@@ -1,0 +1,387 @@
+/* ==========================================================================
+   shell.css — everything outside a window: wallpaper, desktop icons,
+   taskbar, Start button, Start menu, tray, balloon.
+   Every rule here is scoped under html.js — none of it exists in document mode.
+   ========================================================================== */
+
+html.js, html.js body { height: 100%; overflow: hidden; }
+html.js body { background: var(--xp-desktop-bg); }
+
+/* ==========================================================================
+   DESKTOP + WALLPAPER
+   Layers, back to front: sky (gradient on #desktop) -> clouds -> haze -> hill.
+   Split into layers on purpose: one big SVG with `slice` couples the sky, the
+   clouds and the horizon to a single crop and breaks at extreme aspect ratios.
+   ========================================================================== */
+html.js #desktop {
+  position: fixed;
+  inset: 0 0 calc(var(--xp-taskbar-h) + env(safe-area-inset-bottom, 0px)) 0;
+  z-index: var(--z-wallpaper);
+  overflow: hidden;
+  contain: layout paint;
+  background-color: var(--xp-desktop-bg);
+  background-image: linear-gradient(to bottom,
+    var(--sky-1)   0%, var(--sky-2)  10%, var(--sky-3)  26%, var(--sky-4)  42%,
+    var(--sky-5)  54%, var(--sky-6)  64%, var(--sky-7)  72%, var(--sky-8) 100%);
+}
+
+.wp-cloud, .wp-haze, .wp-hill { pointer-events: none; }
+
+/* Clouds: three overlapping soft ellipses each, masked so the underside is flat —
+   that flat bottom is what reads as cumulus rather than a smudge. Sized in vmax
+   so a cloud is the same physical size at 375px and at 2560px. */
+.wp-cloud {
+  position: absolute; background-repeat: no-repeat;
+  filter: blur(4px);
+  -webkit-mask-image: linear-gradient(to bottom,#fff 0 56%, rgba(255,255,255,.18) 88%, transparent 100%);
+          mask-image: linear-gradient(to bottom,#fff 0 56%, rgba(255,255,255,.18) 88%, transparent 100%);
+}
+.wp-cloud--a {
+  left: 6%; top: 14%; width: 32vmax; height: 12vmax;
+  background-image:
+    radial-gradient(closest-side, rgba(255,255,255,.96), rgba(255,255,255,.58) 46%, transparent 100%),
+    radial-gradient(closest-side, rgba(255,255,255,.94), rgba(255,255,255,.54) 48%, transparent 100%),
+    radial-gradient(closest-side, rgba(255,255,255,.90), rgba(255,255,255,.48) 50%, transparent 100%);
+  background-size: 17vmax 5.5vmax, 12vmax 7.5vmax, 14vmax 4.5vmax;
+  background-position: 0% 74%, 30% 4%, 62% 60%;
+}
+.wp-cloud--b {
+  left: 62%; top: 8%; width: 26vmax; height: 9vmax;
+  background-image:
+    radial-gradient(closest-side, rgba(255,255,255,.93), rgba(255,255,255,.52) 48%, transparent 100%),
+    radial-gradient(closest-side, rgba(255,255,255,.90), rgba(255,255,255,.48) 50%, transparent 100%),
+    radial-gradient(closest-side, rgba(255,255,255,.84), rgba(255,255,255,.40) 52%, transparent 100%);
+  background-size: 13vmax 4vmax, 9vmax 5.5vmax, 10vmax 3.2vmax;
+  background-position: 4% 72%, 36% 2%, 70% 58%;
+}
+.wp-cloud--c {
+  left: 74%; top: 40%; width: 22vmax; height: 6vmax;
+  background-image:
+    radial-gradient(closest-side, rgba(255,255,255,.80), rgba(255,255,255,.36) 52%, transparent 100%),
+    radial-gradient(closest-side, rgba(255,255,255,.72), rgba(255,255,255,.28) 55%, transparent 100%);
+  background-size: 14vmax 3.2vmax, 9vmax 2.4vmax;
+  background-position: 0% 70%, 52% 10%;
+}
+@media (max-width: 480px) { .wp-cloud--c { display: none; } }
+
+/* Haze positioned off --hill-h so it tracks the horizon at every viewport size.
+   Drawn before the hill, so the silhouette edge stays crisp while the sky above
+   it goes milky — that band is the difference between a landscape and a shape. */
+.wp-haze {
+  position: absolute; left: 0; right: 0;
+  bottom: calc(var(--hill-h) * .78);
+  height: 12vh; min-height: 64px; max-height: 170px;
+  background: linear-gradient(to bottom,
+    rgba(233,244,251,0) 0%, rgba(233,244,251,.22) 55%,
+    rgba(233,244,251,.52) 88%, rgba(233,244,251,.62) 100%);
+}
+
+/* width:max(1040px,100%) + centre transform: below 1040px the hill is
+   centre-cropped instead of squashed. A plain width:100% at 375px would crush
+   the 1440-unit path 3.6x and turn the gentle ridge into a pyramid. */
+.wp-hill {
+  position: absolute; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: max(1040px, 100%); height: var(--hill-h);
+  display: block;
+}
+@media (max-width: 700px) { :root { --hill-h: clamp(170px, 32vh, 340px); } }
+@media (min-aspect-ratio: 21/9) { :root { --hill-h: clamp(190px, 34vh, 420px); } }
+
+@media (forced-colors: active) {
+  html.js #desktop { background: Canvas; background-image: none; }
+  .wp-cloud, .wp-haze, .wp-hill { display: none; }
+}
+
+/* ==========================================================================
+   DESKTOP ICONS
+   ========================================================================== */
+#icon-grid {
+  position: absolute; inset: 8px auto 8px 8px; z-index: var(--z-icons);
+  display: grid;
+  grid-template-columns: repeat(var(--icon-cols, 2), 92px);
+  grid-template-rows: repeat(var(--icon-rows, 5), 82px);
+  gap: 0; margin: 0; padding: 0; list-style: none;
+}
+/* The <li> is the grid item — placement must live here, not on the button. */
+#icon-grid > li { grid-column: var(--c); grid-row: var(--r); display: flex; }
+.dicon {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  width: 92px; padding: 4px 4px;
+  border: 0; background: none; cursor: default; text-align: center; text-decoration: none;
+  font: var(--xp-fs)/1.25 var(--xp-font); color: #fff;
+  -webkit-tap-highlight-color: transparent;
+}
+.dicon svg { width: 32px; height: 32px; flex: 0 0 auto; }
+.dicon span {
+  display: block; max-width: 84px; padding: 1px 3px;
+  /* dark halo keeps white labels legible over both the pale sky and the hill */
+  text-shadow: 0 1px 2px rgba(0,0,0,.85), 0 0 3px rgba(0,0,0,.6);
+  overflow-wrap: anywhere;
+}
+.dicon:hover svg { filter: brightness(1.08); }
+.dicon.is-selected svg {
+  filter: drop-shadow(0 0 0 #316AC5);
+  background: rgba(49,106,197,.42); border-radius: 2px;
+}
+.dicon.is-selected span {
+  background: var(--xp-highlight); color: var(--xp-highlight-text);
+  text-shadow: none; border-radius: 1px;
+}
+.dicon:focus-visible {
+  outline: 1px dotted #fff; outline-offset: -2px;
+  background: rgba(0,0,0,.42); border-radius: 2px;
+}
+.dicon.is-selected:focus-visible { outline: 1px dotted #fff; background: rgba(0,0,0,.42); }
+
+/* ==========================================================================
+   TASKBAR
+   The gradient is per-px bands, not percentages: XP tiled a 1x29 bitmap, and
+   percentage stops drift the moment the safe-area inset grows the element.
+   ========================================================================== */
+#taskbar {
+  position: fixed; inset: auto 0 0 0;
+  height: calc(var(--xp-taskbar-h) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  display: flex; align-items: stretch; gap: 2px;
+  z-index: var(--z-taskbar);
+  font: var(--xp-fs)/1 var(--xp-font); color: #fff;
+  user-select: none; -webkit-tap-highlight-color: transparent;
+  contain: layout paint;
+  background-image: linear-gradient(to bottom,
+    var(--tb-top-hi) 0,                  var(--tb-top-hi) calc(1  * var(--tb-u)),
+    var(--tb-b1) calc(1  * var(--tb-u)), var(--tb-b2) calc(3  * var(--tb-u)),
+    var(--tb-b3) calc(3  * var(--tb-u)), var(--tb-b4) calc(6  * var(--tb-u)),
+    var(--tb-b5) calc(6  * var(--tb-u)), var(--tb-b6) calc(25 * var(--tb-u)),
+    var(--tb-b7) calc(25 * var(--tb-u)), var(--tb-b7) calc(27 * var(--tb-u)),
+    var(--tb-b8) calc(27 * var(--tb-u)), var(--tb-b8) calc(29 * var(--tb-u)),
+    var(--tb-b9) calc(29 * var(--tb-u)));
+  background-repeat: no-repeat;
+  background-size: 100% var(--xp-taskbar-h);
+  background-color: var(--tb-b9);
+}
+
+/* ---------- START BUTTON ---------- */
+#start-button {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 4px;
+  height: var(--xp-taskbar-h); padding: 0 16px 0 7px;
+  border: 0; border-radius: 0 9px 9px 0;
+  background: linear-gradient(180deg,
+    var(--start-g4) 0%, var(--start-g1) 8%, var(--start-g2) 46%,
+    var(--start-g3) 88%, var(--start-g2) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.45), inset -1px 0 0 rgba(0,0,0,.18);
+  color: #fff; cursor: default;
+  font: italic 700 calc(13px * var(--xp-scale))/1 "Franklin Gothic Medium", "Trebuchet MS", var(--xp-font);
+  text-shadow: 1px 1px 1px rgba(0,0,0,.5);
+}
+#start-button svg { width: calc(18px * var(--xp-scale)); height: calc(18px * var(--xp-scale)); flex: 0 0 auto; }
+#start-button:hover { filter: brightness(1.1); }
+#start-button[aria-expanded="true"] {
+  background: linear-gradient(180deg, var(--start-g3) 0%, var(--start-g2) 40%, var(--start-g1) 100%);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,.35);
+}
+#start-button:focus-visible { outline: var(--xp-focus-dotted-light); outline-offset: -4px; }
+
+/* ---------- QUICK LAUNCH ----------
+   The recruiter's shortcut: the two highest-value actions, always visible,
+   never behind a menu, at any viewport width. */
+#quick-launch {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 2px;
+  padding: 0 6px 0 8px; margin: 3px 0;
+  border-left: 1px solid rgba(0,0,0,.22);
+  box-shadow: -1px 0 0 rgba(255,255,255,.16);
+}
+#quick-launch::before {   /* the dotted grabber */
+  content: ""; width: 3px; height: 16px; margin-right: 4px; flex: 0 0 auto;
+  background-image: radial-gradient(rgba(255,255,255,.55) 40%, transparent 42%);
+  background-size: 3px 3px;
+}
+.ql-btn {
+  display: flex; align-items: center; gap: 4px;
+  min-height: 22px; padding: 0 7px 0 5px;
+  border: 0; border-radius: 3px; background: rgba(255,255,255,.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.2);
+  color: #fff; font: var(--xp-fs)/1 var(--xp-font); text-decoration: none; cursor: default;
+  white-space: nowrap;
+}
+.ql-btn svg { width: 16px; height: 16px; flex: 0 0 auto; }
+.ql-btn:hover { background: rgba(255,255,255,.28); }
+.ql-btn:active { background: rgba(0,0,0,.18); }
+.ql-btn:focus-visible { outline: var(--xp-focus-dotted-light); outline-offset: -3px; }
+@media (max-width: 700px) { .ql-btn span { display: none; } .ql-btn { padding: 0 5px; } }
+
+/* ---------- WINDOW BUTTONS ----------
+   min-width:0 is load-bearing: without it the buttons refuse to shrink and
+   push the tray off-screen. That is the classic taskbar-recreation bug. */
+#task-buttons {
+  flex: 1 1 auto; min-width: 0;
+  display: flex; align-items: center; gap: 2px;
+  padding: 0 4px; margin: 3px 0;
+  border-left: 1px solid rgba(0,0,0,.22);
+  box-shadow: -1px 0 0 rgba(255,255,255,.16);
+}
+.tb-btn {
+  flex: 0 1 160px; min-width: 0; max-width: 160px;
+  display: flex; align-items: center; gap: 5px;
+  min-height: 22px; padding: 0 6px;
+  border: 0; border-radius: 3px;
+  background: linear-gradient(180deg, rgba(255,255,255,.30) 0%, rgba(255,255,255,.10) 50%, rgba(0,0,0,.08) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28);
+  color: #fff; font: var(--xp-fs)/1 var(--xp-font); cursor: default; text-align: left;
+}
+.tb-btn svg { width: 16px; height: 16px; flex: 0 0 auto; }
+.tb-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.tb-btn:hover { background: linear-gradient(180deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.18) 100%); }
+.tb-btn.is-active {
+  background: linear-gradient(180deg, rgba(0,0,0,.26) 0%, rgba(0,0,0,.12) 60%, rgba(255,255,255,.14) 100%);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,.36);
+  font-weight: 700;
+}
+.tb-btn:focus-visible { outline: var(--xp-focus-dotted-light); outline-offset: -3px; }
+
+/* ---------- TRAY ---------- */
+#tray {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 7px;
+  padding: 0 9px; margin: 3px 0 3px 0;
+  background: linear-gradient(180deg, var(--tb-b7) 0%, var(--tb-b5) 40%, var(--tb-b7) 100%);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,.32), 1px 0 0 rgba(255,255,255,.12);
+}
+#tray svg { width: 16px; height: 16px; }
+#tray-clock {
+  font: var(--xp-fs)/1 var(--xp-font); color: #fff; cursor: default;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.tray-icon { border: 0; background: none; padding: 0; display: grid; place-items: center;
+  width: 20px; height: 20px; cursor: default; }
+.tray-icon:focus-visible, #tray-clock:focus-visible { outline: var(--xp-focus-dotted-light); }
+@media (max-width: 420px) { .tray-icon { display: none; } }
+
+/* ==========================================================================
+   START MENU
+   ========================================================================== */
+#start-menu {
+  position: fixed; z-index: var(--z-startmenu);
+  left: 2px; bottom: calc(var(--xp-taskbar-h) + env(safe-area-inset-bottom, 0px) - 1px);
+  width: 386px; max-width: calc(100vw - 8px);
+  border-radius: 8px 8px 0 0;
+  background: #fff;
+  box-shadow: 0 -2px 14px rgba(0,0,0,.5);
+  overflow: hidden;
+  font: var(--xp-fs)/1 var(--xp-font);
+  border: 1px solid var(--sm-border);
+}
+#start-menu[hidden] { display: none; }
+html.js #start-menu.is-opening { animation: sm-in 120ms ease-out; }
+@keyframes sm-in { from { opacity: 0; transform: translateY(8px); } }
+
+.sm-header {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 10px;
+  background: linear-gradient(180deg, var(--sm-head-2) 0%, var(--sm-head-1) 40%, var(--sm-head-3) 100%);
+  border-bottom: 2px solid var(--sm-accent);
+  color: #fff;
+}
+.sm-avatar {
+  width: 42px; height: 42px; flex: 0 0 auto; display: grid; place-items: center;
+  border-radius: 4px; background: rgba(255,255,255,.22);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.5);
+}
+.sm-avatar svg { width: 34px; height: 34px; }
+.sm-name { font: 700 calc(13px * var(--xp-scale))/1.3 var(--xp-font); text-shadow: 1px 1px 1px rgba(0,0,0,.45); }
+.sm-role { font: var(--xp-fs)/1.3 var(--xp-font); opacity: .92; }
+
+.sm-cols { display: grid; grid-template-columns: 1fr 168px; }
+.sm-left  { padding: 5px; background: #fff; border-right: 1px solid var(--pane-border); }
+.sm-right { padding: 5px; background: linear-gradient(180deg,var(--sm-right-1) 0%,var(--sm-right-2) 100%); }
+.sm-sep { margin: 4px 6px; border: 0; border-top: 1px solid var(--pane-border); }
+
+.sm-item {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  min-height: 28px; padding: 3px 8px;
+  border: 0; border-radius: 2px; background: none;
+  font: var(--xp-fs)/1.25 var(--xp-font); color: #06172e;
+  text-align: left; text-decoration: none; cursor: default;
+}
+.sm-item svg { width: 24px; height: 24px; flex: 0 0 auto; }
+.sm-right .sm-item svg { width: 20px; height: 20px; }
+.sm-right .sm-item { min-height: 25px; color: var(--pane-text); }
+.sm-item b { font-weight: 700; }
+.sm-item small { display: block; font-weight: 400; color: var(--pane-text); }
+.sm-item:hover, .sm-item:focus-visible {
+  background: linear-gradient(180deg,var(--sm-sel-1) 0%,var(--sm-sel-2) 100%);
+  color: #fff; outline: none;
+}
+.sm-item:hover small, .sm-item:focus-visible small { color: rgba(255,255,255,.85); }
+.sm-pinned .sm-item { min-height: 32px; }
+
+.sm-footer {
+  display: flex; justify-content: flex-end; gap: 10px;
+  padding: 5px 10px;
+  background: linear-gradient(180deg, var(--sm-head-1) 0%, var(--sm-head-2) 45%, var(--sm-head-3) 100%);
+  border-top: 1px solid var(--sm-sel-1);
+}
+.sm-footer .sm-item { width: auto; color: #fff; }
+.sm-footer .sm-item:hover { background: rgba(255,255,255,.2); }
+
+@media (max-width: 460px) {
+  #start-menu { width: calc(100vw - 4px); }
+  .sm-cols { grid-template-columns: 1fr; }
+  .sm-left { border-right: 0; border-bottom: 1px solid var(--pane-border); }
+}
+
+/* ==========================================================================
+   BALLOON TIP  (blue info, never the red shield — that pattern is deceptive)
+   ========================================================================== */
+#balloon {
+  position: fixed; z-index: var(--z-balloon);
+  right: 8px; bottom: calc(var(--xp-taskbar-h) + 14px);
+  width: 268px; padding: 10px 11px;
+  background: var(--xp-info-bg); color: #000;
+  border: 1px solid #97927e; border-radius: 9px;
+  box-shadow: 2px 3px 8px rgba(0,0,0,.35);
+  font: var(--xp-fs)/1.45 var(--xp-font);
+}
+#balloon[hidden] { display: none; }
+#balloon::after {   /* the pointer tail, aimed down at the notification area */
+  content: ""; position: absolute; right: 26px; bottom: -9px;
+  width: 15px; height: 10px; background: var(--xp-info-bg);
+  border-left: 1px solid #97927e; border-bottom: 1px solid #97927e;
+  clip-path: polygon(0 0, 100% 0, 78% 100%);
+}
+#balloon b { display: block; margin-bottom: 3px; }
+#balloon .balloon-icon { float: left; margin: 0 8px 2px 0; width: 20px; height: 20px; }
+#balloon .balloon-close {
+  position: absolute; top: 4px; right: 4px;
+  width: 24px; height: 24px; display: grid; place-items: center;
+  border: 0; background: none; cursor: default; color: #4a4a42;
+}
+#balloon .balloon-close svg { width: 8px; height: 8px; }
+#balloon .balloon-close:hover { color: #000; }
+#balloon .balloon-close:focus-visible { outline: var(--xp-focus-dotted); }
+html.js #balloon.is-opening { animation: sm-in 160ms ease-out; }
+
+/* ==========================================================================
+   EMPTY-DESKTOP HINT — the desktop must never be an unexplained icon field
+   ========================================================================== */
+#desk-hint {
+  position: fixed; z-index: var(--z-icons);
+  left: 50%; top: 42%; transform: translate(-50%,-50%);
+  max-width: 320px; padding: 14px 16px; text-align: center;
+  background: var(--xp-face); color: #000;
+  border: 1px solid var(--xp-shadow-3d); border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.35), inset 0 0 0 1px #fff;
+  font: var(--xp-fs)/1.5 var(--xp-font);
+}
+#desk-hint[hidden] { display: none; }
+#desk-hint b { display: block; margin-bottom: 4px; }
+
+/* ==========================================================================
+   PRINT — the shell does not exist on paper
+   ========================================================================== */
+@media print {
+  html.js #desktop, html.js #taskbar, html.js #start-menu,
+  html.js #balloon, html.js #desk-hint, html.js #icon-grid,
+  html.js .xp-menu, html.js .xp-tip { display: none !important; }
+}
+
+@media (max-width: 767px) { #balloon { display: none; } }

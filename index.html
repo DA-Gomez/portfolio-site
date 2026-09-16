@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Diego Andre Gomez Ruiz — Software Developer</title>
+<meta name="description" content="Diego Andre Gomez Ruiz — software developer in Maple, Ontario. Resume, experience, and projects, presented as a Windows XP desktop.">
+<meta name="color-scheme" content="light">
+
+<!-- Enhancement gate. Parser-blocking and before any stylesheet, so there is no paint
+     opportunity between "no .js" and ".js". Enhancement is additive: without this class
+     the page is a plain readable resume, which is the correct fallback. -->
+<script>
+(function (d) {
+  var h = d.documentElement;
+  try {
+    if (window.matchMedia && window.CSS && CSS.supports &&
+        CSS.supports('display', 'grid') && 'PointerEvent' in window &&
+        Element.prototype.closest) {
+      h.className = h.className ? h.className + ' js' : 'js';
+      /* Watchdog. Deferred scripts run before DOMContentLoaded, so by the time
+         this fires xp.js has either booted (and set .js-ready) or never loaded
+         at all. Without this, a missing or blocked xp.js would leave desktop
+         CSS applied with no window manager behind it. */
+      d.addEventListener('DOMContentLoaded', function () {
+        if (!h.classList.contains('js-ready')) h.classList.remove('js');
+      });
+    }
+  } catch (e) { /* stays a document */ }
+})(document);
+</script>
+
+<link rel="stylesheet" href="css/xp.css">
+<link rel="stylesheet" href="css/shell.css">
+<link rel="stylesheet" href="css/content.css">
+<script src="js/sprite.js" defer></script>
+<script src="js/xp.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#win-about">Skip to content</a>
+<a class="skip-link" href="#win-help">Keyboard shortcuts</a>
+
+<!-- Icon sprite is injected here by js/sprite.js so index.html stays readable. -->
+<div id="sprite-mount" aria-hidden="true"></div>
+
+<noscript><p class="ns-note">This page is showing its plain-document version. Everything is
+here — the Windows XP desktop is an optional visual layer.</p></noscript>
+
+<main id="resume" class="doc">
+
+<!-- ===================== ABOUT / DOCUMENT HEADER ===================== -->
+<section id="win-about" data-window aria-labelledby="t-about"
+         data-title="About_Diego.txt - Notepad" data-label="About Diego"
+         data-icon="doc-text" data-shell="notepad"
+         data-w="468" data-h="462" data-x="228" data-y="26"
+         data-open="1" data-desktop="1" data-col="1" data-row="1"
+         data-menu="File,Edit,Format,View,Help">
+  <h1 id="t-about">Diego Andre Gomez Ruiz</h1>
+  <p class="role">Aspiring Software Engineer/Developer<span class="sep"> · </span><span class="loc">Toronto, ON</span></p>
+
+  <ul class="contact-inline">
+    <li><a href="mailto:diangoru@my.yorku.ca">diangoru@my.yorku.ca</a></li>
+    <li><a href="https://github.com/DA-Gomez" target="_blank" rel="noopener noreferrer">github.com/DA-Gomez</a></li>
+    <li><a href="https://www.linkedin.com/in/diego-andre-gomez-ruiz" target="_blank" rel="noopener noreferrer">linkedin.com/in/diego-andre-gomez-ruiz</a></li>
+  </ul>
+
+  <p>I build backend systems and the interfaces on top of them. Right now I'm co-founding
+  <b>Preneur</b>, a two-sided home-services marketplace in public pre-launch, and finishing a
+  bachelor in Information Technology at York University.</p>
+
+  <p>Before that I was at an enterprise consultancy, shipping C#/.NET and Vue platforms for
+  multinational clients. I just pretty much built systems for clients like Line-of-Business Applications,
+  Enterprise Resource Planning Systems and Workflow Management Systems. I like problems where correctness is the hard part. Things like idempotent writes,
+  event ordering, schemas designed around the queries that will actually hit them.</p>
+
+  <p><b>Looking for:</b> a software engineering internship or new-grad role, backend or
+  full-stack.</p>
+
+  <p class="note">You're looking at a Windows XP desktop rebuilt in HTML, CSS and vanilla
+  JavaScript. Open anything from the desktop icons or the Start menu.</p>
+</section>
+
+<!-- ===================== SKILLS ===================== -->
+<section id="win-skills" data-window aria-labelledby="t-skills"
+         data-title="Skills - Device Manager" data-label="Skills"
+         data-icon="gear" data-shell="tree"
+         data-w="468" data-h="548" data-x="304" data-y="42"
+         data-desktop="1" data-col="2" data-row="1">
+  <h2 id="t-skills">Technical Skills</h2>
+
+  <div class="tree" data-tree-root="DIEGO-PC">
+    <div class="tree-group" data-icon="tools">
+      <h3 class="tree-name">Languages</h3>
+      <ul>
+        <li>JavaScript</li><li>TypeScript</li><li>C#</li><li>Java</li><li>Python</li>
+        <li>SQL (PostgreSQL)</li><li>C++</li><li>C</li><li>HTML/CSS</li>
+      </ul>
+    </div>
+    <div class="tree-group" data-icon="computer">
+      <h3 class="tree-name">Frameworks &amp; Platforms</h3>
+      <ul>
+        <li>.NET / ASP.NET Core</li><li>Entity Framework Core</li><li>React</li><li>Vue</li>
+        <li>Node.js</li><li>Express.js</li><li>FastAPI</li><li>NumPy</li><li>Pandas</li>
+        <li>Firebase</li><li>AWS</li><li>Azure</li><li>GCP</li>
+      </ul>
+    </div>
+    <div class="tree-group" data-icon="gear">
+      <h3 class="tree-name">Tools &amp; Concepts</h3>
+      <ul>
+        <li>Docker</li><li>Git/GitHub</li><li>GitHub Actions</li><li>Linux</li><li>RabbitMQ</li>
+        <li>Redis</li><li>PostgreSQL</li><li>REST APIs</li><li>Microservices</li>
+        <li>Event-Driven Architecture</li><li>ML (scikit-learn)</li><li>CI/CD</li><li>Agile</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EXPERIENCE ===================== -->
+<section id="win-experience" data-window aria-labelledby="t-experience"
+         data-title="Experience" data-label="Experience"
+         data-icon="briefcase" data-shell="explorer"
+         data-w="700" data-h="514" data-x="150" data-y="52"
+         data-desktop="1" data-col="1" data-row="3"
+         data-pane-title="Experience"
+         data-pane-detail="2 positions · Apr 2024 – Present">
+  <h2 id="t-experience">Professional Experience</h2>
+
+  <article class="entry">
+    <h3>Co-Founder &amp; Lead Developer <span class="at">·</span> <span class="org">Preneur</span></h3>
+    <p class="entry-meta">Toronto, ON<span class="sep"> · </span>
+      <time datetime="2025-04">Apr 2025</time> – Present</p>
+    <ul>
+      <li>Architected a two-sided home-services marketplace spanning job posting, contractor
+      discovery, chat, scheduling, and reviews across 82 React 19 and TypeScript modules; now in
+      public pre-launch.</li>
+      <li>Built a config-driven geospatial search engine powering contractor and job browsers from
+      one hook via geohash bounding-box queries, distance ranking, and cursor pagination.</li>
+      <li>Designed a NoSQL schema around query shapes using version-controlled composite indexes
+      and deterministic document IDs, making schedule upserts idempotent and collapsing a lookup
+      query into a direct read.</li>
+      <li>Enforced unidirectional data flow across 10 Redux Toolkit slices, reads through Firestore
+      listeners and writes through async thunks, so multi-step drafts survive reloads while server
+      collections rehydrate live.</li>
+    </ul>
+  </article>
+
+  <article class="entry">
+    <h3>Software Developer Intern <span class="at">·</span> <span class="org">ADS Business Transformation Experts Inc.</span></h3>
+    <p class="entry-meta">Toronto, ON<span class="sep"> · </span>
+      <time datetime="2024-04">Apr 2024</time> – <time datetime="2025-09">Sept 2025</time></p>
+    <ul>
+      <li>Contributed to the development of enterprise business-transformation platforms for
+      multinational clients, such as Holcim, hosted in Azure and built with C#/.NET and Vue.js</li>
+      <li>Collaborated with a team of 3 engineers to build and improve systems for 4 enterprise
+      clients serving hundreds of internal users.</li>
+      <li>Translated client stakeholder requirements into sprint tickets and walked completed work
+      through in demo sessions, carrying features from intake through client acceptance.</li>
+    </ul>
+  </article>
+</section>
+
+<!-- ===================== PROJECTS ===================== -->
+<section id="win-projects" data-window aria-labelledby="t-projects"
+         data-title="Projects" data-label="Projects"
+         data-icon="folder-open" data-shell="explorer"
+         data-w="700" data-h="514" data-x="186" data-y="76"
+         data-desktop="1" data-col="1" data-row="4"
+         data-pane-title="Projects"
+         data-pane-detail="2 items">
+  <h2 id="t-projects">Technical Projects</h2>
+
+  <article class="entry">
+    <h3>Stock Intelligence Platform</h3>
+    <p class="entry-meta stack">C#/.NET 8<span class="sep"> · </span>Python<span class="sep"> · </span>FastAPI<span class="sep"> · </span>PostgreSQL<span class="sep"> · </span>RabbitMQ<span class="sep"> · </span>Docker<span class="sep"> · </span>React</p>
+    <ul>
+      <li>Architected a four-layer Clean Architecture backend in .NET 8 with CQRS handlers, EF Core
+      8, PostgreSQL, and JWT auth, verified by 130 tests running real infrastructure through
+      Testcontainers.</li>
+      <li>Achieved no duplicate writes across runs of a live SEC EDGAR Form 4 ingestion pipeline
+      using unique-index idempotency, a token-bucket rate limiter, and exponential-backoff
+      retry.</li>
+      <li>Eliminated a PostgreSQL-to-RabbitMQ dual-write failure mode with a transactional outbox
+      and polling relay, then routed events to a Python analytics microservice over manual acks,
+      TTL retry, and dead-letter queues.</li>
+      <li>Shipped an LLM recap service as a second consumer on the topic exchange, generating
+      per-user summaries of insider activity under structured output validation, token budgeting,
+      and Redis TTL caching.</li>
+    </ul>
+  </article>
+
+  <article class="entry">
+    <h3>Context-Aware Wardrobe Recommendation App</h3>
+    <p class="entry-meta stack">Node.js<span class="sep"> · </span>Express<span class="sep"> · </span>Python<span class="sep"> · </span>Firebase<span class="sep"> · </span>React</p>
+    <ul>
+      <li>Co-led a 4-person team through a full-stack build, owning system architecture, API design,
+      and Git/GitHub workflow.</li>
+      <li>Engineered a Node.js/Express backend on Firestore handling wardrobe CRUD, weather-data
+      normalization, and real-time recommendation feedback.</li>
+      <li>Designed a recommendation engine pairing rule-based filtering with a scikit-learn model
+      invoked through child_process to score and rank outfit combinations.</li>
+    </ul>
+  </article>
+</section>
+
+<!-- ===================== EDUCATION & LEADERSHIP ===================== -->
+<section id="win-education" data-window aria-labelledby="t-education"
+         data-title="Education and Leadership" data-label="Education and Leadership"
+         data-icon="education" data-shell="dialog"
+         data-w="426" data-h="450" data-x="352" data-y="44"
+         data-fixed="1" data-desktop="1" data-col="2" data-row="2"
+         data-tabs="General,Leadership,Certifications">
+  <h2 id="t-education">Education and Leadership</h2>
+
+  <div class="tabpanel" data-tab="General">
+    <div class="sysprops-hero">
+      <svg class="sysprops-glyph" width="48" height="48" aria-hidden="true"><use href="#icon-education"/></svg>
+      <div class="sysprops-brand">
+        <b>York University</b>
+        <span>Toronto, Ontario</span>
+      </div>
+    </div>
+    <h3 class="fieldlabel">Registered to:</h3>
+    <div class="sysprops-reg">
+      <p>Diego Andre Gomez Ruiz</p>
+      <p>B.A., Spec. Hons. Information Technology</p>
+      <p>GPA 3.7</p>
+      <p><time datetime="2023-09">Sept 2023</time> – <time datetime="2027-05">May 2027</time> (expected)</p>
+    </div>
+    <h3 class="fieldlabel">Awards:</h3>
+    <ul class="tight">
+      <li>Dean's List</li>
+      <li>Continuing Student Award for Academic Excellence</li>
+    </ul>
+  </div>
+
+  <div class="tabpanel" data-tab="Leadership">
+    <article class="entry">
+      <h3>Co-President <span class="at">·</span>
+        <span class="org">Student Excellence in ITEC Initiative (SEICI)</span></h3>
+      <p class="entry-meta">York University<span class="sep"> · </span>
+        <time datetime="2025-06">Jun 2025</time> – Present</p>
+      <ul>
+        <li>Promoted from member to Co-President for the 2026–2027 term, setting organizational
+        goals and leading executive decisions for York's ITEC student initiative.</li>
+        <li>Own the annual operating roadmap across Fall and Winter terms, assigning timelines and
+        an accountable owner to every workshop, technical project, and milestone.</li>
+      </ul>
+    </article>
+  </div>
+
+  <div class="tabpanel" data-tab="Certifications">
+    <h3 class="fieldlabel">Certifications:</h3>
+    <ul class="tight">
+      <li>AWS Certified Cloud Practitioner <span class="org">· Amazon Web Services</span>
+        <span class="badge-inprogress">In Progress</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="win-contact" data-window aria-labelledby="t-contact"
+         data-title="Contact Diego - Message" data-label="Contact"
+         data-icon="mail" data-shell="compose"
+         data-w="546" data-h="408" data-x="266" data-y="104"
+         data-desktop="1" data-col="2" data-row="3">
+  <h2 id="t-contact">Contact</h2>
+
+  <dl class="compose-head">
+    <dt>To:</dt>
+    <dd><a href="mailto:diangoru@my.yorku.ca">diangoru@my.yorku.ca</a></dd>
+    <dt>GitHub:</dt>
+    <dd><a href="https://github.com/DA-Gomez" target="_blank" rel="noopener noreferrer">github.com/DA-Gomez</a></dd>
+    <dt>LinkedIn:</dt>
+    <dd><a href="https://www.linkedin.com/in/diego-andre-gomez-ruiz" target="_blank" rel="noopener noreferrer">linkedin.com/in/diego-andre-gomez-ruiz</a></dd>
+    <dt>Location:</dt>
+    <dd>Maple, Ontario, Canada</dd>
+  </dl>
+
+  <div class="compose-body">
+    <p>The fastest way to reach me is email — I read everything and I reply.</p>
+    <p>If you're hiring for an internship or a new-grad software role, I'd like to hear about it.</p>
+  </div>
+
+  <p class="compose-actions">
+    <a class="xp-btn xp-btn--default" href="mailto:diangoru@my.yorku.ca">Send Mail</a>
+    <a class="xp-btn" href="Resume.pdf" download>Download Resume (PDF)</a>
+  </p>
+</section>
+
+<!-- ===================== HELP ===================== -->
+<section id="win-help" data-window aria-labelledby="t-help"
+         data-title="Help and Support Center" data-label="Help and Support"
+         data-icon="help" data-shell="help"
+         data-w="592" data-h="450" data-x="222" data-y="60"
+         data-topics="Keyboard shortcuts,How this site works,Colophon">
+  <h2 id="t-help">Help and Support</h2>
+
+  <div class="topic" data-topic="Keyboard shortcuts">
+    <h3>Keyboard shortcuts</h3>
+    <p>Every part of this desktop works from the keyboard. Nothing here needs a mouse, and
+    nothing needs dragging.</p>
+    <table class="keytable">
+      <caption>Desktop and window keyboard commands</caption>
+      <thead><tr><th scope="col">Key</th><th scope="col">Does</th></tr></thead>
+      <tbody>
+        <tr><td><kbd>Tab</kbd></td><td>Move between the icon grid, the open windows, and the taskbar</td></tr>
+        <tr><td><kbd>&#8593;</kbd> <kbd>&#8595;</kbd> <kbd>&#8592;</kbd> <kbd>&#8594;</kbd></td><td>Move the selection inside the icon grid, the taskbar, or a menu</td></tr>
+        <tr><td><kbd>Enter</kbd></td><td>Open the selected icon, or activate the focused control</td></tr>
+        <tr><td><kbd>Esc</kbd></td><td>Close the focused window, or dismiss a menu</td></tr>
+        <tr><td><kbd>Alt</kbd> + <kbd>Space</kbd></td><td>Open the window menu — Restore, Move, Size, Minimize, Maximize, Close</td></tr>
+        <tr><td><kbd>Alt</kbd> + <kbd>Tab</kbd></td><td>Switch to the next open window</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>Esc</kbd></td><td>Open the Start menu</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>P</kbd></td><td>Print — produces a clean plain resume, not a picture of a desktop</td></tr>
+      </tbody>
+    </table>
+    <p>In the window menu, <b>Move</b> and <b>Size</b> put the window into a keyboard mode: the
+    arrow keys move or resize it, <kbd>Enter</kbd> commits, and <kbd>Esc</kbd> cancels. That is how
+    real Windows did it, and it means dragging is never the only way to do anything here.</p>
+  </div>
+
+  <div class="topic" data-topic="How this site works">
+    <h3>How this site works</h3>
+    <p>The resume is real HTML in the page, written once. The desktop is a layer on top of it:</p>
+    <ul>
+      <li>With JavaScript off, you get a plain, readable resume document.</li>
+      <li>With it on, each section of that same document is decorated into a window. The content is
+      never copied — only re-framed.</li>
+      <li><kbd>Ctrl</kbd> + <kbd>P</kbd> prints the document, not the desktop.</li>
+      <li>Every window has a shareable link. Adding <code>#win-projects</code> to the URL opens
+      Projects directly.</li>
+    </ul>
+    <p>Theme and font size live in <b>Display Properties</b> — right-click the desktop and choose
+    Properties, or open it from the Start menu. The font-size control is there because
+    fixed-pixel chrome doesn't respond to browser text zoom the way ordinary text does.</p>
+  </div>
+
+  <div class="topic" data-topic="Colophon">
+    <h3>Colophon</h3>
+    <p>Hand-written HTML, CSS and vanilla JavaScript. No frameworks, no build step, no packages, no
+    network requests — opening the file straight off a disk works.</p>
+    <ul>
+      <li><b>No images.</b> The wallpaper is layered CSS gradients plus one authored SVG path. Every
+      icon is an original SVG drawn for this site, in a single 18&nbsp;KB inline sprite.</li>
+      <li><b>The window manager</b> handles focus and z-order, pointer-capture dragging, edge
+      resizing, maximize/restore geometry memory, taskbar semantics, hash routing, and keyboard
+      move and size modes.</li>
+      <li><b>Type</b> is Tahoma, the real Windows XP interface font, with a fallback stack chosen to
+      degrade without shifting the layout.</li>
+    </ul>
+    <p class="note">A tribute to the Windows XP &ldquo;Luna&rdquo; interface, built from scratch.
+    Not affiliated with or endorsed by Microsoft. Windows and Windows XP are trademarks of
+    Microsoft Corporation.</p>
+  </div>
+</section>
+
+<!-- ===================== DISPLAY PROPERTIES (settings, not resume content) ===================== -->
+<section id="win-display" data-window aria-labelledby="t-display"
+         data-title="Display Properties" data-label="Display Properties"
+         data-icon="computer" data-shell="dialog"
+         data-w="412" data-h="422" data-x="330" data-y="70"
+         data-fixed="1" data-nodoc="1" data-tabs="Appearance,Settings">
+  <h2 id="t-display">Display Properties</h2>
+
+  <div class="tabpanel" data-tab="Appearance">
+    <div class="monitor-preview" aria-hidden="true">
+      <div class="mp-screen">
+        <div class="mp-win"><div class="mp-title"></div><div class="mp-body"></div></div>
+        <div class="mp-taskbar"><span class="mp-start"></span></div>
+      </div>
+      <div class="mp-neck"></div>
+      <div class="mp-stand"></div>
+    </div>
+    <fieldset class="xp-group">
+      <legend>Color scheme</legend>
+      <div class="radio-row" role="radiogroup" aria-label="Color scheme">
+        <label><input type="radio" name="xp-theme" value="luna" checked> Luna (Blue)</label>
+        <label><input type="radio" name="xp-theme" value="olive"> Olive Green</label>
+        <label><input type="radio" name="xp-theme" value="silver"> Silver</label>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="tabpanel" data-tab="Settings">
+    <fieldset class="xp-group">
+      <legend>Font size</legend>
+      <div class="radio-row" role="radiogroup" aria-label="Font size">
+        <label><input type="radio" name="xp-fontsize" value="normal" checked> Normal</label>
+        <label><input type="radio" name="xp-fontsize" value="large"> Large Fonts</label>
+        <label><input type="radio" name="xp-fontsize" value="xlarge"> Extra Large Fonts</label>
+      </div>
+      <p class="hint">Scales the whole interface. Browser zoom works too, and the two combine.</p>
+    </fieldset>
+    <fieldset class="xp-group">
+      <legend>Effects</legend>
+      <label class="check-row"><input type="checkbox" id="opt-motion"> Reduce animation</label>
+      <p class="hint">Follows your system &ldquo;reduce motion&rdquo; setting by default.</p>
+    </fieldset>
+  </div>
+</section>
+
+</main>
+
+<footer id="page-footer">
+  <p>Diego Andre Gomez Ruiz<span class="sep"> · </span>Maple, ON<span class="sep"> · </span>
+    <a href="mailto:diangoru@my.yorku.ca">diangoru@my.yorku.ca</a></p>
+  <p class="fine">A tribute to the Windows XP &ldquo;Luna&rdquo; interface, rebuilt in HTML, CSS and
+  vanilla JavaScript. Not affiliated with or endorsed by Microsoft.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,620 @@
+/* ==========================================================================
+   xp.css — Windows XP "Luna" chrome: tokens, window frame, controls.
+   Load order: xp.css -> shell.css -> content.css
+   Specificity budget in this file: max 2 classes, or `html.js` + 1 class.
+   ========================================================================== */
+
+:root {
+  /* ---------- SCALE & TYPE ---------- */
+  --xp-scale: 1;
+  --xp-font: Tahoma, "Segoe UI", Verdana, Geneva, sans-serif;
+  --xp-font-mono: "Lucida Console", "DejaVu Sans Mono", Consolas, monospace;
+  --xp-fs: calc(11px * var(--xp-scale));
+  --xp-hair: 1px;
+
+  /* ---------- 3D BEVEL QUARTET (Luna GetSysColor values) ---------- */
+  --xp-face:          #ECE9D8;
+  --xp-face-light:    #F1EFE2;
+  --xp-hilight-3d:    #FFFFFF;
+  --xp-shadow-3d:     #ACA899;
+  --xp-dkshadow-3d:   #716F64;
+  --xp-window-bg:     #FFFFFF;
+  --xp-window-text:   #000000;
+  --xp-gray-text:     #ACA899;
+  --xp-menu-hilight:  #316AC5;
+  --xp-highlight:     #316AC5;
+  --xp-highlight-text:#FFFFFF;
+  --xp-info-bg:       #FFFFE1;
+
+  /* ---------- WINDOW FRAME (themeable) ---------- */
+  --xp-frame-w: 3px;
+  --xp-frame-radius: 8px;
+  --xp-frame-1-lt: #0831D9;
+  --xp-frame-1-rb: #00138C;
+  --xp-frame-3-lt: #0855DD;
+  --xp-frame-outer: #0A2A80;
+  --xp-frame-i-3-lt: #9DB9EB;
+  --xp-frame-i-outer: #5878B8;
+  --xp-window-shadow: 0 5px 12px -2px rgba(0,0,0,.42), 0 2px 4px rgba(0,0,0,.24);
+  --xp-window-shadow-inactive: 0 3px 8px -2px rgba(0,0,0,.26);
+
+  /* ---------- TITLE BAR (themeable) ---------- */
+  --xp-title-h: calc(28px * var(--xp-scale));
+  --xp-title-topline: #6FBBFF;
+  --xp-title-text: #FFFFFF;
+  --xp-title-shadow: 1px 1px 1px rgba(0,0,0,.55);
+  --xp-title-grad-active: linear-gradient(180deg,
+      #0997FF 0%, #0053EE 8%, #0050EE 40%, #0066FF 88%,
+      #0066FF 93%, #005BFF 95%, #003DD7 96%, #003DD7 100%);
+  --xp-title-grad-inactive: linear-gradient(180deg,
+      #D2E4FB 0%, #A9C6F0 8%, #9DB9EB 40%, #A6C0EA 88%,
+      #93AFE2 95%, #7A96DF 96%, #7A96DF 100%);
+  /* Navy on the pale inactive bar: 5.2:1. Authentic XP used white here, which fails. */
+  --xp-title-text-inactive: #1B3F73;
+
+  /* ---------- CAPTION BUTTONS ---------- */
+  --xp-capbtn-hit: calc(24px * var(--xp-scale));
+  --xp-capbtn-face-size: calc(21px * var(--xp-scale));
+  --xp-capbtn-face: linear-gradient(180deg,
+      #DCEBFC 0%, #9CC3F0 14%, #5E96E0 46%, #3C7BD2 74%, #2A66C4 90%, #7FAEE8 100%);
+  --xp-capbtn-face-hot: linear-gradient(180deg,
+      #F0F8FF 0%, #C0DDF8 14%, #7FB0EC 46%, #5892E0 74%, #3E79D2 90%, #A6CCF2 100%);
+  --xp-capbtn-face-active: linear-gradient(180deg,
+      #1E56A8 0%, #2A66C4 20%, #3C7BD2 60%, #6BA0E4 100%);
+  --xp-capbtn-edge: #16418E;
+  --xp-close-face: linear-gradient(180deg,
+      #F7C9B9 0%, #EE8A6A 14%, #E05A34 46%, #CE3E1B 74%, #B22A08 90%, #E27C5C 100%);
+  --xp-close-face-hot: linear-gradient(180deg,
+      #FFE0D4 0%, #FCA286 14%, #F06B42 46%, #E04E26 74%, #C6350F 90%, #F09472 100%);
+  --xp-close-face-active: linear-gradient(180deg,
+      #8F1C05 0%, #B22A08 20%, #CE3E1B 60%, #E88A68 100%);
+  --xp-close-edge: #7E2109;
+
+  /* ---------- PUSH BUTTON ---------- */
+  --xp-btn-h: calc(23px * var(--xp-scale));
+  --xp-btn-minw: calc(75px * var(--xp-scale));
+  --xp-btn-border: #003C74;
+  --xp-btn-face: linear-gradient(180deg,#FFFFFF 0%,#F6F4EC 40%,#ECE9D8 86%,#D8D0C4 100%);
+  --xp-btn-face-hot: linear-gradient(180deg,#FFFFFF 0%,#FFFAEE 40%,#FDF3DE 86%,#EFDFBC 100%);
+  /* THE XP amber hover glow: four concentric rings, outside -> in */
+  --xp-glow-1: #FFE7A8;
+  --xp-glow-2: #FDD889;
+  --xp-glow-3: #FBC761;
+  --xp-glow-4: #E5A01A;
+  --xp-btn-face-pressed: linear-gradient(180deg,#CDCAC3 0%,#E3E3DB 8%,#E5E5DE 94%,#F2F2EE 100%);
+
+  /* ---------- FIELDS ---------- */
+  --xp-field-border: #5F7F9E;
+  --xp-field-h: calc(21px * var(--xp-scale));
+  --xp-sunken:
+      inset  1px  1px var(--xp-shadow-3d),
+      inset  2px  2px var(--xp-dkshadow-3d),
+      inset -1px -1px var(--xp-hilight-3d),
+      inset -2px -2px var(--xp-face-light);
+
+  /* ---------- SCROLLBAR ---------- */
+  --xp-sb-size: calc(17px * var(--xp-scale));
+  --xp-sb-track: linear-gradient(90deg,#E4E4EC 0%,#F2F2F6 12%,#F0F0F4 88%,#DCDCE4 100%);
+  --xp-sb-thumb: linear-gradient(90deg,
+      #FCFDFF 0%,#EAF1FC 10%,#CFE0F8 28%,#AFC9F0 50%,#95B4E4 72%,#7EA1D8 88%,#B9CEEE 100%);
+  --xp-sb-thumb-h: linear-gradient(180deg,
+      #FCFDFF 0%,#EAF1FC 10%,#CFE0F8 28%,#AFC9F0 50%,#95B4E4 72%,#7EA1D8 88%,#B9CEEE 100%);
+  --xp-sb-thumb-border: #3F6AA8;
+
+  /* ---------- CONTAINERS ---------- */
+  --xp-group-border: #D0CEBF;
+  --xp-statusbar-h: calc(20px * var(--xp-scale));
+  --xp-menu-item-h: calc(24px * var(--xp-scale));
+  --xp-menu-sep: #D6D2C2;
+
+  /* ---------- ACCENT FAMILY (task panes, help rail, Start menu) ----------
+     Tokenized so a theme change carries through the whole shell rather than
+     leaving blue panes on a green desktop. */
+  --pane-1: #f0f4fd;      /* task-pane gradient, top */
+  --pane-2: #dfe8fb;
+  --pane-3: #cfddf8;      /* task-pane gradient, bottom */
+  --pane-border: #b6cef2;
+  --pane-head-1: #5b9ff0; /* the little blue box header */
+  --pane-head-2: #2f74d8;
+  --pane-text: #2d4a72;
+  --sm-head-1: #1d7ae8;   /* Start menu header strip */
+  --sm-head-2: #0f68d4;
+  --sm-head-3: #0d55b4;
+  --sm-accent: #f5b525;   /* the orange rule under the header */
+  --sm-right-1: #d3e5fa;
+  --sm-right-2: #c3daf7;
+  --sm-sel-1: #3d8ff0;
+  --sm-sel-2: #1e63cf;
+  --sm-border: #0831D9;
+
+  /* ---------- TEXT ---------- */
+  --xp-link: #0B3D91;
+  --xp-link-hover: #1D5FB8;
+  --xp-disabled-text: #ACA899;
+
+  /* ---------- FOCUS ---------- */
+  --xp-focus-dotted: 1px dotted #000000;
+  --xp-focus-dotted-light: 1px dotted #FFFFFF;
+  --xp-focus-ring: 0 0 0 2px #FFFFFF, 0 0 0 4px #123C7A;
+
+  /* ---------- SHELL HANDSHAKE (used by shell.css) ---------- */
+  --xp-taskbar-h: calc(30px * var(--xp-scale));
+  --xp-desktop-bg: #004E98;
+  --tb-u: calc(var(--xp-taskbar-h) / 30);
+  --tb-top-hi:#4b9bf7; --tb-b1:#3c86ee; --tb-b2:#2e77e4; --tb-b3:#2a6fdc;
+  --tb-b4:#235fd0;     --tb-b5:#1f58c9; --tb-b6:#1b4fbe; --tb-b7:#17439f;
+  --tb-b8:#0f327a;     --tb-b9:#0b2a66;
+  --start-g1:#5eac3a; --start-g2:#419425; --start-g3:#317d1b; --start-g4:#7cc253;
+  --sky-1:#0f4d8c; --sky-2:#1c62a6; --sky-3:#3080c8; --sky-4:#5ba2d8;
+  --sky-5:#8ec4e8; --sky-6:#bcdcf0; --sky-7:#dcecf7; --sky-8:#eef5fa;
+  --hill-h: clamp(190px, 38vh, 460px);
+
+  /* ---------- Z-INDEX SCALE ---------- */
+  --z-wallpaper: 0;
+  --z-icons: 10;
+  --z-window: 100;      /* WM assigns 100..899 */
+  --z-taskbar: 1000;
+  --z-startmenu: 1100;
+  --z-menu: 1200;       /* window/context menus */
+  --z-balloon: 1300;
+  --z-tooltip: 1400;
+}
+
+/* ---------- THEMES. Only the caption/frame/taskbar/start tokens change. ---------- */
+html[data-theme="olive"] {
+  --xp-frame-1-lt:#8FA34A; --xp-frame-1-rb:#4E5C1F; --xp-frame-3-lt:#7E9440;
+  --xp-frame-outer:#3F4A17; --xp-frame-i-3-lt:#C3CB9C; --xp-frame-i-outer:#8E9668;
+  --xp-title-topline:#D6E39A;
+  /* Darker than authentic Olive on purpose: white caption text on the real
+     #8CA345 measures 2.6:1. #64792B brings it to 4.9:1. */
+  --xp-title-grad-active: linear-gradient(180deg,
+      #A8BC66 0%, #6F8534 8%, #64792B 40%, #71883A 88%,
+      #64792B 95%, #4F6021 96%, #4F6021 100%);
+  --xp-title-grad-inactive: linear-gradient(180deg,
+      #EDF0DC 0%, #D6DDB4 8%, #CBD3A4 40%, #D2D9AE 88%,
+      #C3CB9C 95%, #AFB783 96%, #AFB783 100%);
+  --xp-title-text-inactive:#3A421C;
+  --xp-capbtn-face: linear-gradient(180deg,
+      #E9EFC8 0%,#C6D28C 14%,#9FB25C 46%,#889C45 74%,#748634 90%,#B7C77E 100%);
+  --xp-capbtn-face-hot: linear-gradient(180deg,
+      #F5F8E2 0%,#DCE5AC 14%,#B8C878 46%,#A2B45C 74%,#8B9F45 90%,#CFDC9C 100%);
+  --xp-capbtn-edge:#5A6B24;
+  --tb-top-hi:#a8bf62; --tb-b1:#93ad4c; --tb-b2:#87a341; --tb-b3:#7d9a3a;
+  --tb-b4:#728f32;     --tb-b5:#6a862c; --tb-b6:#627d26; --tb-b7:#526a1d;
+  --tb-b8:#3d5214;     --tb-b9:#33450f;
+  --xp-desktop-bg:#5a6647;
+  --sky-1:#3f5a2c; --sky-2:#556f38; --sky-3:#728a4a; --sky-4:#94a865;
+  --sky-5:#b9c78d; --sky-6:#d6dfb4; --sky-7:#e8eed0; --sky-8:#f2f5e4;
+  --pane-1:#f5f7e8; --pane-2:#e8edcf; --pane-3:#dae2b8; --pane-border:#c3cb9c;
+  --pane-head-1:#94aa4e; --pane-head-2:#6c8130; --pane-text:#3f4a1c;
+  --sm-head-1:#7e9440; --sm-head-2:#647a28; --sm-head-3:#4f6021;
+  --sm-accent:#e8c14a; --sm-right-1:#e4ebc8; --sm-right-2:#d6dfb4;
+  --sm-sel-1:#8ca345; --sm-sel-2:#647a28; --sm-border:#5a6b24;
+  --xp-link:#3f4a17; --xp-link-hover:#6c8130;
+}
+html[data-theme="silver"] {
+  --xp-frame-1-lt:#B4B4C8; --xp-frame-1-rb:#6E6E86; --xp-frame-3-lt:#A0A0B8;
+  --xp-frame-outer:#55556B; --xp-frame-i-3-lt:#D6D6E0; --xp-frame-i-outer:#9A9AAE;
+  --xp-title-topline:#F0F0F6;
+  --xp-title-grad-active: linear-gradient(180deg,
+      #F4F4F8 0%, #D3D3E0 8%, #C6C6D6 40%, #D0D0DE 88%,
+      #C0C0D2 95%, #9C9CB4 96%, #9C9CB4 100%);
+  --xp-title-grad-inactive: linear-gradient(180deg,
+      #FAFAFC 0%, #E8E8EE 8%, #DEDEE6 40%, #E4E4EC 88%,
+      #D6D6E0 95%, #BEBECE 96%, #BEBECE 100%);
+  --xp-title-text: #22222E;
+  --xp-title-shadow: 0 1px 0 rgba(255,255,255,.6);
+  --xp-title-text-inactive:#4A4A5C;
+  --xp-capbtn-face: linear-gradient(180deg,
+      #FDFDFE 0%,#E2E2EA 14%,#C2C2D2 46%,#ADADC0 74%,#9898AE 90%,#DCDCE6 100%);
+  --xp-capbtn-face-hot: linear-gradient(180deg,
+      #FFFFFF 0%,#EFEFF4 14%,#D6D6E2 46%,#C2C2D4 74%,#ADADC0 90%,#EAEAF0 100%);
+  --xp-capbtn-edge:#70708A;
+  --tb-top-hi:#f2f2f6; --tb-b1:#dcdce6; --tb-b2:#cececc; --tb-b3:#c6c6d4;
+  --tb-b4:#bcbcca;     --tb-b5:#b4b4c4; --tb-b6:#acacbe; --tb-b7:#9494a8;
+  --tb-b8:#75758c;     --tb-b9:#66667c;
+  --start-g1:#8f9aa8; --start-g2:#737f8f; --start-g3:#5c6878; --start-g4:#a8b2bd;
+  --xp-desktop-bg:#6b6b7a;
+  --sky-1:#4c4c60; --sky-2:#5f5f75; --sky-3:#7b7b92; --sky-4:#9a9ab0;
+  --sky-5:#bcbcce; --sky-6:#d8d8e4; --sky-7:#eaeaf0; --sky-8:#f4f4f8;
+  --pane-1:#f7f7fa; --pane-2:#e9e9f0; --pane-3:#dadae4; --pane-border:#bebece;
+  --pane-head-1:#9c9cb4; --pane-head-2:#75758c; --pane-text:#33333f;
+  --sm-head-1:#9c9cb4; --sm-head-2:#82829a; --sm-head-3:#66667c;
+  --sm-accent:#c8c8d4; --sm-right-1:#e6e6ee; --sm-right-2:#d8d8e4;
+  --sm-sel-1:#8f8fa8; --sm-sel-2:#6e6e86; --sm-border:#70708a;
+  --xp-link:#3a3a4c; --xp-link-hover:#5c5c74;
+}
+/* Silver's pale caption needs a dark glyph to keep the 3:1 non-text contrast. */
+html[data-theme="silver"] .cap-btn:not(.cap-btn--close) { --capglyph: #2A2A38; }
+
+html[data-fontsize="large"]  { --xp-scale: 1.25; }
+html[data-fontsize="xlarge"] { --xp-scale: 1.5; }
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--xp-window-bg);
+  color: var(--xp-window-text);
+  font: 16px/1.55 var(--xp-font);
+}
+
+::selection { background: var(--xp-highlight); color: var(--xp-highlight-text); }
+
+/* Skip links: visible only when focused, and never under the taskbar. */
+.skip-link {
+  position: absolute; left: 8px; top: -100px; z-index: calc(var(--z-tooltip) + 10);
+  padding: 6px 12px; background: var(--xp-info-bg); color: #000;
+  border: 1px solid #000; font: bold var(--xp-fs)/1.2 var(--xp-font);
+  text-decoration: none;
+}
+.skip-link:focus { top: 8px; }
+
+#sprite-mount { position: absolute; width: 0; height: 0; overflow: hidden; }
+#sprite-mount svg { width: 0; height: 0; }
+
+/* Screen-reader-only text used by generated chrome. */
+.vh {
+  position: absolute !important; width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* ==========================================================================
+   PUSH BUTTON  (used in both document and desktop modes)
+   ========================================================================== */
+.xp-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--xp-btn-minw); min-height: var(--xp-btn-h);
+  padding: 0 calc(12px * var(--xp-scale));
+  border: 1px solid var(--xp-btn-border); border-radius: 3px;
+  background: var(--xp-btn-face);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.85);
+  font: var(--xp-fs)/1 var(--xp-font); color: #000; text-decoration: none;
+  cursor: default; user-select: none;
+}
+.xp-btn:hover {
+  background: var(--xp-btn-face-hot);
+  /* four concentric 1px amber rings — the single most recognizable XP detail */
+  box-shadow:
+    inset  0 0 0 1px var(--xp-glow-1),
+    inset  0 0 0 2px var(--xp-glow-2),
+    inset  0 0 0 3px var(--xp-glow-3),
+    inset  0 0 0 4px var(--xp-glow-4);
+}
+.xp-btn:active { background: var(--xp-btn-face-pressed); box-shadow: none; padding-top: 1px; }
+.xp-btn:focus-visible { outline: var(--xp-focus-dotted); outline-offset: -4px; }
+.xp-btn--default { box-shadow: inset 0 0 0 1px rgba(255,255,255,.85), 0 0 0 1px var(--xp-btn-border); }
+
+/* ==========================================================================
+   WINDOW FRAME  (desktop mode only)
+   ========================================================================== */
+html.js .window {
+  position: absolute;
+  display: flex; flex-direction: column;
+  min-width: 240px; min-height: 140px;
+  padding: 0 var(--xp-frame-w) var(--xp-frame-w);
+  border-radius: var(--xp-frame-radius) var(--xp-frame-radius) 0 0;
+  background: linear-gradient(180deg, var(--xp-frame-3-lt), var(--xp-frame-1-lt));
+  box-shadow:
+    inset 0 0 0 1px var(--xp-frame-1-rb),
+    0 0 0 1px var(--xp-frame-outer),
+    var(--xp-window-shadow-inactive);
+  contain: layout;
+}
+html.js .window.is-focused {
+  box-shadow:
+    inset 0 0 0 1px var(--xp-frame-1-rb),
+    0 0 0 1px var(--xp-frame-outer),
+    var(--xp-window-shadow);
+}
+html.js .window:not(.is-focused) {
+  background: linear-gradient(180deg, var(--xp-frame-i-3-lt), var(--xp-frame-i-outer));
+}
+html.js .window.is-maximized {
+  border-radius: 0;
+  box-shadow: inset 0 0 0 1px var(--xp-frame-1-rb);
+}
+html.js .window[hidden] { display: none; }
+
+/* Windows animate open/close by scale+fade from their own box. */
+html.js .window.is-opening { animation: win-in 140ms cubic-bezier(.2,.8,.3,1); }
+@keyframes win-in { from { opacity: 0; transform: scale(.96); } }
+
+/* ---------- TITLE BAR ---------- */
+html.js .title-bar {
+  position: relative;
+  display: flex; align-items: center; gap: calc(4px * var(--xp-scale));
+  height: var(--xp-title-h); flex: 0 0 auto;
+  padding: 0 calc(3px * var(--xp-scale)) 0 calc(5px * var(--xp-scale));
+  border-radius: calc(var(--xp-frame-radius) - 2px) calc(var(--xp-frame-radius) - 2px) 0 0;
+  background: var(--xp-title-grad-active);
+  cursor: default; user-select: none; touch-action: none;
+}
+html.js .window:not(.is-focused) > .title-bar { background: var(--xp-title-grad-inactive); }
+html.js .window.is-maximized > .title-bar { border-radius: 0; }
+/* the 1px bright line along the very top of the caption */
+html.js .title-bar::before {
+  content: ""; position: absolute; inset: 0 2px auto 2px; height: 1px;
+  background: var(--xp-title-topline); border-radius: inherit;
+}
+html.js .window:not(.is-focused) > .title-bar::before { background: rgba(255,255,255,.55); }
+
+html.js .title-icon { flex: 0 0 auto; width: calc(16px * var(--xp-scale)); height: calc(16px * var(--xp-scale)); }
+
+html.js .title-text {
+  flex: 1 1 auto; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  /* line-height must leave room for descenders: at 1, `overflow:hidden` clipped
+     the underscore in filename titles like About_Diego.txt so it read as a
+     space. The flex row still centres the text, so the box can be taller. */
+  font: 700 var(--xp-fs)/1.45 var(--xp-font);
+  color: var(--xp-title-text); text-shadow: var(--xp-title-shadow);
+}
+html.js .window:not(.is-focused) .title-text {
+  color: var(--xp-title-text-inactive); text-shadow: 0 1px 0 rgba(255,255,255,.55);
+}
+
+/* ---------- CAPTION BUTTONS ----------
+   Visual face stays an authentic 21px; the hit area is padded out to 24px via
+   a pseudo-element so WCAG 2.5.8 is met without changing the look or layout. */
+html.js .win-controls { display: flex; align-items: center; gap: calc(2px * var(--xp-scale)); flex: 0 0 auto; }
+html.js .cap-btn {
+  position: relative;
+  display: grid; place-items: center;
+  width: var(--xp-capbtn-face-size); height: var(--xp-capbtn-face-size);
+  padding: 0; border: 1px solid var(--xp-capbtn-edge); border-radius: 3px;
+  background: var(--xp-capbtn-face);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+  color: var(--capglyph, #fff);
+  cursor: default;
+}
+html.js .cap-btn::after {   /* the 24x24 hit extender */
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: var(--xp-capbtn-hit); height: var(--xp-capbtn-hit);
+  transform: translate(-50%, -50%);
+}
+html.js .cap-btn:hover { background: var(--xp-capbtn-face-hot); }
+html.js .cap-btn:active { background: var(--xp-capbtn-face-active); }
+html.js .cap-btn:focus-visible {
+  outline: 1px dotted #fff; outline-offset: -3px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.58), inset 0 1px 0 rgba(255,255,255,.7);
+}
+html.js .cap-btn--close { border-color: var(--xp-close-edge); background: var(--xp-close-face); }
+html.js .cap-btn--close:hover { background: var(--xp-close-face-hot); }
+html.js .cap-btn--close:active { background: var(--xp-close-face-active); }
+html.js .cap-btn svg {
+  width: calc(10px * var(--xp-scale)); height: calc(10px * var(--xp-scale));
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.38));
+  pointer-events: none;
+}
+html.js .cap-btn[aria-disabled="true"] { opacity: .55; }
+
+/* ---------- WINDOW BODY / STATUS BAR ---------- */
+html.js .win-frame-inner {
+  flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0;
+  background: var(--xp-face);
+  border: 1px solid var(--xp-face);
+}
+html.js .win-body {
+  flex: 1 1 auto; min-height: 0; overflow: auto;
+  background: var(--xp-window-bg);
+  scroll-padding-block-end: 8px;
+}
+html.js .win-status {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 8px;
+  height: var(--xp-statusbar-h); padding: 0 6px;
+  background: var(--xp-face);
+  border-top: 1px solid var(--xp-hilight-3d);
+  font: var(--xp-fs)/1 var(--xp-font); color: #3b3b32;
+  box-shadow: inset 0 1px 0 var(--xp-shadow-3d);
+  user-select: none;
+}
+html.js .win-status > span { padding: 0 6px; box-shadow: var(--xp-sunken); flex: 0 0 auto; height: calc(100% - 4px); display: flex; align-items: center; }
+html.js .win-status > span:first-child { flex: 1 1 auto; min-width: 0; }
+html.js .win-gripper { margin-left: auto; width: 12px; height: 12px; flex: 0 0 auto; box-shadow: none; padding: 0;
+  background:
+    linear-gradient(135deg, transparent 46%, var(--xp-hilight-3d) 46% 54%, transparent 54%) 0 0/5px 5px,
+    linear-gradient(135deg, transparent 60%, var(--xp-shadow-3d) 60% 68%, transparent 68%) 0 0/5px 5px;
+}
+
+/* ---------- MENU BAR ---------- */
+html.js .win-menubar {
+  flex: 0 0 auto; display: flex; align-items: stretch;
+  background: var(--xp-face); border-bottom: 1px solid var(--xp-shadow-3d);
+  font: var(--xp-fs)/1 var(--xp-font); user-select: none;
+}
+html.js .win-menubar button {
+  border: 0; background: none; padding: 0 calc(8px * var(--xp-scale));
+  min-height: calc(20px * var(--xp-scale)); font: inherit; color: #000; cursor: default;
+}
+html.js .win-menubar button:hover,
+html.js .win-menubar button[aria-expanded="true"] {
+  background: var(--xp-menu-hilight); color: #fff;
+}
+html.js .win-menubar button:focus-visible { outline: var(--xp-focus-dotted); outline-offset: -3px; }
+
+/* ---------- POPUP MENU (window menu, context menu, File menu) ---------- */
+.xp-menu {
+  position: fixed; z-index: var(--z-menu); min-width: 168px; padding: 2px;
+  background: var(--xp-window-bg);
+  border: 1px solid var(--xp-shadow-3d);
+  box-shadow: 3px 3px 4px rgba(0,0,0,.3);
+  font: var(--xp-fs)/1 var(--xp-font);
+}
+.xp-menu[hidden] { display: none; }
+.xp-menu button {
+  display: flex; align-items: center; width: 100%;
+  min-height: var(--xp-menu-item-h); padding: 0 calc(24px * var(--xp-scale)) 0 calc(28px * var(--xp-scale));
+  border: 0; background: none; font: inherit; color: #000; text-align: left; cursor: default;
+}
+.xp-menu button:hover:not([aria-disabled="true"]),
+.xp-menu button:focus-visible { background: var(--xp-menu-hilight); color: #fff; outline: none; }
+.xp-menu button[aria-disabled="true"] { color: var(--xp-disabled-text); text-shadow: 1px 1px 0 #fff; }
+.xp-menu hr { margin: 3px 1px; border: 0; border-top: 1px solid var(--xp-menu-sep); }
+.xp-menu .mi-key { margin-left: auto; padding-left: 18px; opacity: .75; }
+.xp-menu button:hover .mi-key { opacity: .9; }
+
+/* ==========================================================================
+   FIELDS, GROUPS, TABS
+   ========================================================================== */
+.xp-group {
+  margin: 0 0 10px; padding: 8px 10px 10px;
+  border: 1px solid var(--xp-group-border); border-radius: 3px;
+  background: transparent;
+}
+.xp-group > legend { padding: 0 4px; font: var(--xp-fs)/1 var(--xp-font); color: #0A246A; }
+
+.radio-row { display: flex; flex-direction: column; gap: 6px; }
+.radio-row label, .check-row {
+  display: flex; align-items: center; gap: 7px;
+  font: var(--xp-fs)/1.3 var(--xp-font); cursor: default; min-height: 24px;
+}
+.radio-row input, .check-row input { width: 13px; height: 13px; margin: 0; accent-color: #1B4FBE; flex: 0 0 auto; }
+.radio-row input:focus-visible, .check-row input:focus-visible { outline: var(--xp-focus-dotted); outline-offset: 2px; }
+
+.hint { margin: 8px 0 0; font: var(--xp-fs)/1.4 var(--xp-font); color: #4a4a42; }
+
+.xp-tabstrip {
+  display: flex; align-items: flex-end; gap: 2px; flex: 0 0 auto;
+  padding: 4px 6px 0; margin-bottom: -1px;
+}
+.xp-tabstrip button {
+  padding: 0 10px; min-height: calc(20px * var(--xp-scale));
+  border: 1px solid var(--xp-shadow-3d); border-bottom: 0; border-radius: 3px 3px 0 0;
+  background: linear-gradient(180deg,#F6F5EE 0%,#ECE9D8 55%,#E1DECD 100%);
+  font: var(--xp-fs)/1 var(--xp-font); color: #000; cursor: default;
+}
+.xp-tabstrip button[aria-selected="true"] {
+  min-height: calc(22px * var(--xp-scale));
+  background: linear-gradient(180deg,#FFFFFF 0%,#F9F8F1 45%,#ECE9D8 100%);
+  position: relative; z-index: 1;
+}
+.xp-tabstrip button:hover:not([aria-selected="true"]) { background: linear-gradient(180deg,#FFFFFF 0%,#F4F2E8 55%,#E9E6D4 100%); }
+.xp-tabstrip button:focus-visible { outline: var(--xp-focus-dotted); outline-offset: -4px; }
+
+/* ==========================================================================
+   SCROLLBARS  (WebKit/Blink full reconstruction; Firefox gets a colour fallback)
+   ========================================================================== */
+html.js .win-body { scrollbar-color: #A9C4EE #F0F0F4; }
+html.js .win-body::-webkit-scrollbar { width: var(--xp-sb-size); height: var(--xp-sb-size); }
+html.js .win-body::-webkit-scrollbar-track { background: var(--xp-sb-track); }
+html.js .win-body::-webkit-scrollbar-track:horizontal { background: linear-gradient(180deg,#E4E4EC 0%,#F2F2F6 12%,#F0F0F4 88%,#DCDCE4 100%); }
+html.js .win-body::-webkit-scrollbar-thumb {
+  background: var(--xp-sb-thumb); border: 1px solid var(--xp-sb-thumb-border); border-radius: 2px;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,.7);
+}
+html.js .win-body::-webkit-scrollbar-thumb:horizontal { background: var(--xp-sb-thumb-h); }
+html.js .win-body::-webkit-scrollbar-thumb:hover { filter: brightness(1.06); }
+html.js .win-body::-webkit-scrollbar-corner { background: var(--xp-face); }
+/* The arrow buttons. Glyphs are encoded SVG data URIs (# must be %23). */
+html.js .win-body::-webkit-scrollbar-button:single-button {
+  display: block; height: var(--xp-sb-size); width: var(--xp-sb-size);
+  background-color: var(--xp-face);
+  background-image: linear-gradient(180deg,#FFFFFF 0%,#F6F4EC 40%,#ECE9D8 86%,#D8D0C4 100%);
+  border: 1px solid var(--xp-shadow-3d); border-radius: 2px;
+  background-repeat: no-repeat; background-position: center;
+  background-size: 7px 7px;
+}
+html.js .win-body::-webkit-scrollbar-button:single-button:vertical:decrement {
+  background-image:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><path d="M4 1.5 7 6H1z" fill="%231F3F6E"/></svg>'),
+    linear-gradient(180deg,#FFFFFF 0%,#F6F4EC 40%,#ECE9D8 86%,#D8D0C4 100%);
+}
+html.js .win-body::-webkit-scrollbar-button:single-button:vertical:increment {
+  background-image:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><path d="M4 6.5 1 2h6z" fill="%231F3F6E"/></svg>'),
+    linear-gradient(180deg,#FFFFFF 0%,#F6F4EC 40%,#ECE9D8 86%,#D8D0C4 100%);
+}
+html.js .win-body::-webkit-scrollbar-button:single-button:horizontal:decrement {
+  background-image:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><path d="M1.5 4 6 1v6z" fill="%231F3F6E"/></svg>'),
+    linear-gradient(180deg,#FFFFFF 0%,#F6F4EC 40%,#ECE9D8 86%,#D8D0C4 100%);
+}
+html.js .win-body::-webkit-scrollbar-button:single-button:horizontal:increment {
+  background-image:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><path d="M6.5 4 2 7V1z" fill="%231F3F6E"/></svg>'),
+    linear-gradient(180deg,#FFFFFF 0%,#F6F4EC 40%,#ECE9D8 86%,#D8D0C4 100%);
+}
+
+/* ==========================================================================
+   RESIZE HANDLES
+   ========================================================================== */
+html.js .rz { position: absolute; z-index: 2; touch-action: none; }
+
+/* The TOP handles sit ENTIRELY ABOVE the window box, in the 4px of desktop just
+   outside it. The window has no top padding, so the title bar starts at y=0 —
+   any north handle with a positive height covered the top 6px of a 28px caption
+   (10px at the corners). That is 21% of the drag surface, so roughly one grab in
+   five silently began a north-resize instead of a move: the window stretched
+   vertically instead of following the pointer, intermittently. That is the
+   single biggest cause of the drag feeling flaky.
+   `contain: layout` does not clip (only `contain: paint` would), so a negative
+   offset stays hit-testable, and a resize zone reaching a few px past the frame
+   is what desktop window managers do anyway. */
+html.js .rz-n  { inset: -4px 14px auto 14px; height: 4px; cursor: ns-resize; }
+html.js .rz-nw { left: 0;  top: -4px; width: 14px; height: 4px; cursor: nwse-resize; }
+html.js .rz-ne { right: 0; top: -4px; width: 14px; height: 4px; cursor: nesw-resize; }
+html.js .rz-s { inset: auto 8px 0 8px; height: 6px; cursor: ns-resize; }
+html.js .rz-w { inset: 8px auto 8px 0; width: 6px; cursor: ew-resize; }
+html.js .rz-e { inset: 8px 0 8px auto; width: 6px; cursor: ew-resize; }
+html.js .rz-sw { left: 0; bottom: 0; width: 10px; height: 10px; cursor: nesw-resize; }
+html.js .rz-se { right: 0; bottom: 0; width: 14px; height: 14px; cursor: nwse-resize; }
+html.js .window.is-maximized .rz,
+html.js .window.is-fixed .rz { display: none; }
+
+/* No `user-select` toggle on the root during a drag. It is an INHERITED
+   property, so flipping it on <html> forces a style recalc for every element in
+   the document at the moment the gesture starts. The drag handles below already
+   carry a static `user-select: none`, and beginDrag() calls preventDefault() on
+   pointerdown, which is what actually stops a selection from starting. The
+   cursor is held steady by #drag-shield. */
+
+/* Holds one cursor for the whole gesture and stops hover states firing on the
+   content sliding underneath. Pointer capture keeps events going to the window,
+   so this only wins hit-testing. */
+#drag-shield {
+  position: fixed; inset: 0; z-index: calc(var(--z-tooltip) + 20);
+  background: transparent;
+}
+#drag-shield[hidden] { display: none; }
+
+/* A window being dragged is a composited layer; its own paint must not be
+   invalidated by the content inside it. */
+html.js .window { will-change: auto; }
+
+/* ==========================================================================
+   TOOLTIP
+   ========================================================================== */
+.xp-tip {
+  position: fixed; z-index: var(--z-tooltip);
+  padding: 2px 6px; max-width: 260px;
+  background: var(--xp-info-bg); color: #000;
+  border: 1px solid #000; box-shadow: 2px 2px 3px rgba(0,0,0,.28);
+  font: var(--xp-fs)/1.35 var(--xp-font); pointer-events: none;
+}
+.xp-tip[hidden] { display: none; }
+
+/* ==========================================================================
+   MOTION / FORCED COLORS
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html.js .window.is-opening { animation: none; }
+  *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+}
+html.reduce-motion .window.is-opening { animation: none; }
+
+@media (forced-colors: active) {
+  html.js .window { forced-color-adjust: none; background: CanvasText; border: 1px solid CanvasText; }
+  html.js .title-bar { background: Highlight; }
+  html.js .title-text { color: HighlightText; text-shadow: none; }
+  html.js .win-frame-inner, html.js .win-body { background: Canvas; color: CanvasText; }
+  html.js .cap-btn { background: ButtonFace; border-color: ButtonText; color: ButtonText; }
+  .xp-btn { background: ButtonFace; color: ButtonText; border-color: ButtonText; box-shadow: none; }
+  .xp-btn:hover { box-shadow: none; outline: 2px solid Highlight; }
+}

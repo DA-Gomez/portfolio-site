@@ -1,0 +1,486 @@
+/* ==========================================================================
+   content.css — resume typography.
+   Band 1 (no prefix)  = the document. This is what a no-JS visitor and the
+                         printer see. It must be a clean, readable resume.
+   Band 2 (html.js …)  = the same nodes re-framed inside window shells.
+   ========================================================================== */
+
+/* ==========================================================================
+   BAND 1 — THE DOCUMENT
+   ========================================================================== */
+.doc {
+  max-width: 68ch; margin-inline: auto; padding: 28px 20px 8px;
+  font: 16px/1.55 var(--xp-font); color: #1B1B17;
+}
+.doc section { margin: 0 0 34px; }
+
+.ns-note {
+  max-width: 68ch; margin: 16px auto 0; padding: 8px 12px;
+  background: var(--xp-info-bg); border: 1px solid #cdc7a8;
+  font-size: 13px;
+}
+
+.doc h1 { margin: 0 0 2px; font-size: 26px; line-height: 1.2; letter-spacing: -.2px; }
+.doc h2 {
+  margin: 0 0 14px; padding-bottom: 4px; font-size: 15px;
+  text-transform: uppercase; letter-spacing: .09em; color: #1f3f73;
+  border-bottom: 2px solid #1f3f73;
+}
+.doc h3 { margin: 0 0 2px; font-size: 15px; line-height: 1.35; }
+
+.role { margin: 0 0 8px; font-size: 15px; color: #3b4a5c; }
+.sep { color: #9aa3ad; }
+
+.contact-inline {
+  display: flex; flex-wrap: wrap; gap: 4px 14px;
+  margin: 0 0 16px; padding: 0; list-style: none; font-size: 13.5px;
+}
+.doc p { margin: 0 0 10px; }
+.doc a { color: var(--xp-link); text-decoration: underline; text-underline-offset: 2px; }
+.doc a:hover { color: var(--xp-link-hover); }
+.doc a:focus-visible { outline: 2px solid #123C7A; outline-offset: 2px; border-radius: 1px; }
+
+.entry { margin: 0 0 20px; }
+.entry:last-child { margin-bottom: 0; }
+.entry-meta { margin: 0 0 7px !important; font-size: 13px; color: #55606c; }
+.entry-meta.stack { color: #3d5a80; font-style: italic; }
+.entry .at { color: #9aa3ad; font-weight: 400; }
+.entry .org { font-weight: 400; }
+
+.doc ul:not(.contact-inline):not(.tight) { margin: 0; padding-left: 19px; }
+.doc li { margin-bottom: 5px; }
+
+ul.tight { margin: 0 0 10px; padding-left: 19px; }
+.fieldlabel { margin: 14px 0 5px !important; font-size: 13px !important; color: #3b4a5c; }
+.badge-inprogress {
+  display: inline-block; margin-left: 6px; padding: 0 5px;
+  background: var(--xp-info-bg); border: 1px solid #cdc7a8; border-radius: 2px;
+  font-size: 11px; color: #5c5330; vertical-align: 1px;
+}
+.note { font-size: 13px; color: #55606c; }
+
+.tree ul { margin: 0 0 12px; padding-left: 0; list-style: none; }
+.tree-group > ul { display: flex; flex-wrap: wrap; gap: 3px 0; }
+.tree-group > ul > li { margin: 0; }
+.tree-group > ul > li:not(:last-child)::after { content: " ·"; color: #9aa3ad; padding: 0 7px 0 1px; }
+
+.compose-head { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 0 0 16px; font-size: 14px; }
+.compose-head dt { color: #55606c; }
+.compose-head dd { margin: 0; }
+.compose-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px !important; }
+
+.keytable { width: 100%; border-collapse: collapse; margin: 0 0 14px; font-size: 13.5px; }
+.keytable caption { text-align: left; padding-bottom: 6px; color: #55606c; font-size: 13px; }
+.keytable th, .keytable td { text-align: left; padding: 5px 8px; border-bottom: 1px solid #dcdcd2; vertical-align: top; }
+.keytable td:first-child { white-space: nowrap; }
+.keytable th { background: #f4f2e8; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+kbd {
+  display: inline-block; padding: 1px 5px; min-width: 18px; text-align: center;
+  background: linear-gradient(180deg,#fff,#ece9d8); border: 1px solid #aca899;
+  border-bottom-width: 2px; border-radius: 3px;
+  font: 11px/1.5 var(--xp-font); color: #000;
+}
+code { font: 12.5px/1.4 var(--xp-font-mono); background: #f2f0e6; padding: 1px 4px; border-radius: 2px; }
+
+#page-footer {
+  max-width: 68ch; margin: 0 auto; padding: 16px 20px 40px;
+  border-top: 1px solid #dcdcd2; font-size: 12.5px; color: #55606c;
+}
+#page-footer p { margin: 0 0 5px; }
+#page-footer .fine { font-size: 11.5px; color: #7a8290; }
+#page-footer a { color: var(--xp-link); }
+
+/* The settings window is chrome, not resume content — hide it in the document
+   and in print. It is created by, and only meaningful with, JavaScript. */
+#win-display { display: none; }
+html.js #win-display { display: flex; }
+
+/* ==========================================================================
+   BAND 2 — WINDOW SHELLS
+   ========================================================================== */
+html.js .doc { max-width: none; margin: 0; padding: 0; }
+html.js .doc section { margin: 0; }
+html.js #page-footer, html.js .ns-note { display: none; }
+
+/* The heading stays in the DOM to supply the window's accessible name via
+   aria-labelledby, but the title bar already shows it — so it is visually
+   hidden for every shell except Notepad, where his name is the point. */
+html.js .win-body > :is(h1, h2) {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+html.js .win-body { font: var(--xp-fs)/1.5 var(--xp-font); color: #1B1B17; }
+html.js .win-body a { color: var(--xp-link); }
+html.js .win-body a:focus-visible { outline: 1px dotted #000; outline-offset: 2px; }
+html.js .win-body h3 { font-size: calc(12px * var(--xp-scale)); margin: 0 0 2px; }
+html.js .win-body p { margin: 0 0 8px; }
+html.js .win-body ul:not(.contact-inline) { margin: 0; padding-left: 17px; }
+html.js .win-body li { margin-bottom: 4px; }
+html.js .win-body .entry { margin-bottom: 16px; }
+html.js .win-body .entry-meta { font-size: calc(11px * var(--xp-scale)); }
+
+/* ---------- SHELL: NOTEPAD ---------- */
+html.js [data-shell="notepad"] .win-body {
+  padding: 8px 10px;
+  font-family: var(--xp-font-mono);
+  font-size: calc(12px * var(--xp-scale)); line-height: 1.55;
+  border: none;
+}
+html.js [data-shell="notepad"] .win-frame-inner { border: 1px solid var(--xp-shadow-3d); box-shadow: var(--xp-sunken); }
+html.js [data-shell="notepad"] .win-body > h1 {
+  position: static; width: auto; height: auto; margin: 0 0 1px; padding: 0;
+  clip-path: none; overflow: visible; white-space: normal;
+  font: 700 calc(15px * var(--xp-scale))/1.25 var(--xp-font-mono);
+  letter-spacing: -.3px;
+}
+html.js [data-shell="notepad"] .role { margin: 0 0 8px; font-size: calc(12px * var(--xp-scale)); color: #3b4a5c; }
+html.js [data-shell="notepad"] .contact-inline {
+  display: block; margin: 0 0 10px; padding: 0 0 8px;
+  border-bottom: 1px dashed #c9c6b8; font-size: calc(11.5px * var(--xp-scale));
+}
+html.js [data-shell="notepad"] .contact-inline li { margin: 0 0 1px; }
+/* This line explains the desktop, so it only makes sense once there is one.
+   In the plain document it would be describing an interface that isn't there. */
+.note { display: none; }
+html.js .note { display: block; }
+html.js [data-shell="notepad"] .note {
+  margin-top: 12px; padding-top: 8px; border-top: 1px dashed #c9c6b8;
+  font-size: calc(11px * var(--xp-scale)); color: #55606c;
+}
+
+/* ---------- SHELL: EXPLORER (task pane + list) ---------- */
+html.js [data-shell="explorer"] .win-frame-inner { border: 1px solid var(--xp-shadow-3d); }
+html.js .explorer-split { flex: 1 1 auto; display: flex; min-height: 0; }
+html.js .task-pane {
+  flex: 0 0 172px; min-width: 0; overflow: auto; padding: 9px 8px;
+  background: linear-gradient(180deg,var(--pane-1) 0%,var(--pane-2) 42%,var(--pane-3) 100%);
+  border-right: 1px solid var(--pane-border);
+}
+html.js .task-pane h4 {
+  margin: 0 0 6px; padding: 4px 8px;
+  background: linear-gradient(180deg,var(--pane-head-1) 0%,var(--pane-head-2) 100%);
+  border-radius: 3px 3px 0 0;
+  font: 700 var(--xp-fs)/1.3 var(--xp-font); color: #fff;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.3);
+}
+html.js .task-pane-box { margin: 0 0 12px; }
+html.js .task-pane-box > div { padding: 0 4px 6px; }
+html.js .task-pane p { margin: 0 0 5px; font-size: calc(10.5px * var(--xp-scale)); color: var(--pane-text); }
+html.js .task-pane ul { margin: 0; padding: 0; list-style: none; }
+html.js .task-pane li { margin: 0 0 1px; }
+html.js .task-link {
+  display: flex; align-items: center; gap: 6px; width: 100%;
+  min-height: 24px; padding: 2px 4px;
+  border: 0; background: none; border-radius: 2px;
+  font: var(--xp-fs)/1.3 var(--xp-font); color: var(--xp-link);
+  text-align: left; cursor: default;
+}
+html.js .task-link svg { width: 16px; height: 16px; flex: 0 0 auto; }
+html.js .task-link:hover { color: #d94a00; text-decoration: underline; }
+html.js .task-link:focus-visible { outline: 1px dotted #000; outline-offset: -2px; }
+html.js .explorer-main { flex: 1 1 auto; min-width: 0; overflow: auto; padding: 12px 14px; background: #fff; }
+html.js .explorer-main .entry {
+  padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid #e6e4d8;
+}
+html.js .explorer-main .entry:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+@media (max-width: 620px) {
+  html.js .explorer-split { flex-direction: column; }
+  html.js .task-pane { flex: 0 0 auto; border-right: 0; border-bottom: 1px solid var(--pane-border); }
+}
+
+/* ---------- SHELL: DEVICE MANAGER TREE ---------- */
+html.js [data-shell="tree"] .win-frame-inner { border: 1px solid var(--xp-shadow-3d); }
+html.js [data-shell="tree"] .win-body { padding: 6px 8px; }
+html.js .tree { font: var(--xp-fs)/1.55 var(--xp-font); }
+html.js .tree-root { display: flex; align-items: center; gap: 5px; margin-bottom: 2px; font-weight: 700; }
+html.js .tree-root svg { width: 16px; height: 16px; }
+html.js .tree-group { margin: 0 0 1px; padding-left: 14px; }
+html.js .tree-head { display: flex; align-items: center; gap: 5px; min-height: 24px; }
+html.js .tree-toggle {
+  position: relative; flex: 0 0 auto;
+  width: 11px; height: 11px; padding: 0; display: grid; place-items: center;
+  border: 1px solid #7f9db9; background: #fff; cursor: default; color: #1f3f6e;
+}
+html.js .tree-toggle::after { content: ""; position: absolute; left: 50%; top: 50%; width: 24px; height: 24px; transform: translate(-50%,-50%); }
+html.js .tree-toggle svg { width: 7px; height: 7px; }
+html.js .tree-toggle:focus-visible { outline: 1px dotted #000; outline-offset: 3px; }
+html.js .tree-label { display: flex; align-items: center; gap: 5px; border: 0; background: none; padding: 1px 3px; font: inherit; cursor: default; border-radius: 1px; }
+html.js .tree-label svg { width: 16px; height: 16px; flex: 0 0 auto; }
+html.js .tree-label:hover { background: #e8f1fc; }
+html.js .tree-label:focus-visible { outline: 1px dotted #000; outline-offset: -1px; }
+html.js .tree-group > ul {
+  columns: auto; margin: 0 0 2px; padding-left: 30px; list-style: none;
+  border-left: 1px dotted #9aa3ad; margin-left: 5px;
+}
+html.js .tree-group > ul > li {
+  display: flex; align-items: center; gap: 5px; margin: 0; min-height: 20px;
+  padding-left: 10px; position: relative;
+}
+html.js .tree-group > ul > li > svg { width: 16px; height: 16px; flex: 0 0 auto; }
+html.js .tree-group > ul > li::before {
+  content: ""; position: absolute; left: 0; top: 50%; width: 8px; height: 1px;
+  border-top: 1px dotted #9aa3ad;
+}
+html.js .tree-group[aria-expanded="false"] > ul { display: none; }
+
+/* ---------- SHELL: DIALOG (tab strip) ---------- */
+html.js [data-shell="dialog"] .win-frame-inner { background: var(--xp-face); border: 0; padding: 0; }
+html.js [data-shell="dialog"] .win-body {
+  background: var(--xp-face); padding: 12px 14px;
+  border: 1px solid var(--xp-shadow-3d); border-top: 0;
+  margin: 0 6px 8px;
+}
+html.js .tabpanel[hidden] { display: none; }
+
+html.js .sysprops-hero {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 0 12px; margin-bottom: 10px; border-bottom: 1px solid var(--xp-shadow-3d);
+}
+html.js .sysprops-glyph { flex: 0 0 auto; }
+html.js .sysprops-brand b { display: block; font-size: calc(14px * var(--xp-scale)); color: #1f3f73; }
+html.js .sysprops-brand span { font-size: calc(11px * var(--xp-scale)); color: #55606c; }
+html.js .sysprops-reg { padding-left: 12px; }
+html.js .sysprops-reg p { margin: 0 0 2px; }
+
+/* Display Properties monitor preview — pure CSS, and it reflects the live theme */
+html.js .monitor-preview { display: grid; justify-items: center; margin: 0 0 12px; }
+html.js .mp-screen {
+  position: relative; width: 176px; height: 128px; padding: 7px;
+  background: #b4b0a4;
+  border: 2px solid #8d897d; border-radius: 7px 7px 3px 3px;
+  box-shadow: inset 0 1px 0 #e8e4d8;
+}
+html.js .mp-screen::before {
+  content: ""; position: absolute; inset: 7px;
+  background-image: linear-gradient(to bottom,
+    var(--sky-2) 0%, var(--sky-4) 38%, var(--sky-6) 66%, var(--sky-8) 100%);
+}
+html.js .mp-win {
+  position: absolute; left: 26px; top: 24px; width: 108px; height: 66px;
+  background: var(--xp-window-bg);
+  border: 2px solid var(--xp-frame-1-lt);
+  border-radius: 3px 3px 0 0;
+}
+html.js .mp-title { height: 11px; background: var(--xp-title-grad-active); }
+html.js .mp-body { height: calc(100% - 11px); background: #fff; }
+html.js .mp-taskbar {
+  position: absolute; left: 7px; right: 7px; bottom: 7px; height: 11px;
+  display: flex; align-items: center;
+  background-image: linear-gradient(to bottom, var(--tb-top-hi) 0 1px, var(--tb-b5) 1px, var(--tb-b8) 100%);
+}
+html.js .mp-start {
+  width: 24px; height: 9px; margin-left: 1px; border-radius: 0 3px 3px 0;
+  background: linear-gradient(180deg, var(--start-g1), var(--start-g3));
+}
+html.js .mp-neck { width: 30px; height: 9px; background: #a9a598; }
+html.js .mp-stand { width: 66px; height: 6px; border-radius: 0 0 4px 4px; background: #9d998c; }
+
+/* ---------- SHELL: HELP AND SUPPORT ---------- */
+html.js [data-shell="help"] .win-frame-inner { border: 1px solid var(--xp-shadow-3d); }
+html.js .help-split { flex: 1 1 auto; display: flex; min-height: 0; }
+html.js .help-rail {
+  flex: 0 0 172px; overflow: auto; padding: 9px 8px;
+  background: linear-gradient(180deg,var(--pane-1) 0%,var(--pane-3) 100%);
+  border-right: 1px solid var(--pane-border);
+}
+html.js .help-rail h4 {
+  margin: 0 0 6px; padding: 4px 8px; border-radius: 3px;
+  background: linear-gradient(180deg,var(--pane-head-1) 0%,var(--pane-head-2) 100%);
+  font: 700 var(--xp-fs)/1.3 var(--xp-font); color: #fff;
+}
+html.js .help-rail ul { margin: 0; padding: 0; list-style: none; }
+html.js .help-main { flex: 1 1 auto; min-width: 0; overflow: auto; padding: 12px 16px; background: #fff; }
+html.js .help-main .topic[hidden] { display: none; }
+html.js .help-main h3 { font-size: calc(14px * var(--xp-scale)); color: #1f3f73; margin-bottom: 8px; }
+html.js .task-link[aria-current="true"] { font-weight: 700; color: #d94a00; }
+html.js .keytable { font-size: calc(11px * var(--xp-scale)); }
+html.js .keytable th, html.js .keytable td { padding: 3px 6px; }
+@media (max-width: 620px) {
+  html.js .help-split { flex-direction: column; }
+  html.js .help-rail { flex: 0 0 auto; border-right: 0; border-bottom: 1px solid var(--pane-border); }
+}
+
+/* ---------- SHELL: OUTLOOK EXPRESS COMPOSE ---------- */
+html.js [data-shell="compose"] .win-frame-inner { border: 1px solid var(--xp-shadow-3d); }
+html.js [data-shell="compose"] .win-body { padding: 0; display: flex; flex-direction: column; }
+html.js [data-shell="compose"] .compose-head {
+  flex: 0 0 auto; display: grid; grid-template-columns: 72px 1fr; gap: 0;
+  margin: 0; padding: 6px 8px; background: var(--xp-face);
+  border-bottom: 1px solid var(--xp-shadow-3d); font-size: var(--xp-fs);
+}
+html.js [data-shell="compose"] .compose-head dt {
+  padding: 3px 6px 3px 0; color: #000; text-align: right;
+}
+html.js [data-shell="compose"] .compose-head dd {
+  margin: 0 0 2px; padding: 2px 5px; background: #fff;
+  border: 1px solid var(--xp-field-border); min-height: var(--xp-field-h);
+  overflow-wrap: anywhere;
+}
+html.js .compose-body { flex: 1 1 auto; padding: 12px 14px; background: #fff; }
+html.js [data-shell="compose"] .compose-actions {
+  flex: 0 0 auto; display: flex; gap: 8px; margin: 0;
+  padding: 8px 12px; background: var(--xp-face);
+  border-top: 1px solid var(--xp-hilight-3d);
+  box-shadow: inset 0 1px 0 var(--xp-shadow-3d);
+}
+
+/* ==========================================================================
+   MOBILE — below 768px floating windows are hostile. Windows become full-bleed
+   sheets stacked one at a time, switched from the taskbar. The metaphor holds:
+   it is still a desktop with a taskbar, it just runs one app maximized, which
+   is exactly what a small screen wants.
+   ========================================================================== */
+@media (max-width: 767px) {
+  html.js .window {
+    inset: 0 0 calc(var(--xp-taskbar-h) + env(safe-area-inset-bottom,0px)) 0 !important;
+    width: auto !important; height: auto !important;
+    transform: none !important; border-radius: 0; padding: 0 2px 2px;
+  }
+  html.js .window > .title-bar { border-radius: 0; }
+  html.js .cap-btn--min, html.js .cap-btn--max { display: none; }
+  html.js #icon-grid { inset: 6px 6px auto 6px; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); grid-auto-flow: row; grid-template-rows: none; }
+  html.js .dicon { width: auto; min-height: 76px; }
+  html.js .task-pane, html.js .help-rail { flex-basis: auto; }
+}
+
+/* ==========================================================================
+   PRINT — one clean resume. No chrome, no wallpaper, nothing hidden.
+   ========================================================================== */
+@media print {
+  html, body { height: auto !important; overflow: visible !important; background: #fff !important; }
+  html.js .doc { max-width: none; margin: 0; padding: 0; }
+
+  /* Undo every trace of the desktop and print the document instead. */
+  html.js .window, html.js .doc section {
+    position: static !important; display: block !important;
+    inset: auto !important; width: auto !important; height: auto !important;
+    min-width: 0 !important; min-height: 0 !important;
+    transform: none !important; padding: 0 !important; margin: 0 0 9pt !important;
+    background: none !important; box-shadow: none !important; border: 0 !important;
+    border-radius: 0 !important; overflow: visible !important;
+  }
+  html.js .window[hidden] { display: block !important; }
+  html.js .title-bar, html.js .win-controls, html.js .win-status,
+  html.js .win-menubar, html.js .xp-tabstrip, html.js .rz,
+  html.js .task-pane, html.js .help-rail, html.js .monitor-preview,
+  html.js #win-display, html.js #win-help, html.js .skip-link { display: none !important; }
+
+  html.js .win-frame-inner, html.js .win-body, html.js .explorer-split,
+  html.js .explorer-main, html.js .help-split, html.js .help-main {
+    display: block !important; position: static !important;
+    overflow: visible !important; height: auto !important; max-height: none !important;
+    padding: 0 !important; margin: 0 !important; border: 0 !important;
+    background: none !important; box-shadow: none !important;
+  }
+  /* Restore the real heading — it carried the section name all along. */
+  html.js .win-body > :is(h1, h2) {
+    position: static !important; width: auto !important; height: auto !important;
+    margin: 0 0 8pt !important; clip-path: none !important; overflow: visible !important;
+    white-space: normal !important;
+  }
+  html.js .tabpanel[hidden], html.js .topic[hidden] { display: block !important; }
+  html.js .tree-group[aria-expanded="false"] > ul { display: block !important; }
+  html.js .tree-toggle { display: none !important; }
+
+  #page-footer { display: block !important; }
+  .doc, #page-footer { color: #000; }
+  .doc { font-size: 10pt; line-height: 1.4; }
+  .doc h1 { font-size: 19pt; }
+  .doc h2 {
+    font-size: 11pt; border-bottom: 1.5pt solid #000; color: #000;
+    margin-bottom: 5pt; break-after: avoid;
+  }
+  .doc h3 { font-size: 10.5pt; break-after: avoid; }
+  .entry { break-inside: avoid; margin-bottom: 6pt; }
+  .doc ul { margin-top: 3pt; margin-bottom: 3pt; }
+  .doc li { margin-bottom: 1.5pt; }
+  /* The footer is attribution, not resume content: keep it, make it small,
+     and never let it be the only thing on a page. */
+  #page-footer { margin-top: 6pt !important; padding-top: 5pt !important; break-inside: avoid; }
+  #page-footer p { margin: 0 0 2pt !important; }
+  #page-footer .fine { font-size: 7.5pt !important; line-height: 1.35 !important; }
+  .tree-group > ul { display: flex; flex-wrap: wrap; }
+  /* Print URLs after link text so a paper copy is still actionable. */
+  .doc a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8.5pt; color: #333; }
+  .doc a { text-decoration: none; color: #000; }
+  .badge-inprogress { border: 1pt solid #666; }
+  .note, #page-footer .fine { font-size: 8.5pt; }
+  @page { margin: 13mm 14mm; }
+}
+
+/* Notepad's Format > Word Wrap, made real. */
+html.js .win-body.no-wrap { white-space: pre-wrap; overflow-x: auto; }
+html.js .win-body.no-wrap p, html.js .win-body.no-wrap li { white-space: nowrap; }
+
+/* Skills categories are real headings. In the document they label the three
+   groups; in the window the tree row adopts the same node. */
+.tree-name { margin: 14px 0 5px !important; font-size: 13px !important; color: #1f3f73; }
+.tree-group:first-child .tree-name { margin-top: 0 !important; }
+html.js .tree-name { margin: 0 !important; font: inherit !important; color: inherit; }
+
+/* ==========================================================================
+   PRINT, PART 2 — neutralize shell presentation.
+   The shells are screen affordances. On paper this must read as a resume, so
+   every shell-specific font, border, tree line and decorative glyph is undone.
+   ========================================================================== */
+@media print {
+  html.js [data-shell] .win-body {
+    font-family: var(--xp-font) !important;
+    font-size: 10pt !important; line-height: 1.4 !important;
+  }
+  html.js [data-shell="notepad"] .win-body > h1 {
+    font-family: var(--xp-font) !important; font-size: 19pt !important;
+    font-weight: 700 !important; letter-spacing: -.2px !important;
+  }
+  html.js [data-shell="notepad"] .role { font-size: 11pt !important; }
+  html.js [data-shell="notepad"] .contact-inline {
+    display: flex !important; flex-wrap: wrap; gap: 2pt 12pt;
+    border-bottom: 0 !important; padding-bottom: 0 !important;
+  }
+  html.js [data-shell="notepad"] .note { border-top: 0 !important; }
+
+  /* The desktop-metaphor aside is meaningless on paper. */
+  html.js .win-body > .note { display: none !important; }
+
+  /* Device Manager tree -> plain labelled lists. */
+  html.js .tree-root,
+  html.js .tree-toggle,
+  html.js .tree-group > ul > li > svg,
+  html.js .tree-label svg,
+  html.js .sysprops-hero,
+  html.js .win-gripper { display: none !important; }
+  html.js .tree-group { padding-left: 0 !important; }
+  html.js .tree-head { display: block !important; }
+  html.js .tree-label { padding: 0 !important; background: none !important; }
+  html.js .tree-name {
+    font-size: 10.5pt !important; font-weight: 700 !important;
+    margin: 9pt 0 3pt !important; color: #000 !important;
+  }
+  html.js .tree-group > ul {
+    border-left: 0 !important; margin-left: 0 !important; padding-left: 0 !important;
+  }
+  html.js .tree-group > ul > li { padding-left: 0 !important; min-height: 0 !important; }
+  html.js .tree-group > ul > li::before { display: none !important; }
+  html.js .sysprops-reg { padding-left: 0 !important; }
+
+  /* Belt and braces: no shell container may draw a frame on paper. */
+  html.js .window, html.js .win-frame-inner, html.js .win-body,
+  html.js [data-shell] .win-frame-inner, html.js [data-shell] .win-body,
+  html.js .doc section {
+    border: 0 !important; box-shadow: none !important; outline: 0 !important;
+    background: none !important;
+  }
+}
+
+@media print {
+  /* Contact restates the header, which already prints all three links with
+     their full URLs. A resume puts contact details in the header, so the
+     compose window's fake fields and buttons have no business on paper. */
+  html.js #win-contact { display: none !important; }
+  html.js .compose-head dd {
+    border: 0 !important; background: none !important; padding: 0 !important;
+    min-height: 0 !important;
+  }
+  html.js .compose-actions, html.js .xp-btn { display: none !important; }
+}
