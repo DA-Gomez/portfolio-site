@@ -195,12 +195,12 @@ function buildMenubar(spec) {
 function menubarItems(name, w) {
   var body = w.chrome && w.chrome.body;
   switch (name) {
-    case 'File': return [
-      { label: 'Save As...', key: 'PDF', run: function () { downloadPdf(); } },
-      { label: 'Print...', key: 'Ctrl+P', run: function () { window.print(); } },
-      '-',
-      { label: 'Exit', key: 'Esc', run: function () { WM.close(w.id); } }
-    ];
+    // case 'File': return [
+    //   // { label: 'Save As...', key: 'PDF', run: function () { downloadPdf(); } },
+    //   { label: 'Print...', key: 'Ctrl+P', run: function () { window.print(); } },
+    //   '-',
+    //   { label: 'Exit', key: 'Esc', run: function () { WM.close(w.id); } }
+    // ];
     case 'Edit': return [
       { label: 'Select All', key: 'Ctrl+A', run: function () {
           if (!body) return;
@@ -228,15 +228,6 @@ function menubarItems(name, w) {
     ];
   }
   return [{ label: '(nothing here)', disabled: true }];
-}
-
-function downloadPdf() {
-  var a = doc.createElement('a');
-  // a.href = 'Resume.pdf';
-  a.setAttribute('download', '');
-  doc.body.appendChild(a);
-  a.click();
-  a.remove();
 }
 
 /* explorer: task pane + list */
@@ -1046,12 +1037,6 @@ function buildShell() {
   qlAbout.appendChild(svgUse('icon-briefcase'));
   qlAbout.appendChild(el('span', null, 'Experience'));
   qlAbout.tabIndex = -1;
-  // var qlPdf = el('a', 'ql-btn');
-  // qlPdf.href = 'Resume.pdf';
-  // qlPdf.setAttribute('download', '');
-  // qlPdf.appendChild(svgUse('icon-doc-pdf'));
-  // qlPdf.appendChild(el('span', null, 'Download PDF'));
-  // qlPdf.tabIndex = -1;
   var qlMail = el('button', 'ql-btn');
   qlMail.type = 'button';
   qlMail.dataset.open = 'win-contact';
@@ -1131,13 +1116,6 @@ function buildStartMenu() {
   var pinned = el('div', 'sm-pinned');
   var pAbout = smItem(wins.filter(function (w) { return w.id === 'win-about'; })[0], 'Start here');
   if (pAbout) pinned.appendChild(pAbout);
-  // var pPdf = el('a', 'sm-item');
-  // pPdf.href = 'Resume.pdf';
-  // pPdf.setAttribute('download', '');
-  // pPdf.setAttribute('role', 'menuitem');
-  // pPdf.appendChild(svgUse('icon-doc-pdf'));
-  // pPdf.appendChild(el('span', null, '<b>Download Resume</b><small>PDF</small>'));
-  // pinned.appendChild(pPdf);
   left.appendChild(pinned);
   left.appendChild(el('hr', 'sm-sep'));
 
@@ -1161,7 +1139,7 @@ function buildStartMenu() {
   });
   right.appendChild(el('hr', 'sm-sep'));
   [['GitHub', 'icon-globe', 'https://github.com/DA-Gomez'],
-   ['LinkedIn', 'icon-globe', 'https://www.linkedin.com/in/diego-andre-gomez-ruiz'],
+   ['LinkedIn', 'icon-globe', 'https://www.linkedin.com/in/in/diego-andre-gomez-ruiz-531287313/'],
    ['Email', 'icon-mail', 'mailto:diangoru@my.yorku.ca']].forEach(function (r) {
     var a = el('a', 'sm-item');
     a.href = r[2];
