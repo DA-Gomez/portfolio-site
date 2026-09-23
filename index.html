@@ -3,13 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Diego Andre Gomez Ruiz — Software Developer</title>
-<meta name="description" content="Diego Andre Gomez Ruiz — software developer in Maple, Ontario. Resume, experience, and projects, presented as a Windows XP desktop.">
+<title>Diego Andre Gomez Ruiz | Software Developer</title>
+<meta name="description" content="Diego Andre Gomez Ruiz is a software developer in the Toronto area who likes backend systems, marketplaces, and making things that don't fall over.">
 <meta name="color-scheme" content="light">
 
-<!-- Enhancement gate. Parser-blocking and before any stylesheet, so there is no paint
-     opportunity between "no .js" and ".js". Enhancement is additive: without this class
-     the page is a plain readable resume, which is the correct fallback. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Diego Andre Gomez Ruiz | Software Developer">
+<meta property="og:description" content="My portfolio, dressed up as a Windows XP desktop you can actually click around.">
+<meta property="og:url" content="[REPLACE LINK: https://your-domain.com/]">
+<meta property="og:image" content="[REPLACE LINK: https://your-domain.com/og.png]">
+<meta name="twitter:card" content="summary_large_image">
+
 <script>
 (function (d) {
   var h = d.documentElement;
@@ -18,15 +22,11 @@
         CSS.supports('display', 'grid') && 'PointerEvent' in window &&
         Element.prototype.closest) {
       h.className = h.className ? h.className + ' js' : 'js';
-      /* Watchdog. Deferred scripts run before DOMContentLoaded, so by the time
-         this fires xp.js has either booted (and set .js-ready) or never loaded
-         at all. Without this, a missing or blocked xp.js would leave desktop
-         CSS applied with no window manager behind it. */
       d.addEventListener('DOMContentLoaded', function () {
         if (!h.classList.contains('js-ready')) h.classList.remove('js');
       });
     }
-  } catch (e) { /* stays a document */ }
+  } catch (e) { /* old browser: leave it as a plain page */ }
 })(document);
 </script>
 
@@ -41,176 +41,241 @@
 <a class="skip-link" href="#win-about">Skip to content</a>
 <a class="skip-link" href="#win-help">Keyboard shortcuts</a>
 
-<!-- Icon sprite is injected here by js/sprite.js so index.html stays readable. -->
 <div id="sprite-mount" aria-hidden="true"></div>
 
-<noscript><p class="ns-note">This page is showing its plain-document version. Everything is
-here — the Windows XP desktop is an optional visual layer.</p></noscript>
+<noscript><p class="ns-note">You're looking at the plain version of this page. Everything is still here, the Windows XP desktop just sits on top of it when JavaScript is on.</p></noscript>
 
 <main id="resume" class="doc">
 
-<!-- ===================== ABOUT / DOCUMENT HEADER ===================== -->
+<!-- about -->
 <section id="win-about" data-window aria-labelledby="t-about"
-         data-title="About_Diego.txt - Notepad" data-label="About Diego"
+         data-title="About_Me.txt - Notepad" data-label="About Me"
          data-icon="doc-text" data-shell="notepad"
          data-w="468" data-h="462" data-x="228" data-y="26"
          data-open="1" data-desktop="1" data-col="1" data-row="1"
          data-menu="File,Edit,Format,View,Help">
   <h1 id="t-about">Diego Andre Gomez Ruiz</h1>
-  <p class="role">Aspiring Software Engineer/Developer<span class="sep"> · </span><span class="loc">Toronto, ON</span></p>
+  <p class="role">Software developer<span class="sep"> · </span><span class="loc">Greater Toronto Area</span><span class="sep"> · </span>Currently building Preneur</p>
 
   <ul class="contact-inline">
     <li><a href="mailto:diangoru@my.yorku.ca">diangoru@my.yorku.ca</a></li>
-    <li><a href="https://github.com/DA-Gomez" target="_blank" rel="noopener noreferrer">github.com/DA-Gomez</a></li>
-    <li><a href="https://www.linkedin.com/in/diego-andre-gomez-ruiz" target="_blank" rel="noopener noreferrer">linkedin.com/in/diego-andre-gomez-ruiz</a></li>
+    <li><a href="https://github.com/DA-Gomez" target="_blank" rel="noopener noreferrer">Github</a></li>
+    <li><a href="https://www.linkedin.com/in/diego-andre-gomez-ruiz-531287313/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
   </ul>
 
-  <p>I build backend systems and the interfaces on top of them. Right now I'm co-founding
-  <b>Preneur</b>, a two-sided home-services marketplace in public pre-launch, and finishing a
-  bachelor in Information Technology at York University.</p>
+  <h2>Under the hood</h2>
 
-  <p>Before that I was at an enterprise consultancy, shipping C#/.NET and Vue platforms for
-  multinational clients. I just pretty much built systems for clients like Line-of-Business Applications,
-  Enterprise Resource Planning Systems and Workflow Management Systems. I like problems where correctness is the hard part. Things like idempotent writes,
-  event ordering, schemas designed around the queries that will actually hit them.</p>
+  <p><b>I like the parts of software you only notice when they break.</b></p>
 
-  <p><b>Looking for:</b> a software engineering internship or new-grad role, backend or
-  full-stack.</p>
+  <p>I'm a software developer in the Toronto area, finishing my Information Technology degree at York (April 2028 is the plan for now). Most of my work lives on the backend. That means things like getting two systems to agree on what actually happened, making sure a job that runs twice doesn't leave a mess behind, and lately, getting an LLM to hand back something a program can actually trust.</p>
 
-  <p class="note">You're looking at a Windows XP desktop rebuilt in HTML, CSS and vanilla
-  JavaScript. Open anything from the desktop icons or the Start menu.</p>
+  <p>That's taken me a few places so far. I spent sixteen months at ADS, a consulting firm downtown, building and looking after software that real companies used to run their day. I co-founded Preneur, a marketplace where homeowners and contractors find each other. And on the side I've been building StockIntel, which reads SEC insider-trading filings and flags buying that looks unusual.</p>
+
+  <p>My favourite stage of any project is the start, while nobody's quite sure yet what it should be. ADS taught me that the first version of a request is almost never the real one, and that a few extra questions early on can save weeks later. Past that, what I care about is software that keeps working when something around it doesn't, and that the next person can pick up without needing me in the room to explain it.</p>
+
+  <p>When I'm not at a keyboard for work, I'm usually at one for SEICI, the student IT group at York where I'm co-president. We run workshops and term-long projects so students have more than coursework to show when recruiting season comes around.</p>
+
+  <p>A few things I try to stick to:</p>
+  <ul>
+    <li>Ask the second question. The first answer tells you what someone wants, and the second one usually tells you what they need.</li>
+    <li>Assume it'll fail halfway through, and make sure halfway doesn't leave a mess.</li>
+    <li>Write down the reasoning, so nobody has to guess at it later (future me included).</li>
+  </ul>
+
+  <p>If you've read this far, go ahead and poke around. The windows drag, resize and minimize like the real thing.</p>
 </section>
 
-<!-- ===================== SKILLS ===================== -->
+<!-- skills -->
 <section id="win-skills" data-window aria-labelledby="t-skills"
          data-title="Skills - Device Manager" data-label="Skills"
          data-icon="gear" data-shell="tree"
          data-w="468" data-h="548" data-x="304" data-y="42"
          data-desktop="1" data-col="2" data-row="1">
-  <h2 id="t-skills">Technical Skills</h2>
+  <h2 id="t-skills">What I reach for</h2>
 
   <div class="tree" data-tree-root="DIEGO-PC">
     <div class="tree-group" data-icon="tools">
       <h3 class="tree-name">Languages</h3>
       <ul>
-        <li>JavaScript</li><li>TypeScript</li><li>C#</li><li>Java</li><li>Python</li>
-        <li>SQL (PostgreSQL)</li><li>C++</li><li>C</li><li>HTML/CSS</li>
+        <li><b>C#</b></li>
+        <li><b>TypeScript / JavaScript</b></li>
+        <li>Java</li>
+        <li><b>Python</b></li>
+        <li><b>SQL (mostly PostgreSQL)</b></li>
+        <li>C and C++</li>
+        <li>HTML and CSS</li>
       </ul>
     </div>
     <div class="tree-group" data-icon="computer">
-      <h3 class="tree-name">Frameworks &amp; Platforms</h3>
+      <h3 class="tree-name">Frameworks</h3>
       <ul>
-        <li>.NET / ASP.NET Core</li><li>Entity Framework Core</li><li>React</li><li>Vue</li>
-        <li>Node.js</li><li>Express.js</li><li>FastAPI</li><li>NumPy</li><li>Pandas</li>
-        <li>Firebase</li><li>AWS</li><li>Azure</li><li>GCP</li>
+        <li><b>.NET 8 and ASP.NET Core</b></li>
+        <li><b>Next.js</b></li>
+        <li><b>React</b></li>
+        <li><b>Vue</b></li>
+        <li>Entity Framework Core</li>
+        <li>Redux Toolkit</li>
+        <li>Node and Express</li>
+        <li>Next.js</li>
+        <li>FastAPI</li>
+        <li>pandas, NumPy, scikit-learn</li>
+      </ul>
+    </div>
+    <div class="tree-group" data-icon="computer">
+      <h3 class="tree-name">Backend and infrastructure</h3>
+      <ul>
+        <li><b>RabbitMQ</b></li>
+        <li><b>PostgreSQL</b></li>
+        <li><b>Firebase and Firestore</b></li>
+        <li><b>Docker</b></li>
+        <li>Redis</li>
+        <li>Testcontainers</li>
+        <li>GitHub Actions</li>
+        <li>AWS</li>
+        <li>GCP</li>
+        <li>IBM Cloud</li>
+        <li>Linux</li>
+        <li>REST API</li>
       </ul>
     </div>
     <div class="tree-group" data-icon="gear">
-      <h3 class="tree-name">Tools &amp; Concepts</h3>
+      <h3 class="tree-name">How I work</h3>
       <ul>
-        <li>Docker</li><li>Git/GitHub</li><li>GitHub Actions</li><li>Linux</li><li>RabbitMQ</li>
-        <li>Redis</li><li>PostgreSQL</li><li>REST APIs</li><li>Microservices</li>
-        <li>Event-Driven Architecture</li><li>ML (scikit-learn)</li><li>CI/CD</li><li>Agile</li>
+        <li>Sitting in on client calls</li>
+        <li>Turning vague asks into tickets</li>
+        <li>Two-week sprints in Jira</li>
+        <li>Writing down decisions (ADRs)</li>
+        <li>Tests that hit a real database</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- ===================== EXPERIENCE ===================== -->
+<!-- work -->
 <section id="win-experience" data-window aria-labelledby="t-experience"
-         data-title="Experience" data-label="Experience"
+         data-title="Work" data-label="Work"
          data-icon="briefcase" data-shell="explorer"
          data-w="700" data-h="514" data-x="150" data-y="52"
          data-desktop="1" data-col="1" data-row="3"
-         data-pane-title="Experience"
-         data-pane-detail="2 positions · Apr 2024 – Present">
-  <h2 id="t-experience">Professional Experience</h2>
+         data-pane-title="Work"
+         data-pane-detail="2 places · since May 2024">
+  <h2 id="t-experience">Where I've worked</h2>
 
   <article class="entry">
-    <h3>Co-Founder &amp; Lead Developer <span class="at">·</span> <span class="org">Preneur</span></h3>
+    <h3>Co-founder and lead developer <span class="at">·</span> <span class="org">Preneur</span></h3>
     <p class="entry-meta">Toronto, ON<span class="sep"> · </span>
-      <time datetime="2025-04">Apr 2025</time> – Present</p>
-    <ul>
-      <li>Architected a two-sided home-services marketplace spanning job posting, contractor
-      discovery, chat, scheduling, and reviews across 82 React 19 and TypeScript modules; now in
-      public pre-launch.</li>
-      <li>Built a config-driven geospatial search engine powering contractor and job browsers from
-      one hook via geohash bounding-box queries, distance ranking, and cursor pagination.</li>
-      <li>Designed a NoSQL schema around query shapes using version-controlled composite indexes
-      and deterministic document IDs, making schedule upserts idempotent and collapsing a lookup
-      query into a direct read.</li>
-      <li>Enforced unidirectional data flow across 10 Redux Toolkit slices, reads through Firestore
-      listeners and writes through async thunks, so multi-step drafts survive reloads while server
-      collections rehydrate live.</li>
-    </ul>
+      <time datetime="2025-04">May 2025</time> - Present</p>
+    <p class="entry-meta stack">React 19<span class="sep"> · </span>Vite<span class="sep"> · </span>Redux Toolkit<span class="sep"> · </span>Firebase<span class="sep"> · </span>Google Maps</p>
+
+    <p>Preneur started with a complaint pretty much everyone has: finding a good contractor is a pain. You ask around, you chase quotes, half the people never call back. So a friend and I started building a place for it. A homeowner posts a job, contractors nearby find it (or get it sent to them directly), and from there the two sides message each other, agree on a time, and leave reviews once the work is done. It's in public pre-launch right now. My co-founder took on profiles, reviews, settings and the overall look, dark mode included. I've been driving the rest of the app: search, the job posting flow, requests, scheduling, chat, and the state layer that ties them together.</p>
+
+    <p>Search is the part I'm proudest of. Asking for plumbers within 15 km sounds like one simple query, but Firestore has no idea what "within 15 km" means. So every user and job stores a geohash, which is a location turned into a short string where places that are close together share the same beginning. When you search, I turn your circle into a handful of those string ranges, fire them all off at once, merge what comes back, and then do the real distance math on each result to throw out the ones sitting in the corners of the box. One hook runs both the contractor browser and the job board, it just gets handed a different config. It also has a hard limit on how much it'll pull in, and if you hit it the page tells you to narrow things down instead of quietly showing you half the answer.</p>
+
+    <p>A lot of the work was designing the data backwards from the questions the app needs to ask. Scheduling is the easiest example. A job can go out to several contractors, so the thing that actually gets scheduled is a pairing of one job and one contractor. I made that pairing the document's ID, the job's ID and the contractor's ID joined with an underscore. Saving a schedule twice just writes over the same document, and loading one is a straight read with no search involved. I even changed our ID generator so it can never produce an underscore itself, which keeps the two halves from ever getting mixed up.</p>
+
+    <p>I also built the chat, which turned into the biggest single piece of the app. When you hit send, your message shows up right away, before the database has confirmed anything. If the save fails, it gets pulled back out and your text goes back in the box so you don't lose it. One message can touch up to five documents behind the scenes (both people's contact lists and unread counts, the message itself, sometimes a new date divider), so they all go through in a single batch or not at all. When someone changes a booking, a note about it gets posted into the conversation automatically.</p>
+
+    <p>Keeping the app's state sane was its own project. Anything coming from the server streams in live, and every change to jobs and schedules goes through one set of functions in Redux, so the rules for those only live in one spot. The five-step job posting form saves as you go, which means a refresh halfway through doesn't cost you anything. It's not done, and I keep an honest list of what I'd fix before real traffic shows up: moving a few multi-step writes onto the server so they can't overlap, loading long chat histories a page at a time, and a real search service so the filtering doesn't happen on your phone.</p>
+
+    <p class="entry-links">
+      <a href="https://preneur-djn.web.app/" target="_blank" rel="noopener noreferrer">Preneur beta website</a>
+    </p>
   </article>
 
   <article class="entry">
-    <h3>Software Developer Intern <span class="at">·</span> <span class="org">ADS Business Transformation Experts Inc.</span></h3>
+    <h3>Software developer intern <span class="at">·</span> <span class="org">ADS Business Transformation Experts Inc.</span></h3>
     <p class="entry-meta">Toronto, ON<span class="sep"> · </span>
-      <time datetime="2024-04">Apr 2024</time> – <time datetime="2025-09">Sept 2025</time></p>
-    <ul>
-      <li>Contributed to the development of enterprise business-transformation platforms for
-      multinational clients, such as Holcim, hosted in Azure and built with C#/.NET and Vue.js</li>
-      <li>Collaborated with a team of 3 engineers to build and improve systems for 4 enterprise
-      clients serving hundreds of internal users.</li>
-      <li>Translated client stakeholder requirements into sprint tickets and walked completed work
-      through in demo sessions, carrying features from intake through client acceptance.</li>
-    </ul>
+      <time datetime="2024-04">May 2024</time> - <time datetime="2025-09">Aug 2025</time></p>
+    <p class="entry-meta stack">.NET<span class="sep"> · </span>Vue.js<span class="sep"> · </span>IBM Cloud<span class="sep"> · </span>Jira</p>
+
+    <p>ADS is a consulting firm that builds and looks after custom software for other companies, and I spent eighteen months on their dev team. We were small, usually three developers on a project, and we were responsible for a few client systems at the same time: one for a construction materials company, one for a vehicle rental business, and an internal ERP. So in a normal week I might be building something new for one client, tracking down a bug another client had reported that morning, and updating a screen for a third because their process had changed.</p>
+
+    <p>What made it feel different from school was how close we were to the people using the software. I started sitting in on stakeholder meetings pretty early, and that's where I learned that the first version of a request is almost never the real one. A big part of the job was requirement gathering, which in practice meant asking follow-up questions until we understood what the person actually needed, writing that up as tickets for the next sprint, and then showing them the finished thing at the end so they could say "yes" or, more often, "close, but."</p>
+
+    <p>We ran everything in sprints, planned out in Jira. A change would go from my machine to a DEV environment, then to QAS, where the client could click through it themselves, and only then to PROD on IBM Cloud. Watching a client test your feature before it goes live is humbling in a good way. I got into the habit of writing short, plain notes on how to try out each change, so someone who isn't a developer could actually check it.</p>
+
+    <p>The project I think about most was for Holcim, one of the biggest building-materials companies in the world. Their dispatchers were planning the day's concrete trucks from screens that were basically long tables of times. Concrete can't sit around waiting (it starts setting in the drum), so knowing when every truck loads up and heads out really matters. I built them a scheduling view in Vue that lays the whole day out visually, truck by truck, so a dispatcher can spot a gap or a clash at a glance instead of reading it off a spreadsheet.</p>
+
+    <p>For another client, the staff told us pretty plainly that the screens they used every day were confusing. I went through the tasks they did most often, found where people were getting lost or typing the same thing in twice, and reworked those flows in Vue, changing the .NET side underneath to match. Same work, fewer steps. The best feedback I got was that people just stopped asking how to do things. And honestly, a lot of the eighteen months was plain upkeep, keeping three codebases healthy across four clients, chasing bugs that only showed up with one client's data, and updating things whenever a business rule changed. That kind of work doesn't make for exciting stories, but it's most of what keeps a client happy.</p>
   </article>
 </section>
 
-<!-- ===================== PROJECTS ===================== -->
+<!-- projects -->
 <section id="win-projects" data-window aria-labelledby="t-projects"
          data-title="Projects" data-label="Projects"
          data-icon="folder-open" data-shell="explorer"
          data-w="700" data-h="514" data-x="186" data-y="76"
          data-desktop="1" data-col="1" data-row="4"
          data-pane-title="Projects"
-         data-pane-detail="2 items">
-  <h2 id="t-projects">Technical Projects</h2>
+         data-pane-detail="3 items">
+  <h2 id="t-projects">Things I've built</h2>
 
   <article class="entry">
-    <h3>Stock Intelligence Platform</h3>
-    <p class="entry-meta stack">C#/.NET 8<span class="sep"> · </span>Python<span class="sep"> · </span>FastAPI<span class="sep"> · </span>PostgreSQL<span class="sep"> · </span>RabbitMQ<span class="sep"> · </span>Docker<span class="sep"> · </span>React</p>
-    <ul>
-      <li>Architected a four-layer Clean Architecture backend in .NET 8 with CQRS handlers, EF Core
-      8, PostgreSQL, and JWT auth, verified by 130 tests running real infrastructure through
-      Testcontainers.</li>
-      <li>Achieved no duplicate writes across runs of a live SEC EDGAR Form 4 ingestion pipeline
-      using unique-index idempotency, a token-bucket rate limiter, and exponential-backoff
-      retry.</li>
-      <li>Eliminated a PostgreSQL-to-RabbitMQ dual-write failure mode with a transactional outbox
-      and polling relay, then routed events to a Python analytics microservice over manual acks,
-      TTL retry, and dead-letter queues.</li>
-      <li>Shipped an LLM recap service as a second consumer on the topic exchange, generating
-      per-user summaries of insider activity under structured output validation, token budgeting,
-      and Redis TTL caching.</li>
-    </ul>
+    <h3>StockIntel</h3>
+    <p class="entry-meta stack">C# / .NET 8<span class="sep"> · </span>Python 3.13<span class="sep"> · </span>PostgreSQL<span class="sep"> · </span>RabbitMQ<span class="sep"> · </span>Docker<span class="sep"> · </span>Testcontainers</p>
+
+    <p>Whenever an executive or board member buys or sells shares in their own company, they have to tell the SEC within two business days, on a filing called a Form 4. All of it is public. StockIntel pulls those filings in and watches for patterns that are usually worth a second look, like three different insiders at the same company buying within a couple of weeks of each other. It's a learning project, and I set one rule for myself at the start: nothing gets added until there's a real problem for it to solve. That's why you won't find Kafka or Kubernetes in here.</p>
+
+    <p>It's made of two services that talk through RabbitMQ. A .NET 8 API handles pulling filings in, saving them and serving them, and it's the only thing allowed to write to the database. A Python service listens for new filings, keeps a rolling 14-day window for each company in memory, and runs three checks on it: several insiders buying together, an officer buying, and someone's stake jumping by more than a quarter. When one of those trips, it sends a signal back, and the API stores it and serves it up through a paginated endpoint.</p>
+
+    <p>The interesting problem is keeping a filing and the message about it from ever getting out of sync. If I save a filing and the broker happens to be down when I publish, nobody downstream ever hears about it. If I publish first and then the save fails, I've announced something that never happened. There's no single transaction that covers both. So the message goes into an "outbox" table inside the same database transaction as the filing, and a small relay empties that table into RabbitMQ every two seconds, fifty at a time. If RabbitMQ goes down, messages just pile up in Postgres and go out once it's back. The system gets slower for a bit, and nothing gets lost.</p>
+
+    <p>The catch is that a message can now show up more than once, so everything downstream has to shrug off duplicates. Filings are keyed on their SEC accession number with a unique index. Instead of checking first and inserting second (which can race), the code just tries the insert and handles the conflict. My favourite detail in the whole repo came out of this. When a duplicate gets caught, I clear out every pending change Entity Framework is holding, not only the filing. When I wrote it, that was just tidy-up. Once the outbox existed, it became the only thing stopping a duplicate filing from sending out a ghost message, and now there's a test that pins it in place.</p>
+
+    <p>I wired the RabbitMQ side by hand, no MassTransit, and that was on purpose, because I wanted to understand retries and dead-letter queues before letting a library hide them from me. Consumers only acknowledge a message once they're done with it. A message that fails waits ten seconds in a retry queue and gets three tries, and anything that can't be processed ends up in a dead-letter queue with a note explaining why. One thing you only find out by building it: when RabbitMQ dead-letters a message, it rewrites the routing key, so I have to dig the original back out of the x-death header. And on the way in, SEC lets you hit their servers ten times a second. I stay at five, because getting rate-limited by a government API is a bad way to spend a weekend.</p>
+
+    <p>Two languages means two chances to disagree about what a message looks like. Whichever side publishes an event also writes out sample files for it, and both test suites check against those samples, so a change that would break the other service fails in CI before it's merged. There are 130 tests right now, 107 in xUnit and 23 in pytest. The ones that touch Postgres or RabbitMQ run against the real thing in throwaway Docker containers, since a mocked database can't tell you whether your unique index actually fires.</p>
+
+    <p>What I'm working on now is a second listener on the same exchange that writes each user a short, plain-English recap of insider activity on their watchlist. An LLM writes it, its output gets checked against a strict schema, it runs on a token budget, and results are cached in Redis so the same summary never gets paid for twice. After that comes putting the whole thing online. It only runs as a single instance today, and I know the three reasons why: the relay would double-send if two copies ran at once, database migrations run at startup, and a second copy would double the traffic to the SEC. Each has a known fix, and that list is next.</p>
+
+    <p class="entry-links">
+      <a href="https://github.com/DA-Gomez/StockIntel" target="_blank" rel="noopener noreferrer">StockIntel on GitHub</a>
+    </p>
   </article>
 
   <article class="entry">
-    <h3>Context-Aware Wardrobe Recommendation App</h3>
-    <p class="entry-meta stack">Node.js<span class="sep"> · </span>Express<span class="sep"> · </span>Python<span class="sep"> · </span>Firebase<span class="sep"> · </span>React</p>
-    <ul>
-      <li>Co-led a 4-person team through a full-stack build, owning system architecture, API design,
-      and Git/GitHub workflow.</li>
-      <li>Engineered a Node.js/Express backend on Firestore handling wardrobe CRUD, weather-data
-      normalization, and real-time recommendation feedback.</li>
-      <li>Designed a recommendation engine pairing rule-based filtering with a scikit-learn model
-      invoked through child_process to score and rank outfit combinations.</li>
-    </ul>
+    <h3>Wardrobe recommendation app</h3>
+    <p class="entry-meta stack">React<span class="sep"> · </span>Node.js<span class="sep"> · </span>Express<span class="sep"> · </span>Python<span class="sep"> · </span>scikit-learn<span class="sep"> · </span>Firebase</p>
+
+    <p>This was a four-person team project that tries to answer the question everyone asks at seven in the morning: what do I wear today? You add what's in your closet, the app checks the weather where you are, and it suggests a few outfits. You tell it which ones you actually liked, and over time it gets a little better at guessing.</p>
+
+    <p>I co-led the team and owned how everything fit together, meaning the overall architecture, the API design, and how the four of us used Git without stepping on each other. That last part took more effort than I expected. We landed on short-lived branches and pull requests that at least one other person had to read before anything got merged, which saved us more than once the week before the demo.</p>
+
+    <p>The backend is Node and Express sitting on Firestore. It keeps track of your wardrobe as you add, edit and remove pieces, takes the messy response from a weather API and boils it down to something simpler like "cold, windy, might rain," and records how you rated every suggestion so the model has something to learn from.</p>
+
+    <p>Recommendations happen in two passes. The first is plain rules: no shorts at minus five, no suede in the rain, nothing too casual for a formal event. Whatever survives gets scored by a scikit-learn model trained on the outfits you've said yes to before, and the top few become your options. The model is Python and the server is Node, so the server launches the scoring script as a child process, hands it the candidates and reads the scores back. It isn't a fancy bridge, but it let each half stay in the language it's best at, and we could swap the model without touching the API at all.</p>
+
+    <p class="entry-links">
+      <a href="https://github.com/DA-Gomez/LYVYN" target="_blank" rel="noopener noreferrer">Wardrobe app on GitHub</a>
+    </p>
+  </article>
+
+  <article class="entry">
+    <h3>This desktop (the site you're on)</h3>
+    <p class="entry-meta stack">HTML<span class="sep"> · </span>CSS<span class="sep"> · </span>JavaScript<span class="sep"> · </span>AWS S3 and CloudFront</p>
+
+    <p>I wanted a portfolio people would actually remember, and something about Windows XP makes just about everyone smile a little, so here we are. Everything you're clicking on is plain HTML, CSS and JavaScript.</p>
+
+    <p>The windows behave like the real ones. You can drag them by the title bar, resize them from any edge, minimize them to the taskbar, and maximize them and have them come back to exactly where they were. Whichever window you clicked last comes to the front. Each one also has its own link, so adding #win-projects to the address opens straight to this one.</p>
+
+    <p>You don't need a mouse for any of it. Alt+Space opens the little menu in the corner of a window, same as XP, and from there the arrow keys move or resize it and Enter locks it in. Tab and the arrow keys get you around the icons and the taskbar. The full list is in Help and Support.</p>
+
+    <p>Underneath the desktop, it's just a normal page. With JavaScript turned off, or if you print it with Ctrl+P, you get a clean, readable version of everything here. The icons and window borders all come from a single SVG sprite and a set of CSS variables, which is also how the three colour themes swap. It's hosted on S3 behind CloudFront, and the account that deploys it can't touch anything except this one bucket.</p>
+
+    <p class="entry-links">
+      <a href="https://github.com/DA-Gomez/portfolio-site" target="_blank" rel="noopener noreferrer">This site on GitHub</a>
+    </p>
   </article>
 </section>
 
-<!-- ===================== EDUCATION & LEADERSHIP ===================== -->
+<!-- school and community -->
 <section id="win-education" data-window aria-labelledby="t-education"
-         data-title="Education and Leadership" data-label="Education and Leadership"
+         data-title="School and Community" data-label="School and Community"
          data-icon="education" data-shell="dialog"
          data-w="426" data-h="450" data-x="352" data-y="44"
          data-fixed="1" data-desktop="1" data-col="2" data-row="2"
          data-tabs="General,Leadership,Certifications">
-  <h2 id="t-education">Education and Leadership</h2>
+  <h2 id="t-education">Groundwork</h2>
 
   <div class="tabpanel" data-tab="General">
     <div class="sysprops-hero">
@@ -223,72 +288,122 @@ here — the Windows XP desktop is an optional visual layer.</p></noscript>
     <h3 class="fieldlabel">Registered to:</h3>
     <div class="sysprops-reg">
       <p>Diego Andre Gomez Ruiz</p>
-      <p>B.A., Spec. Hons. Information Technology</p>
+      <p>B.A., Specialized Honours, Information Technology</p>
       <p>GPA 3.7</p>
-      <p><time datetime="2023-09">Sept 2023</time> – <time datetime="2027-05">May 2027</time> (expected)</p>
+      <p><time datetime="2023-09">Sept 2023</time> - <time datetime="2027-12">Apr 2028</time> (expected)</p>
+      <p>Eligible for 4, 8, 12, and 16 month Co-op Placements</p>
     </div>
-    <h3 class="fieldlabel">Awards:</h3>
+    <h3 class="fieldlabel">Honours:</h3>
     <ul class="tight">
       <li>Dean's List</li>
       <li>Continuing Student Award for Academic Excellence</li>
     </ul>
+    <h3 class="fieldlabel">Courses that stuck with me:</h3>
+    <p>I want to say, I've enjoyed a lot of classes throughout my career; data analytics class, database management systems, web development and the machine learning class
+      are the ones I can name right now. The ones that really stuck to me are: Data structures and databases, mostly because I kept running into both again at work. 
+      Systems analysis and design turned out to be surprisingly practical too.</p>
   </div>
 
   <div class="tabpanel" data-tab="Leadership">
     <article class="entry">
-      <h3>Co-President <span class="at">·</span>
+      <h3>Co-president <span class="at">·</span>
         <span class="org">Student Excellence in ITEC Initiative (SEICI)</span></h3>
       <p class="entry-meta">York University<span class="sep"> · </span>
-        <time datetime="2025-06">Jun 2025</time> – Present</p>
-      <ul>
-        <li>Promoted from member to Co-President for the 2026–2027 term, setting organizational
-        goals and leading executive decisions for York's ITEC student initiative.</li>
-        <li>Own the annual operating roadmap across Fall and Winter terms, assigning timelines and
-        an accountable owner to every workshop, technical project, and milestone.</li>
-      </ul>
+        <time datetime="2025-06">Jun 2025</time> - Present</p>
+
+      <p>SEICI is a student-run group for people in York's IT program. School gives you the theory, and we try to fill in what it leaves out: how to actually land an internship, what working on a real team feels like, and how to build something outside of class. I joined as a regular member and ended up as co-president, which mostly means I help decide what we do and then make sure it actually happens.</p>
+
+      <p>Before each school year starts, we map out the whole Fall and Winter terms, every workshop, every project and every deadline, with one person's name next to each item. One name sounds like a small thing, but it changed a lot. Stuff stopped falling into the gap between "someone should do this" and "I thought you were doing it."</p>
+
+      <p>In practice, that looks like resume and interview workshops before recruiting season, evening sessions where members build something small from scratch, and team projects that run across a term so people have something real to talk about in interviews. I've led a few of the technical sessions myself, including one on Git that a good chunk of the room said they wished they'd had in first year.</p>
+
+      <p>Co-leading turned out to be its own skill. Everyone involved is a student with exams and jobs, so a lot of it is keeping plans realistic, knowing when an event should be cut because it isn't ready, and making sure the people doing the work get the credit for it.</p>
     </article>
   </div>
 
   <div class="tabpanel" data-tab="Certifications">
     <h3 class="fieldlabel">Certifications:</h3>
     <ul class="tight">
-      <li>AWS Certified Cloud Practitioner <span class="org">· Amazon Web Services</span>
-        <span class="badge-inprogress">In Progress</span></li>
+      <li><b>AWS Certified Cloud Practitioner</b>
+        <span class="org">· Amazon Web Services</span><br>
+        Issued <time datetime="2026-08">Aug 2026</time>, good until <time datetime="2029-08">Aug 2029</time>
+        <span class="sep"> · </span>
+        <a href="https://www.credly.com/badges/7ec9e21e-a2b2-4ef5-95b1-b35631c18115/public_url"
+           target="_blank" rel="noopener noreferrer">Verify on Credly</a></li>
     </ul>
+    <p>I went for this one mostly because this site runs on AWS and I wanted to properly understand what I was using. It covers how the main services fit together, how permissions and security work, and how billing works, which as a student is the chapter you read twice.</p>
   </div>
 </section>
 
-<!-- ===================== CONTACT ===================== -->
+<!-- notes -->
+<section id="win-notes" data-window aria-labelledby="t-notes"
+         data-title="Notes.txt - Notepad" data-label="Notes"
+         data-icon="doc-text" data-shell="notepad"
+         data-w="560" data-h="470" data-x="200" data-y="64"
+         data-desktop="1" data-col="1" data-row="2"
+         data-menu="File,Edit,Format,View,Help">
+  <h2 id="t-notes">Notes and write-ups</h2>
+
+  <article class="entry">
+    <h3>Why I stopped trusting "save, then publish"</h3>
+    <p>Pretty much every service that saves to a database and then sends a message runs into the same bug eventually. This one walks through what goes wrong, how a plain outbox table and a relay that runs every two seconds fixed it in StockIntel, and the part where a clean-up line I'd written months earlier turned out to be holding the whole thing together.</p>
+    <p class="entry-links">
+      <p><a href="https://microservices.io/patterns/data/transactional-outbox" target="_blank" rel="noopener noreferrer">Transactional outbox article</a></p>
+      <p><a href="https://www.milanjovanovic.tech/blog/implementing-the-outbox-pattern" target="_blank" rel="noopener noreferrer">Transactional outbox implementation article</a></p>
+    </p>
+  </article>
+
+  <article class="entry">
+    <h3>Finding nearby contractors on a database that doesn't do distance</h3>
+    <p>Firestore can't answer "who's within 15 km of me?" on its own. This is how geohashes get you most of the way there, why the box they give you is always a bit bigger than the circle you asked for, and what Preneur does to clean up the difference.</p>
+    <p class="entry-links">
+      <p><a href="https://firebase.google.com/docs/firestore/solutions/geoqueries?hl=en" target="_blank" rel="noopener noreferrer">Geographical queries</a></p>
+      <p><a href="https://blog.algomaster.io/p/geohashing" target="_blank" rel="noopener noreferrer">Geohashing article</a></p>
+    </p>
+  </article>
+
+  <article class="entry">
+    <h3>Rebuilding Windows XP in a browser</h3>
+    <p>Notes from building this desktop: dragging windows without letting them escape off screen, keeping track of which one is on top, copying XP's keyboard shortcuts, and making sure the whole thing still reads as a normal page when JavaScript is off.</p>
+    <p class="entry-links">
+      <p><a href="https://developer.mozilla.org/docs/Web/API/Element/setPointerCapture" target="_blank" rel="noopener noreferrer">Window follows cursor article</a></p>
+      
+    </p>
+  </article>
+</section>
+
+<!-- contact -->
 <section id="win-contact" data-window aria-labelledby="t-contact"
-         data-title="Contact Diego - Message" data-label="Contact"
+         data-title="New Message" data-label="Say Hi"
          data-icon="mail" data-shell="compose"
          data-w="546" data-h="408" data-x="266" data-y="104"
          data-desktop="1" data-col="2" data-row="3">
-  <h2 id="t-contact">Contact</h2>
+  <h2 id="t-contact">Say hi</h2>
 
   <dl class="compose-head">
     <dt>To:</dt>
     <dd><a href="mailto:diangoru@my.yorku.ca">diangoru@my.yorku.ca</a></dd>
     <dt>GitHub:</dt>
-    <dd><a href="https://github.com/DA-Gomez" target="_blank" rel="noopener noreferrer">github.com/DA-Gomez</a></dd>
+    <dd><a href="https://github.com/DA-Gomez" target="_blank" rel="noopener noreferrer">GitHub</a></dd>
     <dt>LinkedIn:</dt>
-    <dd><a href="https://www.linkedin.com/in/diego-andre-gomez-ruiz" target="_blank" rel="noopener noreferrer">linkedin.com/in/diego-andre-gomez-ruiz</a></dd>
+    <dd><a href="https://www.linkedin.com/in/diego-andre-gomez-ruiz-531287313/" target="_blank" rel="noopener noreferrer">LinkedIn</a></dd>
     <dt>Location:</dt>
-    <dd>Maple, Ontario, Canada</dd>
+    <dd>Maple, Ontario (Toronto area)</dd>
   </dl>
 
   <div class="compose-body">
-    <p>The fastest way to reach me is email — I read everything and I reply.</p>
-    <p>If you're hiring for an internship or a new-grad software role, I'd like to hear about it.</p>
+    <p>If you're hiring for a software engineering, software development, data analytics/engineering or ML position, 
+      want to dig into something you saw on here, or you're stuck on a Firebase or RabbitMQ problem and want a second pair of eyes, 
+      send me an email, I'll be happy to hear from you.</p>
+    <p>I read everything that lands in my inbox and usually reply within a day or two.</p>
   </div>
 
   <p class="compose-actions">
-    <a class="xp-btn xp-btn--default" href="mailto:diangoru@my.yorku.ca">Send Mail</a>
-    <a class="xp-btn" href="Resume.pdf" download>Download Resume (PDF)</a>
+    <a class="xp-btn xp-btn--default" href="mailto:diangoru@my.yorku.ca">Send email</a>
   </p>
 </section>
 
-<!-- ===================== HELP ===================== -->
+<!-- help -->
 <section id="win-help" data-window aria-labelledby="t-help"
          data-title="Help and Support Center" data-label="Help and Support"
          data-icon="help" data-shell="help"
@@ -298,63 +413,45 @@ here — the Windows XP desktop is an optional visual layer.</p></noscript>
 
   <div class="topic" data-topic="Keyboard shortcuts">
     <h3>Keyboard shortcuts</h3>
-    <p>Every part of this desktop works from the keyboard. Nothing here needs a mouse, and
-    nothing needs dragging.</p>
+    <p>You don't need a mouse for anything on this desktop. It all works from the keyboard, and nothing needs dragging.</p>
     <table class="keytable">
-      <caption>Desktop and window keyboard commands</caption>
-      <thead><tr><th scope="col">Key</th><th scope="col">Does</th></tr></thead>
+      <caption>Keyboard shortcuts for the desktop and its windows</caption>
+      <thead><tr><th scope="col">Key</th><th scope="col">What it does</th></tr></thead>
       <tbody>
-        <tr><td><kbd>Tab</kbd></td><td>Move between the icon grid, the open windows, and the taskbar</td></tr>
-        <tr><td><kbd>&#8593;</kbd> <kbd>&#8595;</kbd> <kbd>&#8592;</kbd> <kbd>&#8594;</kbd></td><td>Move the selection inside the icon grid, the taskbar, or a menu</td></tr>
-        <tr><td><kbd>Enter</kbd></td><td>Open the selected icon, or activate the focused control</td></tr>
-        <tr><td><kbd>Esc</kbd></td><td>Close the focused window, or dismiss a menu</td></tr>
-        <tr><td><kbd>Alt</kbd> + <kbd>Space</kbd></td><td>Open the window menu — Restore, Move, Size, Minimize, Maximize, Close</td></tr>
+        <tr><td><kbd>Tab</kbd></td><td>Jump between the desktop icons, open windows and the taskbar</td></tr>
+        <tr><td><kbd>&#8593;</kbd> <kbd>&#8595;</kbd> <kbd>&#8592;</kbd> <kbd>&#8594;</kbd></td><td>Move around the icons, the taskbar or an open menu</td></tr>
+        <tr><td><kbd>Enter</kbd></td><td>Open the selected icon, or press whatever has focus</td></tr>
+        <tr><td><kbd>Esc</kbd></td><td>Close the window you're in, or back out of a menu</td></tr>
+        <tr><td><kbd>Alt</kbd> + <kbd>Space</kbd></td><td>Open a window's menu (Restore, Move, Size, Minimize, Maximize, Close)</td></tr>
         <tr><td><kbd>Alt</kbd> + <kbd>Tab</kbd></td><td>Switch to the next open window</td></tr>
         <tr><td><kbd>Ctrl</kbd> + <kbd>Esc</kbd></td><td>Open the Start menu</td></tr>
-        <tr><td><kbd>Ctrl</kbd> + <kbd>P</kbd></td><td>Print — produces a clean plain resume, not a picture of a desktop</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>P</kbd></td><td>Print everything as a plain page</td></tr>
       </tbody>
     </table>
-    <p>In the window menu, <b>Move</b> and <b>Size</b> put the window into a keyboard mode: the
-    arrow keys move or resize it, <kbd>Enter</kbd> commits, and <kbd>Esc</kbd> cancels. That is how
-    real Windows did it, and it means dragging is never the only way to do anything here.</p>
   </div>
 
   <div class="topic" data-topic="How this site works">
     <h3>How this site works</h3>
-    <p>The resume is real HTML in the page, written once. The desktop is a layer on top of it:</p>
+    <p>Under the desktop, this is one ordinary HTML page. The desktop gets drawn on top of it with JavaScript.</p>
     <ul>
-      <li>With JavaScript off, you get a plain, readable resume document.</li>
-      <li>With it on, each section of that same document is decorated into a window. The content is
-      never copied — only re-framed.</li>
-      <li><kbd>Ctrl</kbd> + <kbd>P</kbd> prints the document, not the desktop.</li>
-      <li>Every window has a shareable link. Adding <code>#win-projects</code> to the URL opens
-      Projects directly.</li>
+      <li>With JavaScript off, you get everything as a simple page you can read top to bottom.</li>
+      <li>With JavaScript on, each section opens up as its own window.</li>
+      <li><kbd>Ctrl</kbd> + <kbd>P</kbd> prints the plain version, not the desktop.</li>
+      <li>Every window has its own link, like <code>#win-projects</code>, so you can send someone straight to it.</li>
     </ul>
-    <p>Theme and font size live in <b>Display Properties</b> — right-click the desktop and choose
-    Properties, or open it from the Start menu. The font-size control is there because
-    fixed-pixel chrome doesn't respond to browser text zoom the way ordinary text does.</p>
   </div>
 
   <div class="topic" data-topic="Colophon">
     <h3>Colophon</h3>
-    <p>Hand-written HTML, CSS and vanilla JavaScript. No frameworks, no build step, no packages, no
-    network requests — opening the file straight off a disk works.</p>
+    <p>Written by hand in HTML, CSS and plain JavaScript. There's no framework and nothing to install, so what you see in View Source is what's actually running.</p>
     <ul>
-      <li><b>No images.</b> The wallpaper is layered CSS gradients plus one authored SVG path. Every
-      icon is an original SVG drawn for this site, in a single 18&nbsp;KB inline sprite.</li>
-      <li><b>The window manager</b> handles focus and z-order, pointer-capture dragging, edge
-      resizing, maximize/restore geometry memory, taskbar semantics, hash routing, and keyboard
-      move and size modes.</li>
-      <li><b>Type</b> is Tahoma, the real Windows XP interface font, with a fallback stack chosen to
-      degrade without shifting the layout.</li>
+      <li><b>Font:</b> Tahoma, falling back to whatever your system has.</li>
+      <li><b>Themes:</b> Luna (blue), Olive Green and Silver, swapped with CSS variables. You can switch between them in Display Properties.</li>
     </ul>
-    <p class="note">A tribute to the Windows XP &ldquo;Luna&rdquo; interface, built from scratch.
-    Not affiliated with or endorsed by Microsoft. Windows and Windows XP are trademarks of
-    Microsoft Corporation.</p>
   </div>
 </section>
 
-<!-- ===================== DISPLAY PROPERTIES (settings, not resume content) ===================== -->
+<!-- display properties -->
 <section id="win-display" data-window aria-labelledby="t-display"
          data-title="Display Properties" data-label="Display Properties"
          data-icon="computer" data-shell="dialog"
@@ -389,12 +486,10 @@ here — the Windows XP desktop is an optional visual layer.</p></noscript>
         <label><input type="radio" name="xp-fontsize" value="large"> Large Fonts</label>
         <label><input type="radio" name="xp-fontsize" value="xlarge"> Extra Large Fonts</label>
       </div>
-      <p class="hint">Scales the whole interface. Browser zoom works too, and the two combine.</p>
     </fieldset>
     <fieldset class="xp-group">
       <legend>Effects</legend>
       <label class="check-row"><input type="checkbox" id="opt-motion"> Reduce animation</label>
-      <p class="hint">Follows your system &ldquo;reduce motion&rdquo; setting by default.</p>
     </fieldset>
   </div>
 </section>
@@ -404,8 +499,7 @@ here — the Windows XP desktop is an optional visual layer.</p></noscript>
 <footer id="page-footer">
   <p>Diego Andre Gomez Ruiz<span class="sep"> · </span>Maple, ON<span class="sep"> · </span>
     <a href="mailto:diangoru@my.yorku.ca">diangoru@my.yorku.ca</a></p>
-  <p class="fine">A tribute to the Windows XP &ldquo;Luna&rdquo; interface, rebuilt in HTML, CSS and
-  vanilla JavaScript. Not affiliated with or endorsed by Microsoft.</p>
+  <p class="fine">A fan-made take on the Windows XP "Luna" look. Not affiliated with Microsoft.</p>
 </footer>
 
 </body>

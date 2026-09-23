@@ -1,18 +1,16 @@
-/* ==========================================================================
-   xp.css — Windows XP "Luna" chrome: tokens, window frame, controls.
-   Load order: xp.css -> shell.css -> content.css
-   Specificity budget in this file: max 2 classes, or `html.js` + 1 class.
-   ========================================================================== */
+/* xp.css - luna tokens plus the window chrome itself.
+   load order: xp.css, shell.css, content.css.
+   nothing in here goes past 2 classes, or html.js + 1. */
 
 :root {
-  /* ---------- SCALE & TYPE ---------- */
+  /* type + scale */
   --xp-scale: 1;
   --xp-font: Tahoma, "Segoe UI", Verdana, Geneva, sans-serif;
   --xp-font-mono: "Lucida Console", "DejaVu Sans Mono", Consolas, monospace;
   --xp-fs: calc(11px * var(--xp-scale));
   --xp-hair: 1px;
 
-  /* ---------- 3D BEVEL QUARTET (Luna GetSysColor values) ---------- */
+  /* luna GetSysColor values */
   --xp-face:          #ECE9D8;
   --xp-face-light:    #F1EFE2;
   --xp-hilight-3d:    #FFFFFF;
@@ -26,7 +24,7 @@
   --xp-highlight-text:#FFFFFF;
   --xp-info-bg:       #FFFFE1;
 
-  /* ---------- WINDOW FRAME (themeable) ---------- */
+  /* frame */
   --xp-frame-w: 3px;
   --xp-frame-radius: 8px;
   --xp-frame-1-lt: #0831D9;
@@ -38,7 +36,7 @@
   --xp-window-shadow: 0 5px 12px -2px rgba(0,0,0,.42), 0 2px 4px rgba(0,0,0,.24);
   --xp-window-shadow-inactive: 0 3px 8px -2px rgba(0,0,0,.26);
 
-  /* ---------- TITLE BAR (themeable) ---------- */
+  /* title bar */
   --xp-title-h: calc(28px * var(--xp-scale));
   --xp-title-topline: #6FBBFF;
   --xp-title-text: #FFFFFF;
@@ -49,10 +47,10 @@
   --xp-title-grad-inactive: linear-gradient(180deg,
       #D2E4FB 0%, #A9C6F0 8%, #9DB9EB 40%, #A6C0EA 88%,
       #93AFE2 95%, #7A96DF 96%, #7A96DF 100%);
-  /* Navy on the pale inactive bar: 5.2:1. Authentic XP used white here, which fails. */
+  /* xp used white here, which is 2.4:1 on the pale bar. navy is 5.2:1 */
   --xp-title-text-inactive: #1B3F73;
 
-  /* ---------- CAPTION BUTTONS ---------- */
+  /* caption buttons */
   --xp-capbtn-hit: calc(24px * var(--xp-scale));
   --xp-capbtn-face-size: calc(21px * var(--xp-scale));
   --xp-capbtn-face: linear-gradient(180deg,
@@ -70,20 +68,20 @@
       #8F1C05 0%, #B22A08 20%, #CE3E1B 60%, #E88A68 100%);
   --xp-close-edge: #7E2109;
 
-  /* ---------- PUSH BUTTON ---------- */
+  /* push button */
   --xp-btn-h: calc(23px * var(--xp-scale));
   --xp-btn-minw: calc(75px * var(--xp-scale));
   --xp-btn-border: #003C74;
   --xp-btn-face: linear-gradient(180deg,#FFFFFF 0%,#F6F4EC 40%,#ECE9D8 86%,#D8D0C4 100%);
   --xp-btn-face-hot: linear-gradient(180deg,#FFFFFF 0%,#FFFAEE 40%,#FDF3DE 86%,#EFDFBC 100%);
-  /* THE XP amber hover glow: four concentric rings, outside -> in */
+  /* the amber hover glow, outer ring first */
   --xp-glow-1: #FFE7A8;
   --xp-glow-2: #FDD889;
   --xp-glow-3: #FBC761;
   --xp-glow-4: #E5A01A;
   --xp-btn-face-pressed: linear-gradient(180deg,#CDCAC3 0%,#E3E3DB 8%,#E5E5DE 94%,#F2F2EE 100%);
 
-  /* ---------- FIELDS ---------- */
+  /* fields */
   --xp-field-border: #5F7F9E;
   --xp-field-h: calc(21px * var(--xp-scale));
   --xp-sunken:
@@ -92,7 +90,7 @@
       inset -1px -1px var(--xp-hilight-3d),
       inset -2px -2px var(--xp-face-light);
 
-  /* ---------- SCROLLBAR ---------- */
+  /* scrollbar */
   --xp-sb-size: calc(17px * var(--xp-scale));
   --xp-sb-track: linear-gradient(90deg,#E4E4EC 0%,#F2F2F6 12%,#F0F0F4 88%,#DCDCE4 100%);
   --xp-sb-thumb: linear-gradient(90deg,
@@ -101,15 +99,15 @@
       #FCFDFF 0%,#EAF1FC 10%,#CFE0F8 28%,#AFC9F0 50%,#95B4E4 72%,#7EA1D8 88%,#B9CEEE 100%);
   --xp-sb-thumb-border: #3F6AA8;
 
-  /* ---------- CONTAINERS ---------- */
+  /* containers */
   --xp-group-border: #D0CEBF;
   --xp-statusbar-h: calc(20px * var(--xp-scale));
   --xp-menu-item-h: calc(24px * var(--xp-scale));
   --xp-menu-sep: #D6D2C2;
 
-  /* ---------- ACCENT FAMILY (task panes, help rail, Start menu) ----------
-     Tokenized so a theme change carries through the whole shell rather than
-     leaving blue panes on a green desktop. */
+  /* accent family: task panes, help rail, start menu. tokenized so a theme
+     swap carries through the shell instead of leaving blue panes on a
+     green desktop. */
   --pane-1: #f0f4fd;      /* task-pane gradient, top */
   --pane-2: #dfe8fb;
   --pane-3: #cfddf8;      /* task-pane gradient, bottom */
@@ -127,17 +125,17 @@
   --sm-sel-2: #1e63cf;
   --sm-border: #0831D9;
 
-  /* ---------- TEXT ---------- */
+  /* text */
   --xp-link: #0B3D91;
   --xp-link-hover: #1D5FB8;
   --xp-disabled-text: #ACA899;
 
-  /* ---------- FOCUS ---------- */
+  /* focus */
   --xp-focus-dotted: 1px dotted #000000;
   --xp-focus-dotted-light: 1px dotted #FFFFFF;
   --xp-focus-ring: 0 0 0 2px #FFFFFF, 0 0 0 4px #123C7A;
 
-  /* ---------- SHELL HANDSHAKE (used by shell.css) ---------- */
+  /* shared with shell.css */
   --xp-taskbar-h: calc(30px * var(--xp-scale));
   --xp-desktop-bg: #004E98;
   --tb-u: calc(var(--xp-taskbar-h) / 30);
@@ -149,24 +147,24 @@
   --sky-5:#8ec4e8; --sky-6:#bcdcf0; --sky-7:#dcecf7; --sky-8:#eef5fa;
   --hill-h: clamp(190px, 38vh, 460px);
 
-  /* ---------- Z-INDEX SCALE ---------- */
+  /* z scale */
   --z-wallpaper: 0;
   --z-icons: 10;
-  --z-window: 100;      /* WM assigns 100..899 */
+  --z-window: 100;      /* wm hands out 100-899 */
   --z-taskbar: 1000;
   --z-startmenu: 1100;
-  --z-menu: 1200;       /* window/context menus */
+  --z-menu: 1200;       /* window + context menus */
   --z-balloon: 1300;
   --z-tooltip: 1400;
 }
 
-/* ---------- THEMES. Only the caption/frame/taskbar/start tokens change. ---------- */
+/* themes swap the caption/frame/taskbar/start tokens, nothing else */
 html[data-theme="olive"] {
   --xp-frame-1-lt:#8FA34A; --xp-frame-1-rb:#4E5C1F; --xp-frame-3-lt:#7E9440;
   --xp-frame-outer:#3F4A17; --xp-frame-i-3-lt:#C3CB9C; --xp-frame-i-outer:#8E9668;
   --xp-title-topline:#D6E39A;
-  /* Darker than authentic Olive on purpose: white caption text on the real
-     #8CA345 measures 2.6:1. #64792B brings it to 4.9:1. */
+  /* real olive is #8CA345 and white caption text on it measures 2.6:1.
+     #64792B gets to 4.9:1. */
   --xp-title-grad-active: linear-gradient(180deg,
       #A8BC66 0%, #6F8534 8%, #64792B 40%, #71883A 88%,
       #64792B 95%, #4F6021 96%, #4F6021 100%);
@@ -224,15 +222,13 @@ html[data-theme="silver"] {
   --sm-sel-1:#8f8fa8; --sm-sel-2:#6e6e86; --sm-border:#70708a;
   --xp-link:#3a3a4c; --xp-link-hover:#5c5c74;
 }
-/* Silver's pale caption needs a dark glyph to keep the 3:1 non-text contrast. */
+/* dark glyph on silver, the pale caption can't carry a white one */
 html[data-theme="silver"] .cap-btn:not(.cap-btn--close) { --capglyph: #2A2A38; }
 
 html[data-fontsize="large"]  { --xp-scale: 1.25; }
 html[data-fontsize="xlarge"] { --xp-scale: 1.5; }
 
-/* ==========================================================================
-   BASE
-   ========================================================================== */
+/* base */
 *, *::before, *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
@@ -246,7 +242,7 @@ body {
 
 ::selection { background: var(--xp-highlight); color: var(--xp-highlight-text); }
 
-/* Skip links: visible only when focused, and never under the taskbar. */
+/* only shows up on focus, and never under the taskbar */
 .skip-link {
   position: absolute; left: 8px; top: -100px; z-index: calc(var(--z-tooltip) + 10);
   padding: 6px 12px; background: var(--xp-info-bg); color: #000;
@@ -258,16 +254,14 @@ body {
 #sprite-mount { position: absolute; width: 0; height: 0; overflow: hidden; }
 #sprite-mount svg { width: 0; height: 0; }
 
-/* Screen-reader-only text used by generated chrome. */
+/* sr-only, for the generated chrome */
 .vh {
   position: absolute !important; width: 1px; height: 1px;
   margin: -1px; padding: 0; overflow: hidden;
   clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
 }
 
-/* ==========================================================================
-   PUSH BUTTON  (used in both document and desktop modes)
-   ========================================================================== */
+/* push button. same thing in document and desktop mode */
 .xp-btn {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: var(--xp-btn-minw); min-height: var(--xp-btn-h);
@@ -280,7 +274,7 @@ body {
 }
 .xp-btn:hover {
   background: var(--xp-btn-face-hot);
-  /* four concentric 1px amber rings — the single most recognizable XP detail */
+  /* four 1px amber rings, the one xp detail everybody remembers */
   box-shadow:
     inset  0 0 0 1px var(--xp-glow-1),
     inset  0 0 0 2px var(--xp-glow-2),
@@ -291,9 +285,7 @@ body {
 .xp-btn:focus-visible { outline: var(--xp-focus-dotted); outline-offset: -4px; }
 .xp-btn--default { box-shadow: inset 0 0 0 1px rgba(255,255,255,.85), 0 0 0 1px var(--xp-btn-border); }
 
-/* ==========================================================================
-   WINDOW FRAME  (desktop mode only)
-   ========================================================================== */
+/* window frame */
 html.js .window {
   position: absolute;
   display: flex; flex-direction: column;
@@ -322,11 +314,11 @@ html.js .window.is-maximized {
 }
 html.js .window[hidden] { display: none; }
 
-/* Windows animate open/close by scale+fade from their own box. */
+/* open animation */
 html.js .window.is-opening { animation: win-in 140ms cubic-bezier(.2,.8,.3,1); }
 @keyframes win-in { from { opacity: 0; transform: scale(.96); } }
 
-/* ---------- TITLE BAR ---------- */
+/* title bar */
 html.js .title-bar {
   position: relative;
   display: flex; align-items: center; gap: calc(4px * var(--xp-scale));
@@ -350,9 +342,9 @@ html.js .title-icon { flex: 0 0 auto; width: calc(16px * var(--xp-scale)); heigh
 html.js .title-text {
   flex: 1 1 auto; min-width: 0;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  /* line-height must leave room for descenders: at 1, `overflow:hidden` clipped
-     the underscore in filename titles like About_Diego.txt so it read as a
-     space. The flex row still centres the text, so the box can be taller. */
+  /* 1.45, not 1: with overflow hidden a line-height of 1 clipped the
+     underscore in titles like About_Diego.txt so it read as a space. the
+     flex row still centres it. */
   font: 700 var(--xp-fs)/1.45 var(--xp-font);
   color: var(--xp-title-text); text-shadow: var(--xp-title-shadow);
 }
@@ -360,9 +352,8 @@ html.js .window:not(.is-focused) .title-text {
   color: var(--xp-title-text-inactive); text-shadow: 0 1px 0 rgba(255,255,255,.55);
 }
 
-/* ---------- CAPTION BUTTONS ----------
-   Visual face stays an authentic 21px; the hit area is padded out to 24px via
-   a pseudo-element so WCAG 2.5.8 is met without changing the look or layout. */
+/* caption buttons. face stays 21px, the ::after below pads the hit area
+   out to 24 so 2.5.8 passes without the look changing. */
 html.js .win-controls { display: flex; align-items: center; gap: calc(2px * var(--xp-scale)); flex: 0 0 auto; }
 html.js .cap-btn {
   position: relative;
@@ -374,7 +365,7 @@ html.js .cap-btn {
   color: var(--capglyph, #fff);
   cursor: default;
 }
-html.js .cap-btn::after {   /* the 24x24 hit extender */
+html.js .cap-btn::after {   /* hit extender */
   content: ""; position: absolute; left: 50%; top: 50%;
   width: var(--xp-capbtn-hit); height: var(--xp-capbtn-hit);
   transform: translate(-50%, -50%);
@@ -395,7 +386,7 @@ html.js .cap-btn svg {
 }
 html.js .cap-btn[aria-disabled="true"] { opacity: .55; }
 
-/* ---------- WINDOW BODY / STATUS BAR ---------- */
+/* body + status bar */
 html.js .win-frame-inner {
   flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0;
   background: var(--xp-face);
@@ -423,7 +414,7 @@ html.js .win-gripper { margin-left: auto; width: 12px; height: 12px; flex: 0 0 a
     linear-gradient(135deg, transparent 60%, var(--xp-shadow-3d) 60% 68%, transparent 68%) 0 0/5px 5px;
 }
 
-/* ---------- MENU BAR ---------- */
+/* menu bar */
 html.js .win-menubar {
   flex: 0 0 auto; display: flex; align-items: stretch;
   background: var(--xp-face); border-bottom: 1px solid var(--xp-shadow-3d);
@@ -439,7 +430,7 @@ html.js .win-menubar button[aria-expanded="true"] {
 }
 html.js .win-menubar button:focus-visible { outline: var(--xp-focus-dotted); outline-offset: -3px; }
 
-/* ---------- POPUP MENU (window menu, context menu, File menu) ---------- */
+/* popup menus: window menu, context menu, the File menu */
 .xp-menu {
   position: fixed; z-index: var(--z-menu); min-width: 168px; padding: 2px;
   background: var(--xp-window-bg);
@@ -460,9 +451,7 @@ html.js .win-menubar button:focus-visible { outline: var(--xp-focus-dotted); out
 .xp-menu .mi-key { margin-left: auto; padding-left: 18px; opacity: .75; }
 .xp-menu button:hover .mi-key { opacity: .9; }
 
-/* ==========================================================================
-   FIELDS, GROUPS, TABS
-   ========================================================================== */
+/* fields, groups, tabs */
 .xp-group {
   margin: 0 0 10px; padding: 8px 10px 10px;
   border: 1px solid var(--xp-group-border); border-radius: 3px;
@@ -498,9 +487,7 @@ html.js .win-menubar button:focus-visible { outline: var(--xp-focus-dotted); out
 .xp-tabstrip button:hover:not([aria-selected="true"]) { background: linear-gradient(180deg,#FFFFFF 0%,#F4F2E8 55%,#E9E6D4 100%); }
 .xp-tabstrip button:focus-visible { outline: var(--xp-focus-dotted); outline-offset: -4px; }
 
-/* ==========================================================================
-   SCROLLBARS  (WebKit/Blink full reconstruction; Firefox gets a colour fallback)
-   ========================================================================== */
+/* scrollbars. webkit gets the real thing, firefox just the two colours */
 html.js .win-body { scrollbar-color: #A9C4EE #F0F0F4; }
 html.js .win-body::-webkit-scrollbar { width: var(--xp-sb-size); height: var(--xp-sb-size); }
 html.js .win-body::-webkit-scrollbar-track { background: var(--xp-sb-track); }
@@ -512,7 +499,7 @@ html.js .win-body::-webkit-scrollbar-thumb {
 html.js .win-body::-webkit-scrollbar-thumb:horizontal { background: var(--xp-sb-thumb-h); }
 html.js .win-body::-webkit-scrollbar-thumb:hover { filter: brightness(1.06); }
 html.js .win-body::-webkit-scrollbar-corner { background: var(--xp-face); }
-/* The arrow buttons. Glyphs are encoded SVG data URIs (# must be %23). */
+/* arrow glyphs are inline svg data uris, so # has to be %23 */
 html.js .win-body::-webkit-scrollbar-button:single-button {
   display: block; height: var(--xp-sb-size); width: var(--xp-sb-size);
   background-color: var(--xp-face);
@@ -542,21 +529,15 @@ html.js .win-body::-webkit-scrollbar-button:single-button:horizontal:increment {
     linear-gradient(180deg,#FFFFFF 0%,#F6F4EC 40%,#ECE9D8 86%,#D8D0C4 100%);
 }
 
-/* ==========================================================================
-   RESIZE HANDLES
-   ========================================================================== */
+/* resize handles */
 html.js .rz { position: absolute; z-index: 2; touch-action: none; }
 
-/* The TOP handles sit ENTIRELY ABOVE the window box, in the 4px of desktop just
-   outside it. The window has no top padding, so the title bar starts at y=0 —
-   any north handle with a positive height covered the top 6px of a 28px caption
-   (10px at the corners). That is 21% of the drag surface, so roughly one grab in
-   five silently began a north-resize instead of a move: the window stretched
-   vertically instead of following the pointer, intermittently. That is the
-   single biggest cause of the drag feeling flaky.
-   `contain: layout` does not clip (only `contain: paint` would), so a negative
-   offset stays hit-testable, and a resize zone reaching a few px past the frame
-   is what desktop window managers do anyway. */
+/* the north handles sit outside the box, in the few px of desktop above it.
+   the window has no top padding, so the caption starts at y=0 and any north
+   handle with height covered its top 6px (10 at the corners). that is a fifth
+   of the drag surface, and it is why grabbing the title bar sometimes resized
+   instead of moving. contain: layout doesn't clip the way contain: paint would,
+   so the negative offset still hit-tests. */
 html.js .rz-n  { inset: -4px 14px auto 14px; height: 4px; cursor: ns-resize; }
 html.js .rz-nw { left: 0;  top: -4px; width: 14px; height: 4px; cursor: nwse-resize; }
 html.js .rz-ne { right: 0; top: -4px; width: 14px; height: 4px; cursor: nesw-resize; }
@@ -568,29 +549,23 @@ html.js .rz-se { right: 0; bottom: 0; width: 14px; height: 14px; cursor: nwse-re
 html.js .window.is-maximized .rz,
 html.js .window.is-fixed .rz { display: none; }
 
-/* No `user-select` toggle on the root during a drag. It is an INHERITED
-   property, so flipping it on <html> forces a style recalc for every element in
-   the document at the moment the gesture starts. The drag handles below already
-   carry a static `user-select: none`, and beginDrag() calls preventDefault() on
-   pointerdown, which is what actually stops a selection from starting. The
-   cursor is held steady by #drag-shield. */
+/* no user-select toggle on <html> while dragging: it inherits, so flipping it
+   recalcs style for the whole document right as the gesture starts. the handles
+   already carry user-select: none and beginDrag preventDefaults the pointerdown,
+   which is what actually stops a selection. #drag-shield holds the cursor. */
 
-/* Holds one cursor for the whole gesture and stops hover states firing on the
-   content sliding underneath. Pointer capture keeps events going to the window,
-   so this only wins hit-testing. */
+/* one cursor for the whole gesture, and it keeps hover off whatever slides
+   past underneath. pointer capture still routes the events. */
 #drag-shield {
   position: fixed; inset: 0; z-index: calc(var(--z-tooltip) + 20);
   background: transparent;
 }
 #drag-shield[hidden] { display: none; }
 
-/* A window being dragged is a composited layer; its own paint must not be
-   invalidated by the content inside it. */
+/* the wm sets will-change itself, on pointerdown */
 html.js .window { will-change: auto; }
 
-/* ==========================================================================
-   TOOLTIP
-   ========================================================================== */
+/* tooltip */
 .xp-tip {
   position: fixed; z-index: var(--z-tooltip);
   padding: 2px 6px; max-width: 260px;
@@ -600,9 +575,7 @@ html.js .window { will-change: auto; }
 }
 .xp-tip[hidden] { display: none; }
 
-/* ==========================================================================
-   MOTION / FORCED COLORS
-   ========================================================================== */
+/* motion + forced colors */
 @media (prefers-reduced-motion: reduce) {
   html.js .window.is-opening { animation: none; }
   *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; }

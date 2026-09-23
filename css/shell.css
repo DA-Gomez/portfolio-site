@@ -1,18 +1,13 @@
-/* ==========================================================================
-   shell.css — everything outside a window: wallpaper, desktop icons,
-   taskbar, Start button, Start menu, tray, balloon.
-   Every rule here is scoped under html.js — none of it exists in document mode.
-   ========================================================================== */
+/* shell.css - everything outside a window: wallpaper, desktop icons, taskbar,
+   start button, start menu, tray, balloon. all of it is html.js only. */
 
 html.js, html.js body { height: 100%; overflow: hidden; }
 html.js body { background: var(--xp-desktop-bg); }
 
-/* ==========================================================================
-   DESKTOP + WALLPAPER
-   Layers, back to front: sky (gradient on #desktop) -> clouds -> haze -> hill.
-   Split into layers on purpose: one big SVG with `slice` couples the sky, the
-   clouds and the horizon to a single crop and breaks at extreme aspect ratios.
-   ========================================================================== */
+/* wallpaper, back to front: sky gradient on #desktop, clouds, haze, hill.
+   it is split into layers on purpose. one big svg with slice ties the sky, the
+   clouds and the horizon to a single crop, which breaks at extreme aspect
+   ratios. */
 html.js #desktop {
   position: fixed;
   inset: 0 0 calc(var(--xp-taskbar-h) + env(safe-area-inset-bottom, 0px)) 0;
@@ -27,9 +22,9 @@ html.js #desktop {
 
 .wp-cloud, .wp-haze, .wp-hill { pointer-events: none; }
 
-/* Clouds: three overlapping soft ellipses each, masked so the underside is flat —
-   that flat bottom is what reads as cumulus rather than a smudge. Sized in vmax
-   so a cloud is the same physical size at 375px and at 2560px. */
+/* three soft ellipses each, masked flat along the bottom. that flat underside
+   is what reads as cumulus rather than a smudge. vmax so a cloud is the same
+   size at 375px as at 2560. */
 .wp-cloud {
   position: absolute; background-repeat: no-repeat;
   filter: blur(4px);
@@ -64,9 +59,8 @@ html.js #desktop {
 }
 @media (max-width: 480px) { .wp-cloud--c { display: none; } }
 
-/* Haze positioned off --hill-h so it tracks the horizon at every viewport size.
-   Drawn before the hill, so the silhouette edge stays crisp while the sky above
-   it goes milky — that band is the difference between a landscape and a shape. */
+/* positioned off --hill-h so it tracks the horizon at any size. drawn under
+   the hill so the ridge stays crisp while the sky above it goes milky. */
 .wp-haze {
   position: absolute; left: 0; right: 0;
   bottom: calc(var(--hill-h) * .78);
@@ -76,9 +70,9 @@ html.js #desktop {
     rgba(233,244,251,.52) 88%, rgba(233,244,251,.62) 100%);
 }
 
-/* width:max(1040px,100%) + centre transform: below 1040px the hill is
-   centre-cropped instead of squashed. A plain width:100% at 375px would crush
-   the 1440-unit path 3.6x and turn the gentle ridge into a pyramid. */
+/* max(1040px,100%) plus the centring transform: under 1040 the hill gets
+   cropped instead of squashed. width:100% at 375px squeezes the 1440-unit path
+   3.6x and the ridge turns into a pyramid. */
 .wp-hill {
   position: absolute; bottom: 0; left: 50%;
   transform: translateX(-50%);
@@ -93,9 +87,7 @@ html.js #desktop {
   .wp-cloud, .wp-haze, .wp-hill { display: none; }
 }
 
-/* ==========================================================================
-   DESKTOP ICONS
-   ========================================================================== */
+/* desktop icons */
 #icon-grid {
   position: absolute; inset: 8px auto 8px 8px; z-index: var(--z-icons);
   display: grid;
@@ -103,7 +95,7 @@ html.js #desktop {
   grid-template-rows: repeat(var(--icon-rows, 5), 82px);
   gap: 0; margin: 0; padding: 0; list-style: none;
 }
-/* The <li> is the grid item — placement must live here, not on the button. */
+/* the li is the grid item, so placement goes here and not on the button */
 #icon-grid > li { grid-column: var(--c); grid-row: var(--r); display: flex; }
 .dicon {
   display: flex; flex-direction: column; align-items: center; gap: 3px;
@@ -134,11 +126,8 @@ html.js #desktop {
 }
 .dicon.is-selected:focus-visible { outline: 1px dotted #fff; background: rgba(0,0,0,.42); }
 
-/* ==========================================================================
-   TASKBAR
-   The gradient is per-px bands, not percentages: XP tiled a 1x29 bitmap, and
-   percentage stops drift the moment the safe-area inset grows the element.
-   ========================================================================== */
+/* taskbar. the gradient stops are per-px, not percentages: xp tiled a 1x29
+   bitmap, and percentages drift as soon as the safe-area inset grows the bar. */
 #taskbar {
   position: fixed; inset: auto 0 0 0;
   height: calc(var(--xp-taskbar-h) + env(safe-area-inset-bottom, 0px));
@@ -161,7 +150,7 @@ html.js #desktop {
   background-color: var(--tb-b9);
 }
 
-/* ---------- START BUTTON ---------- */
+/* start button */
 #start-button {
   flex: 0 0 auto; display: flex; align-items: center; gap: 4px;
   height: var(--xp-taskbar-h); padding: 0 16px 0 7px;
@@ -182,9 +171,8 @@ html.js #desktop {
 }
 #start-button:focus-visible { outline: var(--xp-focus-dotted-light); outline-offset: -4px; }
 
-/* ---------- QUICK LAUNCH ----------
-   The recruiter's shortcut: the two highest-value actions, always visible,
-   never behind a menu, at any viewport width. */
+/* quick launch: the two things a recruiter actually wants, never behind a
+   menu, at any width */
 #quick-launch {
   flex: 0 0 auto; display: flex; align-items: center; gap: 2px;
   padding: 0 6px 0 8px; margin: 3px 0;
@@ -210,9 +198,8 @@ html.js #desktop {
 .ql-btn:focus-visible { outline: var(--xp-focus-dotted-light); outline-offset: -3px; }
 @media (max-width: 700px) { .ql-btn span { display: none; } .ql-btn { padding: 0 5px; } }
 
-/* ---------- WINDOW BUTTONS ----------
-   min-width:0 is load-bearing: without it the buttons refuse to shrink and
-   push the tray off-screen. That is the classic taskbar-recreation bug. */
+/* window buttons. min-width:0 matters, without it they refuse to shrink and
+   shove the tray off screen. */
 #task-buttons {
   flex: 1 1 auto; min-width: 0;
   display: flex; align-items: center; gap: 2px;
@@ -239,7 +226,7 @@ html.js #desktop {
 }
 .tb-btn:focus-visible { outline: var(--xp-focus-dotted-light); outline-offset: -3px; }
 
-/* ---------- TRAY ---------- */
+/* tray */
 #tray {
   flex: 0 0 auto; display: flex; align-items: center; gap: 7px;
   padding: 0 9px; margin: 3px 0 3px 0;
@@ -256,9 +243,7 @@ html.js #desktop {
 .tray-icon:focus-visible, #tray-clock:focus-visible { outline: var(--xp-focus-dotted-light); }
 @media (max-width: 420px) { .tray-icon { display: none; } }
 
-/* ==========================================================================
-   START MENU
-   ========================================================================== */
+/* start menu */
 #start-menu {
   position: fixed; z-index: var(--z-startmenu);
   left: 2px; bottom: calc(var(--xp-taskbar-h) + env(safe-area-inset-bottom, 0px) - 1px);
@@ -329,9 +314,7 @@ html.js #start-menu.is-opening { animation: sm-in 120ms ease-out; }
   .sm-left { border-right: 0; border-bottom: 1px solid var(--pane-border); }
 }
 
-/* ==========================================================================
-   BALLOON TIP  (blue info, never the red shield — that pattern is deceptive)
-   ========================================================================== */
+/* balloon tip. info blue, never the red shield, that reads as a fake warning */
 #balloon {
   position: fixed; z-index: var(--z-balloon);
   right: 8px; bottom: calc(var(--xp-taskbar-h) + 14px);
@@ -342,7 +325,7 @@ html.js #start-menu.is-opening { animation: sm-in 120ms ease-out; }
   font: var(--xp-fs)/1.45 var(--xp-font);
 }
 #balloon[hidden] { display: none; }
-#balloon::after {   /* the pointer tail, aimed down at the notification area */
+#balloon::after {   /* the tail, pointed down at the notification area */
   content: ""; position: absolute; right: 26px; bottom: -9px;
   width: 15px; height: 10px; background: var(--xp-info-bg);
   border-left: 1px solid #97927e; border-bottom: 1px solid #97927e;
@@ -360,9 +343,7 @@ html.js #start-menu.is-opening { animation: sm-in 120ms ease-out; }
 #balloon .balloon-close:focus-visible { outline: var(--xp-focus-dotted); }
 html.js #balloon.is-opening { animation: sm-in 160ms ease-out; }
 
-/* ==========================================================================
-   EMPTY-DESKTOP HINT — the desktop must never be an unexplained icon field
-   ========================================================================== */
+/* nothing-open hint. an unexplained field of icons is not a home page */
 #desk-hint {
   position: fixed; z-index: var(--z-icons);
   left: 50%; top: 42%; transform: translate(-50%,-50%);
@@ -375,9 +356,7 @@ html.js #balloon.is-opening { animation: sm-in 160ms ease-out; }
 #desk-hint[hidden] { display: none; }
 #desk-hint b { display: block; margin-bottom: 4px; }
 
-/* ==========================================================================
-   PRINT — the shell does not exist on paper
-   ========================================================================== */
+/* none of this exists on paper */
 @media print {
   html.js #desktop, html.js #taskbar, html.js #start-menu,
   html.js #balloon, html.js #desk-hint, html.js #icon-grid,

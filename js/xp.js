@@ -1,14 +1,11 @@
-/* ==========================================================================
-   xp.js — the window manager and desktop shell.
+/* xp.js - window manager and desktop shell.
 
-   Architecture: every window already exists in the document as a
-   <section data-window>. This script only ADDS chrome around that content and
-   positions it. It never copies, clones, or re-authors a content node, so the
-   resume exists exactly once in the DOM, and the print/no-JS view is the same
-   nodes the windows are made of.
+   every window is already in the html as a <section data-window>. this only
+   wraps chrome around it and positions it; no content node is ever cloned or
+   re-authored, so the resume exists once in the dom and the print/no-js view is
+   made of the same nodes as the windows.
 
-   State is the single source of truth; the DOM is rendered from it.
-   ========================================================================== */
+   state is the source of truth, the dom gets rendered from it. */
 (function () {
 'use strict';
 
@@ -17,7 +14,7 @@ var Z_BASE = 100, Z_MAX = 890;
 var MOBILE_Q = window.matchMedia('(max-width: 767px)');
 var MOTION_Q = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-/* ---------- tiny helpers ---------- */
+/* helpers */
 function el(tag, cls, html) {
   var n = doc.createElement(tag);
   if (cls) n.className = cls;
@@ -38,19 +35,17 @@ function store(key, val) {
   try {
     if (val === undefined) return localStorage.getItem(key);
     localStorage.setItem(key, val);
-  } catch (e) { /* private mode, blocked storage: preferences just don't persist */ }
+  } catch (e) { /* private mode, blocked storage. prefs just don't stick */ }
   return null;
 }
 function reduceMotion() { return root.classList.contains('reduce-motion') || MOTION_Q.matches; }
 
-/* ==========================================================================
-   1. STATE
-   ========================================================================== */
-var wins = [];      // window records, document order
+/* --- state --- */
+var wins = [];      // window records, in document order
 var byId = {};
 var zTop = Z_BASE;
 var focusedId = null;
-var lastFocusOutside = null;   // element to restore focus to when a window closes
+var lastFocusOutside = null;   // where focus goes back to when the last window closes
 
 function rec(section) {
   var d = section.dataset;
@@ -80,9 +75,7 @@ function rec(section) {
   };
 }
 
-/* ==========================================================================
-   2. BUILD CHROME  (adds only; never touches content nodes)
-   ========================================================================== */
+/* --- chrome --- */
 var CAP = [
   { k: 'min', sym: 'ui-caption-minimize', name: 'Minimize' },
   { k: 'max', sym: 'ui-caption-maximize', name: 'Maximize' },
@@ -91,11 +84,11 @@ var CAP = [
 
 function buildWindow(w) {
   var s = w.node;
-  // Compute status text NOW, while the content is still a child of the section.
-  // After the move it lives in a detached subtree and would not be found.
+  // read this before the content moves. afterwards it is in a detached
+  // subtree and the query comes back empty.
   var statusText = statusFor(w);
   s.classList.add('window');
-  s.setAttribute('role', 'region');           // non-modal: NOT a dialog, no aria-modal
+  s.setAttribute('role', 'region');           // region, not dialog. nothing here is modal
   s.setAttribute('data-shell', w.shell);
   if (w.fixed) s.classList.add('is-fixed');
   s.hidden = true;
@@ -105,7 +98,7 @@ function buildWindow(w) {
   bar.appendChild(svgUse(w.icon, 'title-icon'));
   var t = el('span', 'title-text');
   t.textContent = w.title;
-  t.setAttribute('aria-hidden', 'true');      // real name comes from aria-labelledby
+  t.setAttribute('aria-hidden', 'true');      // the accessible name comes from aria-labelledby
   bar.appendChild(t);
 
   var ctrls = el('div', 'win-controls');
@@ -128,7 +121,7 @@ function buildWindow(w) {
   var inner = el('div', 'win-frame-inner');
   var body = el('div', 'win-body');
 
-  // Move the existing content into the body. appendChild is a MOVE, not a copy.
+  // appendChild moves the node, it does not copy it
   while (bar.nextSibling) {
     var n = bar.nextSibling;
     if (n === inner) break;
@@ -168,8 +161,8 @@ function buildWindow(w) {
   return w;
 }
 
-/* Status text is derived from real content, never authored, so it can never
-   drift out of sync with what the window actually shows. */
+/* derived from the content, so it can't drift out of sync with what the
+   window actually shows */
 function statusFor(w) {
   var role = w.node.querySelector('.role');
   if (role) return role.textContent.replace(/\s+/g, ' ').trim();
@@ -197,8 +190,8 @@ function buildMenubar(spec) {
   return mb;
 }
 
-/* Real menu contents. A menu bar that does nothing is a worse affordance than
-   no menu bar, so every item here performs a genuine action. */
+/* a menu bar that does nothing is worse than no menu bar, so everything in
+   here actually does something */
 function menubarItems(name, w) {
   var body = w.chrome && w.chrome.body;
   switch (name) {
@@ -239,14 +232,14 @@ function menubarItems(name, w) {
 
 function downloadPdf() {
   var a = doc.createElement('a');
-  a.href = 'Resume.pdf';
+  // a.href = 'Resume.pdf';
   a.setAttribute('download', '');
   doc.body.appendChild(a);
   a.click();
   a.remove();
 }
 
-/* ---------- Explorer: blue task pane + content list ---------- */
+/* explorer: task pane + list */
 function shellExplorer(w, body) {
   var split = el('div', 'explorer-split');
   var pane = el('aside', 'task-pane');
@@ -259,7 +252,7 @@ function shellExplorer(w, body) {
   box.appendChild(inner);
   pane.appendChild(box);
 
-  // "Other Places" — a real third navigation path, and authentic XP furniture.
+  // other places. real xp furniture, and a third way to get around
   var other = el('div', 'task-pane-box');
   other.appendChild(el('h4', null, 'Other Places'));
   var ul = el('ul');
@@ -277,21 +270,21 @@ function shellExplorer(w, body) {
   other.appendChild(ul);
   pane.appendChild(other);
 
-  // Move the real content into the main area — a move, never a copy. Snapshot
-  // the child list first: mutating while walking firstChild skips nodes.
+  // moving, not copying. snapshot the child list first, walking firstChild
+  // while mutating skips nodes.
   [].slice.call(body.childNodes).forEach(function (n) {
     if (n.nodeType === 1 && (n.tagName === 'H1' || n.tagName === 'H2')) return; // heading stays
     main.appendChild(n);
   });
   split.appendChild(pane);
   split.appendChild(main);
-  body.appendChild(split);   // heading is still body's first child, so order holds
+  body.appendChild(split);   // heading is still first, so the order holds
   body.style.overflow = 'hidden';
   body.style.display = 'flex';
   body.style.flexDirection = 'column';
 }
 
-/* ---------- Device Manager tree ---------- */
+/* device manager tree */
 function shellTree(w, body) {
   var tree = body.querySelector('.tree');
   if (!tree) return;
@@ -315,7 +308,7 @@ function shellTree(w, body) {
     var lab = el('button', 'tree-label');
     lab.type = 'button';
     lab.appendChild(svgUse('icon-' + (g.dataset.icon || 'gear')));
-    if (h3) lab.appendChild(h3);          // MOVE the real heading, never copy it
+    if (h3) lab.appendChild(h3);          // move the real heading in
     else lab.appendChild(el('span', null, name));
     head.appendChild(lab);
 
@@ -336,7 +329,7 @@ function shellTree(w, body) {
   });
 }
 
-/* ---------- Dialog with a tab strip ---------- */
+/* dialog with a tab strip */
 function shellDialog(w, inner, body) {
   var names = (w.node.dataset.tabs || '').split(',').filter(Boolean);
   if (!names.length) return;
@@ -385,7 +378,7 @@ function shellDialog(w, inner, body) {
   inner.insertBefore(strip, inner.firstChild);
 }
 
-/* ---------- Help and Support: topic rail + reading pane ---------- */
+/* help: topic rail + reading pane */
 function shellHelp(w, body) {
   var names = (w.node.dataset.topics || '').split(',').filter(Boolean);
   var split = el('div', 'help-split');
@@ -434,20 +427,18 @@ function shellHelp(w, body) {
   body.style.flexDirection = 'column';
 }
 
-/* ==========================================================================
-   3. GEOMETRY
-   ========================================================================== */
+/* --- geometry --- */
 function deskRect() {
   var d = doc.getElementById('desktop');
   return { w: d.clientWidth, h: d.clientHeight };
 }
 
-/* A window may hang off the left, right and bottom edge, exactly like real
-   Windows. What has to stay reachable is a slice of TITLE BAR — not the box's
-   top-left corner, which is all an unconditional Math.max(0, x) protects.
-   Clamping the corner meant a wide window grabbed mid-caption stopped moving
-   while the pointer kept going. */
-var KEEP = 80;                       // px of caption that must stay on-desktop
+/* a window is allowed to hang off the left, right and bottom, same as the
+   real thing. what has to stay reachable is a strip of caption, not the
+   box's top-left corner, which is all an unconditional Math.max(0, x)
+   protects. clamping the corner meant a wide window grabbed mid-caption
+   stopped dead while the pointer kept going. */
+var KEEP = 80;                       // px of caption that has to stay on the desktop
 function clampX(x, wpx, r) { return Math.max(KEEP - wpx, Math.min(x, r.w - KEEP)); }
 function clampY(y, r)      { return Math.max(0, Math.min(y, r.h - 28)); }
 function applyGeom(w) {
@@ -459,21 +450,20 @@ function applyGeom(w) {
   var r = deskRect();
   var width = Math.min(w.w, Math.max(240, r.w - 8));
   var height = Math.min(w.h, Math.max(140, r.h - 8));
-  // Clamp so the title bar is always reachable: never above 0, and always at
-  // least 80px of the window's left edge on screen.
+  // keep the caption reachable
   var x = clampX(w.x, width, r);
   var y = clampY(w.y, r);
-  /* Write the clamped result BACK into state. Previously this clamped into
-     locals and rendered them while w.x/w.y kept the unclamped values, so state
-     and DOM silently diverged — and beginDrag seeds its baseline from state, so
-     the next drag started from a phantom origin and the window teleported. */
+  /* write the clamped values back into state. this used to clamp into locals
+     and render those while w.x/w.y kept the unclamped ones, and since
+     beginDrag seeds its baseline from state, the next drag started from a
+     position that was never on screen and the window jumped. */
   w.x = x; w.y = y; w.w = width; w.h = height;
   s.style.left = x + 'px';
   s.style.top = y + 'px';
   s.style.width = width + 'px';
   s.style.height = height + 'px';
 }
-/* Overlap of the smaller window's area, 0..1. */
+/* how much of the smaller window is covered, 0..1 */
 function occlusion(a, b) {
   var ox = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
   var oy = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
@@ -481,19 +471,16 @@ function occlusion(a, b) {
   return (ox * oy) / Math.min(a.w * a.h, b.w * b.h);
 }
 
-/* Windows are free to overlap — that is authentic, and with several large
-   windows open it is unavoidable, since their combined area exceeds the
-   desktop. What must not happen is a new window burying an existing one while
-   an emptier spot was available.
+/* overlapping is fine, and with a few big windows open it is unavoidable,
+   their combined area is bigger than the desktop. what should not happen is
+   a new window burying an open one while somewhere emptier was free.
 
-   Testing origin proximity (the original rule) missed this completely: two wide
-   windows can sit 150px apart and still hide 80% of each other. Walking a fixed
-   cascade offset was no better — it stepped off the desktop and fell back to a
-   position it never re-checked.
-
-   So: score a list of candidate positions and take the best. Candidates are
-   ordered by preference, and ties keep the earlier one, so a window that fits
-   at its designed position stays there. */
+   comparing origins missed that entirely: two wide windows can sit 150px
+   apart and still cover 80% of each other. a fixed cascade step was no
+   better, it walked off the desktop and fell back to a spot it never
+   re-checked. so score a list of candidates and take the best one. they are
+   in preference order and ties keep the earlier one, so a window that fits
+   where it was meant to go stays put. */
 function cascade(w) {
   var open = wins.filter(function (o) {
     return o !== w && (o.state === 'normal' || o.state === 'maximized');
@@ -502,14 +489,13 @@ function cascade(w) {
 
   var r = deskRect();
   var maxX = Math.max(0, r.w - w.w), maxY = Math.max(0, r.h - w.h);
-  var cand = [{ x: w.x, y: w.y }];                       // designed position first
+  var cand = [{ x: w.x, y: w.y }];                       // where it wants to be
   var i;
   for (i = 1; i <= 6; i++) cand.push({ x: w.x + i * 28, y: w.y + i * 26 });
-  // Then the corners and centre, which are the emptiest spots once the middle
-  // of the desktop is crowded.
+  // corners and centre, the emptiest spots once the middle fills up
   cand.push({ x: 0, y: 0 }, { x: maxX, y: 0 }, { x: 0, y: maxY }, { x: maxX, y: maxY },
              { x: Math.round(maxX / 2), y: Math.round(maxY / 2) });
-  // A coarse grid as the last resort, so there is always something to find.
+  // coarse grid so there is always something to find
   for (var gx = 0; gx <= maxX; gx += 80) {
     for (var gy = 0; gy <= maxY; gy += 60) cand.push({ x: gx, y: gy });
   }
@@ -527,17 +513,15 @@ function cascade(w) {
       if (v > worst) worst = v;
     }
     if (worst < bestScore) { bestScore = worst; best = c; }
-    if (bestScore <= 0.35) break;              // good enough, keep the preference order
+    if (bestScore <= 0.35) break;              // good enough, stop looking
   }
 
-  // A title bar must always be grabbable.
+  // and it still has to be grabbable
   w.x = clampX(best.x, w.w, r);
   w.y = clampY(best.y, r);
 }
 
-/* ==========================================================================
-   4. WINDOW MANAGER API
-   ========================================================================== */
+/* --- window manager --- */
 var WM = {
   open: function (id, opts) {
     var w = byId[id];
@@ -567,7 +551,7 @@ var WM = {
     w.node.hidden = true;
     if (focusedId === id) focusedId = null;
     render();
-    // Focus must not be lost. Prefer the next window, else the invoking element.
+    // don't drop focus: next window down, else whatever opened this one
     var next = wins.filter(function (o) { return o.state !== 'closed' && o.state !== 'minimized'; })
                    .sort(function (a, b) { return b.z - a.z; })[0];
     if (next) WM.focus(next.id);
@@ -586,7 +570,7 @@ var WM = {
       applyGeom(w);
     }
     if (focusedId !== id) {
-      // Monotonic counter, renormalized before it can overflow the band.
+      // monotonic, renormalized before it can run out of band
       if (++zTop > Z_MAX) {
         wins.slice().sort(function (a, b) { return a.z - b.z; })
             .forEach(function (o, i) { o.z = Z_BASE + i; });
@@ -597,8 +581,8 @@ var WM = {
       focusedId = id;
     }
     if (!silent) {
-      // Move DOM focus into the window, but to the window itself rather than
-      // its first link, so focus is not stolen into content unexpectedly.
+      // focus the window itself and not its first link, so focus doesn't get
+      // yanked into the content
       if (!w.node.contains(doc.activeElement)) {
         w.node.tabIndex = -1;
         w.node.focus({ preventScroll: true });
@@ -611,8 +595,8 @@ var WM = {
   minimize: function (id) {
     var w = byId[id];
     if (!w || w.state === 'closed') return;
-    // Remember maximized-ness: Windows restores a minimized maximized window
-    // back to maximized, not to its pre-maximize size.
+    // windows puts a minimized-while-maximized window back to maximized, not
+    // to its pre-maximize size
     w.wasMax = (w.state === 'maximized');
     w.state = 'minimized';
     w.node.hidden = true;                       // out of the a11y tree and tab order
@@ -637,9 +621,8 @@ var WM = {
     render();
   },
 
-  /* Taskbar semantics, matching real Windows exactly:
-     clicking the focused window's button minimizes it; any other button
-     focuses and restores. */
+  /* same as the real taskbar: clicking the focused window's button minimizes
+     it, any other button focuses and restores */
   taskbarClick: function (id) {
     var w = byId[id];
     if (!w) return;
@@ -654,9 +637,7 @@ var WM = {
 };
 window.XP = WM;
 
-/* ==========================================================================
-   5. RENDER  (derived entirely from state)
-   ========================================================================== */
+/* --- render, all of it off state --- */
 function render() {
   wins.forEach(function (w) {
     w.node.classList.toggle('is-focused', focusedId === w.id);
@@ -698,18 +679,12 @@ function renderTaskbar() {
   });
 }
 
-/* ==========================================================================
-   6. DRAG + RESIZE  (pointer events, so touch and pen work identically)
-   ========================================================================== */
-/* Moving a window by writing left/top on every pointermove forces a layout and
-   repaint of the whole window subtree each frame — visibly janky in the windows
-   with the most nodes. So a move-drag runs entirely on a composited
-   `transform`, and the offset is committed back into left/top only on release,
-   which keeps state authoritative without paying layout per frame.
-   A resize genuinely has to relayout, so it still writes width/height. Both
-   modes write synchronously in the pointermove handler: Chrome already coalesces
-   pointermove to frame cadence, so an extra requestAnimationFrame hop would only
-   add a frame of lag and leave the window trailing the cursor. */
+/* --- drag + resize, on pointer events so touch and pen behave --- */
+/* writing left/top on every pointermove relayouts and repaints the whole
+   window subtree each frame, which is visibly rough in the windows with the
+   most nodes. so a move runs on a composited transform and only commits
+   back to left/top on release. a resize has to relayout either way, so that
+   one still writes width/height. */
 var drag = null, shield = null, dragRAF = 0;
 
 function dragCursor(mode) {
@@ -720,9 +695,9 @@ function dragCursor(mode) {
   return 'nesw-resize';
 }
 
-/* A full-viewport shield keeps one cursor for the whole gesture. Pointer
-   capture means events still reach the window, so this only wins hit-testing
-   for the cursor — and it stops hover states firing on content underneath. */
+/* full-viewport shield, so the cursor stays put for the whole gesture.
+   pointer capture means events still reach the window, so this only wins
+   hit-testing, which also keeps hover off the content underneath. */
 function makeShield() {
   if (shield) return shield;
   shield = el('div');
@@ -750,25 +725,23 @@ function beginDrag(e, w, mode) {
     tx: w.x, ty: w.y, tw: w.w, th: w.h,
     r: deskRect(), started: false, dx: 0, dy: 0
   };
-  /* Capture on the window element. The listener is delegated on document, so
-     e.currentTarget is document here — which has no setPointerCapture, and
-     capturing it silently failed. Without capture, a fast drag that outruns the
-     cursor loses the pointer stream entirely. */
+  /* capture on the window element. the listener is delegated on document, so
+     currentTarget is document here, which has no setPointerCapture and fails
+     quietly. without capture a fast drag outruns the cursor and loses the
+     pointer stream. */
   drag.cap = w.node;
   try { w.node.setPointerCapture(e.pointerId); } catch (err) { drag.cap = null; }
 
-  /* Promote to its own compositor layer NOW, on press, rather than on the first
-     move. Creating a layer mid-gesture means the window has to be rasterized
-     while the pointer is already moving, which reads as a stutter in the first
-     few frames. Doing it on press spends that cost before any motion. The open
-     animation also animates transform, and a running animation outranks an
-     inline style, so it is dropped here too. */
+  /* make the layer on press, not on the first move. building it mid-gesture
+     means rasterizing the window while the pointer is already moving, which
+     reads as a stutter for the first few frames. the open animation animates
+     transform too, and a running animation outranks an inline style, so drop
+     it here as well. */
   if (mode === 'move') {
     w.node.classList.remove('is-opening');
     w.node.style.willChange = 'transform';
   }
-  /* Stop the native text-selection / image drag that otherwise competes with
-     the move and makes it stutter. */
+  /* the native text/image drag otherwise competes with the move */
   e.preventDefault();
 }
 
@@ -783,13 +756,11 @@ function moveDrag(e) {
   }
   drag.dx = dx; drag.dy = dy;
 
-  /* Coalesce to one write per frame. This costs NO latency: rAF callbacks run in
-     the frame's animation phase, which is after input dispatch and before style
-     and paint, so the value written here lands in the very same composite a
-     synchronous write would have. What it removes is redundant work when the
-     pointer reports faster than the display — Chrome already merges pointermove
-     to frame cadence, but Firefox dispatches at device rate, so a high-polling
-     mouse there produced several style writes per frame. */
+  /* one write per frame, which costs nothing: rAF callbacks run after input
+     dispatch and before style and paint, so the value lands in the same
+     composite a synchronous write would have. chrome already merges
+     pointermove to frame cadence, firefox dispatches at device rate, so a
+     high-polling mouse there was doing several style writes per frame. */
   if (!dragRAF) dragRAF = requestAnimationFrame(paintDrag);
 }
 
@@ -800,21 +771,13 @@ function paintDrag() {
   else paintResize();
 }
 
-/* Writes only — never reads layout, so it cannot force a reflow.
-   NO clamping here. The window tracks the pointer 1:1 for the whole gesture and
-   is brought back inside the desktop once, on release. Clamping every frame
-   pinned the window against the edge while the cursor kept travelling, then let
-   it rejoin when the cursor came back — stick-slip that reads as both "doesn't
-   follow the cursor" and "stutters, then jumps". */
+/* writes only, no layout reads, so it can't force a reflow. */
 function paintMove() {
   var d = drag, r = d.r;
-  /* Clamp during the gesture, but with bounds that only bite at a real screen
-     edge: the window may travel until just KEEP px of caption is left, exactly
-     like dragging a window off the side in Windows. The original bug was
-     clamping the window's own top-left corner to >= 0, which stopped a wide
-     window hundreds of px before the cursor reached any edge.
-     Clamping here rather than on release means the committed position always
-     equals the rendered one, so releasing never snaps. */
+  /* clamped, but with bounds that only bite at a real screen edge: the window
+     travels until KEEP px of caption is left, like dragging one off the side
+     in windows. clamping here rather than on release means the committed
+     position always equals the rendered one, so letting go never snaps. */
   d.tx = clampX(d.ox + d.dx, d.ow, r);
   d.ty = clampY(d.oy + d.dy, r);
   d.w.node.style.transform =
@@ -853,26 +816,21 @@ function endDrag(e) {
   } else {
     var s = d.w.node;
     if (d.mode === 'move') {
-      // Clamp ONCE, here, so the gesture itself is never decoupled from the
-      // cursor. Use the latest delta rather than the last painted frame: a
-      // release landing before a pending rAF would otherwise lose a frame of
-      // travel.
-      // paintMove already clamped, so this is the same value that is on screen:
-      // commit is a no-op visually and cannot snap.
+      // paintMove already clamped, so this is the value that is on screen and
+      // the commit can't snap
       d.w.x = d.tx;
       d.w.y = d.ty;
       s.style.left = d.w.x + 'px';
       s.style.top = d.w.y + 'px';
       s.style.transform = '';
-      /* Force the recalc now so the transform removal and the new left/top are
-         applied together. Without this the element kept its old composited
-         transform for a frame while left/top had already moved, so every drag
-         ended with the window snapping from its pre-release position to the
-         committed one — a visible jump at the end of the gesture. */
+      /* force the recalc now so dropping the transform and the new left/top land
+         together. without it the element kept the old composited transform for a
+         frame while left/top had already moved, and every drag ended with a
+         visible jump. */
       void s.offsetWidth;
-      /* Release the layer only on the NEXT frame. Dropping will-change in the
-         same task tears the layer down while that swap is still settling, which
-         is what made the stale transform visible in the first place. */
+      /* let the layer go on the next frame. dropping will-change in the same task
+         tears it down while that swap is still settling, which is what made the
+         stale transform visible in the first place. */
       requestAnimationFrame(function () {
         if (!drag || drag.w !== d.w) s.style.willChange = '';
       });
@@ -885,16 +843,16 @@ function endDrag(e) {
   hideShield();
 }
 
-// pointercancel matters: without it a drag can leak and stick to the cursor.
+// without pointercancel a drag can leak and stick to the cursor
 doc.addEventListener('pointermove', moveDrag);
 doc.addEventListener('pointerup', endDrag);
 doc.addEventListener('pointercancel', endDrag);
-// Losing capture (Esc, another gesture, the tab going away) must also end it.
+// losing capture (esc, another gesture, the tab going away) ends it too
 doc.addEventListener('lostpointercapture', function (e) {
   if (drag && e.pointerId === drag.pid) endDrag(e);
 });
 
-/* ---------- keyboard move / size modes (the WCAG 2.2 drag alternative) ---------- */
+/* keyboard move/size, the alternative to dragging */
 var kbMode = null;
 function enterKbMode(w, mode) {
   kbMode = { w: w, mode: mode, x: w.x, y: w.y, wd: w.w, ht: w.h };
@@ -914,9 +872,8 @@ function exitKbMode(commit) {
 function kbNudge(key, shift) {
   var w = kbMode.w, step = shift ? 1 : 12, r = deskRect();
   if (kbMode.mode === 'move') {
-    // Same bounds as a pointer drag, so keyboard Move can reach every position
-    // dragging can. Previously this clamped the box corner to >= 0, which meant
-    // a window could be dragged off the left edge but never moved back there
+    // same bounds as a pointer drag. this used to clamp the corner to >= 0,
+    // so a window dragged off the left edge could never be brought back
     // with the keyboard.
     if (key === 'ArrowLeft')  w.x = clampX(w.x - step, w.w, r);
     if (key === 'ArrowRight') w.x = clampX(w.x + step, w.w, r);
@@ -931,9 +888,7 @@ function kbNudge(key, shift) {
   applyGeom(w);
 }
 
-/* ==========================================================================
-   7. MENUS  (window menu / desktop context menu)
-   ========================================================================== */
+/* --- menus: window menu, desktop context menu --- */
 var menuEl = null;
 function closeMenu() {
   if (menuEl) { menuEl.remove(); menuEl = null; }
@@ -985,9 +940,7 @@ function windowMenu(w, x, y, returnTo) {
   ], x, y, returnTo);
 }
 
-/* ==========================================================================
-   8. SHELL: desktop, icons, taskbar, start menu, tray
-   ========================================================================== */
+/* --- shell: desktop, icons, taskbar, start menu, tray --- */
 var selectedIcon = null;
 
 function buildShell() {
@@ -1018,8 +971,8 @@ function buildShell() {
           '<stop offset="0" stop-color="#12330e" stop-opacity="0"/>' +
           '<stop offset="1" stop-color="#12330e" stop-opacity=".38"/>' +
         '</linearGradient>' +
-        // explicit filter region is mandatory: the default clips the blur and
-        // leaves a hard line where the filter output ends.
+        // the default filter region clips the blur and leaves a hard line where
+        // the output ends
         '<filter id="hillSoft" x="-5%" y="-10%" width="110%" height="130%" color-interpolation-filters="sRGB">' +
           '<feGaussianBlur stdDeviation="0.9"/>' +
         '</filter>' +
@@ -1039,7 +992,7 @@ function buildShell() {
   var maxRow = 1;
   deskWins.forEach(function (w) {
     var li = el('li');
-    li.style.setProperty('--c', w.col);   // the <li> is the grid item
+    li.style.setProperty('--c', w.col);   // the li is the grid item
     li.style.setProperty('--r', w.row);
     var b = el('button', 'dicon');
     b.type = 'button';
@@ -1052,19 +1005,6 @@ function buildShell() {
     w.dIcon = b;
     maxRow = Math.max(maxRow, w.row);
   });
-  // The PDF sits at position 2, directly under About: "read it here" and
-  // "take it with you" presented as one adjacent choice.
-  var pdfLi = el('li');
-  pdfLi.style.setProperty('--c', 1);
-  pdfLi.style.setProperty('--r', 2);
-  var pdf = el('a', 'dicon');
-  pdf.href = 'Resume.pdf';
-  pdf.setAttribute('download', '');
-  pdf.appendChild(svgUse('icon-doc-pdf'));
-  pdf.appendChild(el('span', null, 'Resume.pdf'));
-  pdf.tabIndex = -1;
-  pdfLi.appendChild(pdf);
-  grid.appendChild(pdfLi);
   grid.style.setProperty('--icon-rows', Math.max(maxRow, 2));
   desk.appendChild(grid);
   if (deskWins[0]) deskWins[0].dIcon.tabIndex = 0;
@@ -1098,28 +1038,27 @@ function buildShell() {
   ql.id = 'quick-launch';
   ql.setAttribute('role', 'group');
   ql.setAttribute('aria-label', 'Quick Launch');
-  // Quick Launch holds the three highest-value recruiter actions, always
-  // visible at any width. About is not here — it opens on load and already has
-  // a desktop icon and a pinned Start item.
+  // the two actions worth a permanent slot at any width. about is not here,
+  // it opens on load and already has an icon and a pinned start item.
   var qlAbout = el('button', 'ql-btn');
   qlAbout.type = 'button';
   qlAbout.dataset.open = 'win-experience';
   qlAbout.appendChild(svgUse('icon-briefcase'));
   qlAbout.appendChild(el('span', null, 'Experience'));
   qlAbout.tabIndex = -1;
-  var qlPdf = el('a', 'ql-btn');
-  qlPdf.href = 'Resume.pdf';
-  qlPdf.setAttribute('download', '');
-  qlPdf.appendChild(svgUse('icon-doc-pdf'));
-  qlPdf.appendChild(el('span', null, 'Download PDF'));
-  qlPdf.tabIndex = -1;
+  // var qlPdf = el('a', 'ql-btn');
+  // qlPdf.href = 'Resume.pdf';
+  // qlPdf.setAttribute('download', '');
+  // qlPdf.appendChild(svgUse('icon-doc-pdf'));
+  // qlPdf.appendChild(el('span', null, 'Download PDF'));
+  // qlPdf.tabIndex = -1;
   var qlMail = el('button', 'ql-btn');
   qlMail.type = 'button';
   qlMail.dataset.open = 'win-contact';
   qlMail.appendChild(svgUse('icon-mail'));
   qlMail.appendChild(el('span', null, 'Contact'));
   qlMail.tabIndex = -1;
-  ql.appendChild(qlAbout); ql.appendChild(qlPdf); ql.appendChild(qlMail);
+  ql.appendChild(qlAbout); ql.appendChild(qlMail);
   tb.appendChild(ql);
 
   var tasks = el('div');
@@ -1188,27 +1127,27 @@ function buildStartMenu() {
   var left = el('div', 'sm-left');
   var right = el('div', 'sm-right');
 
-  // Pinned: the two highest-value actions.
+  // pinned
   var pinned = el('div', 'sm-pinned');
   var pAbout = smItem(wins.filter(function (w) { return w.id === 'win-about'; })[0], 'Start here');
   if (pAbout) pinned.appendChild(pAbout);
-  var pPdf = el('a', 'sm-item');
-  pPdf.href = 'Resume.pdf';
-  pPdf.setAttribute('download', '');
-  pPdf.setAttribute('role', 'menuitem');
-  pPdf.appendChild(svgUse('icon-doc-pdf'));
-  pPdf.appendChild(el('span', null, '<b>Download Resume</b><small>PDF</small>'));
-  pinned.appendChild(pPdf);
+  // var pPdf = el('a', 'sm-item');
+  // pPdf.href = 'Resume.pdf';
+  // pPdf.setAttribute('download', '');
+  // pPdf.setAttribute('role', 'menuitem');
+  // pPdf.appendChild(svgUse('icon-doc-pdf'));
+  // pPdf.appendChild(el('span', null, '<b>Download Resume</b><small>PDF</small>'));
+  // pinned.appendChild(pPdf);
   left.appendChild(pinned);
   left.appendChild(el('hr', 'sm-sep'));
 
-  // Everything else in the manifest, so the Start menu alone reaches it all.
+  // everything else, so the start menu on its own reaches all of it
   wins.forEach(function (w) {
     if (w.id === 'win-about' || w.node.dataset.nodoc === '1') return;
     left.appendChild(smItem(w));
   });
 
-  // Right column: authentic XP associations, pointed at honest destinations.
+  // right column: the usual xp entries, pointed somewhere real
   [['My Computer', 'icon-computer', 'win-skills'],
    ['Control Panel', 'icon-gear', 'win-display'],
    ['Help and Support', 'icon-help', 'win-help']].forEach(function (r) {
@@ -1298,16 +1237,14 @@ function announce(msg) {
   if (l) l.textContent = msg;
 }
 
-/* ==========================================================================
-   9. START MENU open/close
-   ========================================================================== */
+/* --- start menu --- */
 function setStart(open) {
   var m = doc.getElementById('start-menu'), b = doc.getElementById('start-button');
   m.hidden = !open;
   b.setAttribute('aria-expanded', String(open));
   if (open) {
     var bal = doc.getElementById('balloon');
-    if (bal) bal.hidden = true;      // never let the tip cover the menu it points at
+    if (bal) bal.hidden = true;      // don't let the tip cover the menu it points at
     if (!reduceMotion()) {
       m.classList.add('is-opening');
       setTimeout(function () { m.classList.remove('is-opening'); }, 180);
@@ -1318,9 +1255,7 @@ function setStart(open) {
 }
 function startOpen() { return !doc.getElementById('start-menu').hidden; }
 
-/* ==========================================================================
-   10. HASH ROUTING — one URL works with and without JS
-   ========================================================================== */
+/* --- hash routing, so one url works with or without js --- */
 var hashLock = false;
 function syncHash() {
   if (hashLock) return;
@@ -1337,9 +1272,7 @@ function readHash() {
   return byId[id] ? id : null;
 }
 
-/* ==========================================================================
-   11. THEME / SCALE / MOTION preferences
-   ========================================================================== */
+/* --- prefs: theme, scale, motion --- */
 function applyPrefs() {
   var th = store('xp.theme') || 'luna';
   var fs = store('xp.fontsize') || 'normal';
@@ -1356,9 +1289,7 @@ function applyPrefs() {
   wins.forEach(applyGeom);
 }
 
-/* ==========================================================================
-   12. EVENT WIRING
-   ========================================================================== */
+/* --- events --- */
 function wire() {
   /* --- anything with data-open opens that window --- */
   doc.addEventListener('click', function (e) {
@@ -1441,23 +1372,23 @@ function wire() {
         { label: 'Arrange Icons By', disabled: true },
         { label: 'Refresh', run: function () { wins.forEach(applyGeom); } },
         '-',
-        { label: 'Print Resume', run: function () { window.print(); } },
+        // { label: 'Print Resume', run: function () { window.print(); } },
         '-',
         { label: 'Properties', run: function () { WM.open('win-display'); } }
       ], e.clientX, e.clientY, doc.activeElement);
     }
   });
 
-  /* --- global keyboard --- */
+  /* --- keyboard --- */
   doc.addEventListener('keydown', function (e) {
-    /* keyboard move/size mode owns the arrows while active */
+    /* move/size mode owns the arrows while it is on */
     if (kbMode) {
       if (e.key.indexOf('Arrow') === 0) { kbNudge(e.key, e.shiftKey); e.preventDefault(); return; }
       if (e.key === 'Enter') { exitKbMode(true); e.preventDefault(); return; }
       if (e.key === 'Escape') { exitKbMode(false); e.preventDefault(); return; }
     }
 
-    /* Ctrl+Esc must be tested before plain Esc, or it never reaches its branch. */
+    /* ctrl+esc has to be tested before plain esc or it never gets here */
     if (e.key === 'Escape' && e.ctrlKey) {
       setStart(!startOpen());
       if (!startOpen()) doc.getElementById('start-button').focus();
@@ -1470,7 +1401,7 @@ function wire() {
       if (focusedId) { WM.close(focusedId); e.preventDefault(); }
       return;
     }
-    if (e.key === ' ' && e.altKey) {   /* Alt+Space: the window system menu */
+    if (e.key === ' ' && e.altKey) {   /* alt+space: system menu */
       if (focusedId) {
         var w = byId[focusedId];
         var r = w.chrome.bar.getBoundingClientRect();
@@ -1479,7 +1410,7 @@ function wire() {
       }
       return;
     }
-    if (e.key === 'Tab' && e.altKey) {   /* Alt+Tab: next window */
+    if (e.key === 'Tab' && e.altKey) {   /* alt+tab */
       var live = wins.filter(function (w) { return w.state !== 'closed'; });
       if (live.length) {
         var i = live.findIndex(function (w) { return w.id === focusedId; });
@@ -1489,7 +1420,7 @@ function wire() {
       return;
     }
 
-    /* roving arrow navigation inside the icon grid and the taskbar */
+    /* --- roving arrows in the icon grid and the taskbar --- */
     var ic = e.target.closest('.dicon');
     if (ic && e.key.indexOf('Arrow') === 0) {
       var icons = [].slice.call(doc.querySelectorAll('.dicon'));
@@ -1546,9 +1477,7 @@ function wire() {
   });
 }
 
-/* ==========================================================================
-   13. BOOT
-   ========================================================================== */
+/* --- boot --- */
 function boot() {
   var sections = [].slice.call(doc.querySelectorAll('section[data-window]'));
   if (!sections.length) throw new Error('no windows in document');
@@ -1564,8 +1493,8 @@ function boot() {
   applyPrefs();
   wire();
 
-  // A deep link wins over the default, so a shared #win-projects link lands
-  // on projects with nothing else in the way.
+  // a deep link beats the default, so a shared #win-projects lands on
+  // projects with nothing in front of it
   var deep = readHash();
   if (deep) WM.open(deep);
   else {
@@ -1574,7 +1503,7 @@ function boot() {
   }
   render();
 
-  // One balloon, once per session, never blocking, no motion if reduced.
+  // one balloon per session, never blocking, no motion if reduced
   var shown = null;
   try { shown = sessionStorage.getItem('xp.balloon'); } catch (e) {}
   if (!shown && !MOBILE_Q.matches) {
@@ -1593,8 +1522,8 @@ function boot() {
   root.classList.add('js-ready');
 }
 
-/* teardown: if boot throws we must leave a readable document, not a broken
-   desktop. Removing .js reverts every desktop-scoped rule at once. */
+/* if boot throws we still owe the visitor a readable document, not half a
+   desktop. dropping .js reverts every desktop-scoped rule at once. */
 function teardown() {
   var c = doc.getElementById('chrome');
   if (c) c.remove();
@@ -1620,7 +1549,7 @@ function go() {
   catch (err) {
     root.classList.remove('js', 'js-ready');
     try { teardown(); } catch (e2) {}
-    console.error('[xp] enhancement aborted, falling back to document', err);
+    console.error('xp: boot failed, falling back to the plain document', err);
   }
 }
 

@@ -1,13 +1,9 @@
-/* ==========================================================================
-   content.css — resume typography.
-   Band 1 (no prefix)  = the document. This is what a no-JS visitor and the
-                         printer see. It must be a clean, readable resume.
-   Band 2 (html.js …)  = the same nodes re-framed inside window shells.
-   ========================================================================== */
+/* content.css - the resume text itself.
+   unprefixed rules are the plain document: what a no-js visitor and the printer
+   get, and it has to stand on its own as a resume.
+   html.js rules re-frame the same nodes inside the window shells. */
 
-/* ==========================================================================
-   BAND 1 — THE DOCUMENT
-   ========================================================================== */
+/* ---- the document ---- */
 .doc {
   max-width: 68ch; margin-inline: auto; padding: 28px 20px 8px;
   font: 16px/1.55 var(--xp-font); color: #1B1B17;
@@ -90,21 +86,19 @@ code { font: 12.5px/1.4 var(--xp-font-mono); background: #f2f0e6; padding: 1px 4
 #page-footer .fine { font-size: 11.5px; color: #7a8290; }
 #page-footer a { color: var(--xp-link); }
 
-/* The settings window is chrome, not resume content — hide it in the document
-   and in print. It is created by, and only meaningful with, JavaScript. */
+/* settings window is chrome, not resume content. it only exists with js, so
+   keep it out of the document and out of print. */
 #win-display { display: none; }
 html.js #win-display { display: flex; }
 
-/* ==========================================================================
-   BAND 2 — WINDOW SHELLS
-   ========================================================================== */
+/* ---- window shells ---- */
 html.js .doc { max-width: none; margin: 0; padding: 0; }
 html.js .doc section { margin: 0; }
 html.js #page-footer, html.js .ns-note { display: none; }
 
-/* The heading stays in the DOM to supply the window's accessible name via
-   aria-labelledby, but the title bar already shows it — so it is visually
-   hidden for every shell except Notepad, where his name is the point. */
+/* the heading stays in the dom to name the window via aria-labelledby, but the
+   title bar already shows it, so hide it in every shell but notepad, where his
+   name is the whole point. */
 html.js .win-body > :is(h1, h2) {
   position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
   overflow: hidden; clip-path: inset(50%); white-space: nowrap;
@@ -120,7 +114,7 @@ html.js .win-body li { margin-bottom: 4px; }
 html.js .win-body .entry { margin-bottom: 16px; }
 html.js .win-body .entry-meta { font-size: calc(11px * var(--xp-scale)); }
 
-/* ---------- SHELL: NOTEPAD ---------- */
+/* notepad */
 html.js [data-shell="notepad"] .win-body {
   padding: 8px 10px;
   font-family: var(--xp-font-mono);
@@ -140,8 +134,7 @@ html.js [data-shell="notepad"] .contact-inline {
   border-bottom: 1px dashed #c9c6b8; font-size: calc(11.5px * var(--xp-scale));
 }
 html.js [data-shell="notepad"] .contact-inline li { margin: 0 0 1px; }
-/* This line explains the desktop, so it only makes sense once there is one.
-   In the plain document it would be describing an interface that isn't there. */
+/* this line describes the desktop, so it only makes sense once there is one */
 .note { display: none; }
 html.js .note { display: block; }
 html.js [data-shell="notepad"] .note {
@@ -149,7 +142,7 @@ html.js [data-shell="notepad"] .note {
   font-size: calc(11px * var(--xp-scale)); color: #55606c;
 }
 
-/* ---------- SHELL: EXPLORER (task pane + list) ---------- */
+/* explorer: task pane + list */
 html.js [data-shell="explorer"] .win-frame-inner { border: 1px solid var(--xp-shadow-3d); }
 html.js .explorer-split { flex: 1 1 auto; display: flex; min-height: 0; }
 html.js .task-pane {
@@ -189,7 +182,7 @@ html.js .explorer-main .entry:last-child { border-bottom: 0; margin-bottom: 0; p
   html.js .task-pane { flex: 0 0 auto; border-right: 0; border-bottom: 1px solid var(--pane-border); }
 }
 
-/* ---------- SHELL: DEVICE MANAGER TREE ---------- */
+/* device manager tree */
 html.js [data-shell="tree"] .win-frame-inner { border: 1px solid var(--xp-shadow-3d); }
 html.js [data-shell="tree"] .win-body { padding: 6px 8px; }
 html.js .tree { font: var(--xp-fs)/1.55 var(--xp-font); }
@@ -224,7 +217,7 @@ html.js .tree-group > ul > li::before {
 }
 html.js .tree-group[aria-expanded="false"] > ul { display: none; }
 
-/* ---------- SHELL: DIALOG (tab strip) ---------- */
+/* tabbed dialog */
 html.js [data-shell="dialog"] .win-frame-inner { background: var(--xp-face); border: 0; padding: 0; }
 html.js [data-shell="dialog"] .win-body {
   background: var(--xp-face); padding: 12px 14px;
@@ -243,7 +236,7 @@ html.js .sysprops-brand span { font-size: calc(11px * var(--xp-scale)); color: #
 html.js .sysprops-reg { padding-left: 12px; }
 html.js .sysprops-reg p { margin: 0 0 2px; }
 
-/* Display Properties monitor preview — pure CSS, and it reflects the live theme */
+/* the monitor preview is all css, and it follows the live theme */
 html.js .monitor-preview { display: grid; justify-items: center; margin: 0 0 12px; }
 html.js .mp-screen {
   position: relative; width: 176px; height: 128px; padding: 7px;
@@ -276,7 +269,7 @@ html.js .mp-start {
 html.js .mp-neck { width: 30px; height: 9px; background: #a9a598; }
 html.js .mp-stand { width: 66px; height: 6px; border-radius: 0 0 4px 4px; background: #9d998c; }
 
-/* ---------- SHELL: HELP AND SUPPORT ---------- */
+/* help and support */
 html.js [data-shell="help"] .win-frame-inner { border: 1px solid var(--xp-shadow-3d); }
 html.js .help-split { flex: 1 1 auto; display: flex; min-height: 0; }
 html.js .help-rail {
@@ -301,7 +294,7 @@ html.js .keytable th, html.js .keytable td { padding: 3px 6px; }
   html.js .help-rail { flex: 0 0 auto; border-right: 0; border-bottom: 1px solid var(--pane-border); }
 }
 
-/* ---------- SHELL: OUTLOOK EXPRESS COMPOSE ---------- */
+/* outlook express compose */
 html.js [data-shell="compose"] .win-frame-inner { border: 1px solid var(--xp-shadow-3d); }
 html.js [data-shell="compose"] .win-body { padding: 0; display: flex; flex-direction: column; }
 html.js [data-shell="compose"] .compose-head {
@@ -325,12 +318,9 @@ html.js [data-shell="compose"] .compose-actions {
   box-shadow: inset 0 1px 0 var(--xp-shadow-3d);
 }
 
-/* ==========================================================================
-   MOBILE — below 768px floating windows are hostile. Windows become full-bleed
-   sheets stacked one at a time, switched from the taskbar. The metaphor holds:
-   it is still a desktop with a taskbar, it just runs one app maximized, which
-   is exactly what a small screen wants.
-   ========================================================================== */
+/* under 768px floating windows are just in the way. they become full-bleed
+   sheets, one at a time, switched from the taskbar. still a desktop, it just
+   runs one thing maximized, which is what a phone wants anyway. */
 @media (max-width: 767px) {
   html.js .window {
     inset: 0 0 calc(var(--xp-taskbar-h) + env(safe-area-inset-bottom,0px)) 0 !important;
@@ -344,14 +334,12 @@ html.js [data-shell="compose"] .compose-actions {
   html.js .task-pane, html.js .help-rail { flex-basis: auto; }
 }
 
-/* ==========================================================================
-   PRINT — one clean resume. No chrome, no wallpaper, nothing hidden.
-   ========================================================================== */
+/* print: one clean resume, no chrome, nothing hidden */
 @media print {
   html, body { height: auto !important; overflow: visible !important; background: #fff !important; }
   html.js .doc { max-width: none; margin: 0; padding: 0; }
 
-  /* Undo every trace of the desktop and print the document instead. */
+  /* undo the desktop */
   html.js .window, html.js .doc section {
     position: static !important; display: block !important;
     inset: auto !important; width: auto !important; height: auto !important;
@@ -373,7 +361,7 @@ html.js [data-shell="compose"] .compose-actions {
     padding: 0 !important; margin: 0 !important; border: 0 !important;
     background: none !important; box-shadow: none !important;
   }
-  /* Restore the real heading — it carried the section name all along. */
+  /* the real heading comes back, it had the section name all along */
   html.js .win-body > :is(h1, h2) {
     position: static !important; width: auto !important; height: auto !important;
     margin: 0 0 8pt !important; clip-path: none !important; overflow: visible !important;
@@ -395,13 +383,13 @@ html.js [data-shell="compose"] .compose-actions {
   .entry { break-inside: avoid; margin-bottom: 6pt; }
   .doc ul { margin-top: 3pt; margin-bottom: 3pt; }
   .doc li { margin-bottom: 1.5pt; }
-  /* The footer is attribution, not resume content: keep it, make it small,
-     and never let it be the only thing on a page. */
+  /* attribution, not resume content: keep it, keep it small, and don't let it
+     be the only thing on a page */
   #page-footer { margin-top: 6pt !important; padding-top: 5pt !important; break-inside: avoid; }
   #page-footer p { margin: 0 0 2pt !important; }
   #page-footer .fine { font-size: 7.5pt !important; line-height: 1.35 !important; }
   .tree-group > ul { display: flex; flex-wrap: wrap; }
-  /* Print URLs after link text so a paper copy is still actionable. */
+  /* paper copy needs the urls spelled out */
   .doc a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8.5pt; color: #333; }
   .doc a { text-decoration: none; color: #000; }
   .badge-inprogress { border: 1pt solid #666; }
@@ -409,21 +397,18 @@ html.js [data-shell="compose"] .compose-actions {
   @page { margin: 13mm 14mm; }
 }
 
-/* Notepad's Format > Word Wrap, made real. */
+/* notepad's format > word wrap, for real */
 html.js .win-body.no-wrap { white-space: pre-wrap; overflow-x: auto; }
 html.js .win-body.no-wrap p, html.js .win-body.no-wrap li { white-space: nowrap; }
 
-/* Skills categories are real headings. In the document they label the three
-   groups; in the window the tree row adopts the same node. */
+/* the skills categories are real headings. in the document they label the
+   three groups, in the window the tree row adopts the same node. */
 .tree-name { margin: 14px 0 5px !important; font-size: 13px !important; color: #1f3f73; }
 .tree-group:first-child .tree-name { margin-top: 0 !important; }
 html.js .tree-name { margin: 0 !important; font: inherit !important; color: inherit; }
 
-/* ==========================================================================
-   PRINT, PART 2 — neutralize shell presentation.
-   The shells are screen affordances. On paper this must read as a resume, so
-   every shell-specific font, border, tree line and decorative glyph is undone.
-   ========================================================================== */
+/* more print. the shells are a screen thing, so undo every shell-specific
+   font, border, tree line and glyph and let it read as a resume. */
 @media print {
   html.js [data-shell] .win-body {
     font-family: var(--xp-font) !important;
@@ -440,10 +425,10 @@ html.js .tree-name { margin: 0 !important; font: inherit !important; color: inhe
   }
   html.js [data-shell="notepad"] .note { border-top: 0 !important; }
 
-  /* The desktop-metaphor aside is meaningless on paper. */
+  /* pointless on paper */
   html.js .win-body > .note { display: none !important; }
 
-  /* Device Manager tree -> plain labelled lists. */
+  /* tree back to plain labelled lists */
   html.js .tree-root,
   html.js .tree-toggle,
   html.js .tree-group > ul > li > svg,
@@ -464,7 +449,7 @@ html.js .tree-name { margin: 0 !important; font: inherit !important; color: inhe
   html.js .tree-group > ul > li::before { display: none !important; }
   html.js .sysprops-reg { padding-left: 0 !important; }
 
-  /* Belt and braces: no shell container may draw a frame on paper. */
+  /* and nothing draws a frame */
   html.js .window, html.js .win-frame-inner, html.js .win-body,
   html.js [data-shell] .win-frame-inner, html.js [data-shell] .win-body,
   html.js .doc section {
@@ -474,13 +459,29 @@ html.js .tree-name { margin: 0 !important; font: inherit !important; color: inhe
 }
 
 @media print {
-  /* Contact restates the header, which already prints all three links with
-     their full URLs. A resume puts contact details in the header, so the
-     compose window's fake fields and buttons have no business on paper. */
   html.js #win-contact { display: none !important; }
   html.js .compose-head dd {
     border: 0 !important; background: none !important; padding: 0 !important;
     min-height: 0 !important;
   }
   html.js .compose-actions, html.js .xp-btn { display: none !important; }
+}
+
+.entry-links {
+  margin: 6px 0 0;
+  padding-left: 1.5em;
+  font-size: 0.95em;
+}
+
+.entry-links a + a {
+  margin-left: 12px;
+}
+
+/* show the URL in print */
+@media print {
+  .entry-links a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.9em;
+    word-break: break-all;
+  }
 }
